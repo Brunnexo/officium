@@ -1,0 +1,27 @@
+{
+    "name": "officium",
+    "version": "1.0.0",
+    "description": "Gerenciador de Mão de Obra",
+    "main": "main.js",
+    "keywords": [
+        "joyson",
+        "jss",
+        "gmo",
+        "labor",
+        "relger",
+        "officium"
+    ],
+    "author": "Bruno Costa",
+    "license": "ISC",
+    "dependencies": {
+        "@popperjs/core": "^2.4.0",
+        "bootstrap": "^4.5.0",
+        "chart.js": "^2.9.3",
+        "electron": "^9.0.0",
+        "jquery": "^3.5.1",
+        "jquery.js": "0.0.2-security",
+        "mssql": "^6.2.0",
+        "popper.js": "^1.16.0",
+        "xlsx": "^0.16.2"
+    }
+}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Officium</title>
+    <link rel="stylesheet" type="text/css" href="../res/bootstrap/4.5.0/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../res/styles/scrollbar.css">
+</head>
+
+<body class="bg-light">
+    <!-- Barra de navegação -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" id="nome"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-expanded="false"><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="nav">
+            <ul class="navbar-nav">
+                <li class="nav-item active" id="resume">
+                    <a class="nav-link">Resumo</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="registro" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Registro</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" id="project">Projetos</a>
+                        <a class="dropdown-item" id="sr"><i>Service Request</i></a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" id="general">Geral</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <form>
+            <input id="inDate" type="date" class="form-control">
+        </form>
+        <div style="-webkit-app-region: no-drag; padding-left: 15px;">
+            <button type="button" id="close" class="close" data-toggle="tooltip" data-placement="bottom" title="Fechar"><span>&times;</span></button>
+            <button type="button" id="iconify" class="close" data-toggle="tooltip" data-placement="bottom" title="Minimizar"><span>&minus;</span></button>
+            <button type="button" id="back" class="close" data-toggle="tooltip" data-placement="bottom" title="Voltar"><span>&lt;</span></button>
+        </div>
+    </nav>
+
+    <!-- Conteúdo dinâmico -->
+    <div class="container-fluid" id="content"></div>
+    <div class="fixed-bottom" id="history"></div>
+    <footer>
+        <script src="../res/scripts/extensions/MSSQL.js"></script>
+        <script src="../res/scripts/workerScreen.js"></script>
+    </footer>
+</body>
+
+</html>
