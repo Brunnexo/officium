@@ -12,7 +12,7 @@ var connection;
 
 function connectSQL(callback) {
     connection = new Connection({
-        server: '127.0.0.1', //update me
+        server: '10.144.201.115', //update me
         authentication: {
             type: 'default',
             options: {

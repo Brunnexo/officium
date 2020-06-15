@@ -23,6 +23,7 @@
         "jquery.js": "0.0.2-security",
         "mssql": "^6.2.0",
         "popper.js": "^1.16.0",
+        "smb2": "^0.2.11",
         "xlsx": "^0.16.2"
     },
     "devDependencies": {}
