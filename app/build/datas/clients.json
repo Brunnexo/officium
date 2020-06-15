@@ -1,46 +1,14 @@
-{
-    "GM": [
-        "GM",
-        "Chevrolet",
-        "General Motors"
-    ],
-    "VW": [
-        "VW",
-        "Volks",
-        "Volkswagen"
-    ],
-    "Ford": [
-        "Ford"
-    ],
-    "FCA": [
-        "Fiat",
-        "Chrysler",
-        "Jeep"
-    ],
-    "Renault": [
-        "Renault"
-    ],
-    "Honda": [
-        "Honda"
-    ],
-    "Nissan": [
-        "Nissan"
-    ],
-    "Toyota": [
-        "Toyota"
-    ],
-    "Hyundai": [
-        "Hyundai"
-    ],
-    "Mercedes": [
-        "Mercedes"
-    ],
-    "PSA": [
-        "Peugeot",
-        "Citröen",
-        "Citroen"
-    ],
-    "MAN": [
-        "MAN"
-    ]
-}
+[
+    "GM",
+    "VW",
+    "Ford",
+    "FCA",
+    "Renault",
+    "Honda",
+    "Nissan",
+    "Toyota",
+    "Hyundai",
+    "Mercedes",
+    "PSA",
+    "MAN"
+]

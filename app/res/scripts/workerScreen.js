@@ -191,16 +191,37 @@ function loadHTML(pageHTML, title) {
     // Scripts por página
     // Todas
     // Projeto
+
+    var changeFunction;
+
     if (title.includes("Projeto")) {
+        // Função para alterações
+        changeFunction = function(val) {
+            // #inClient, #inProject, #inWO
+            if (val.includes('inWO')) {
+                // Projeto
+                projetos.forEach(function(p) {
+                    if ($("#inWO").val().includes(p[$('#inFunction').find(':selected').text()].value)) {
+                        $("#inProject").find(`option[value="${p.ID.value}"]`).attr('selected', 'selected');
+                        $("#inClient").find(`option[value="${$('#inClient').find(':selected').text()}"]`).attr('selected', 'selected');
+                    }
+                });
+            } else if (val.includes('inClient')) {
+
+            } else if (val.includes('inProject')) {
+
+            }
+        };
+
         // Preenchimento inicial
         // Cliente
-        Object.keys(clients).forEach(function(k) {
-            $("#inClient").append(`<option>${k}</option>`);
+        clients.forEach(function(k) {
+            $("#inClient").append(`<option value="${k}">${k}</option>`);
         });
         // Projetos
         projetos.forEach(function(p) {
             if (p.Cliente.value.includes($('#inClient').find(':selected').text())) {
-                $("#inProject").append(`<option>${p.Projeto.value} - ${p.Descrição.value}</option>`);
+                $("#inProject").append(`<option value="${p.ID.value}">${p.Projeto.value} - ${p.Descrição.value}</option>`);
             }
         });
         // Funções do colaborador
@@ -217,12 +238,17 @@ function loadHTML(pageHTML, title) {
         });
         // WO
         let projeto = $('#inProject').find(':selected').text().split(' - ')[0];
-        let descrição = $('#inProject').find(':selected').text().split(' - ')[1];
+        let descrição = $('#inProject').find(':selected').text().split(' - ');
+        descrição = descrição[(descrição.length - 1)];
         projetos.forEach(function(p) {
             if ((p.Projeto.value.includes(projeto)) && (p.Descrição.value.includes(descrição))) {
                 $("#inWO").val(p[$('#inFunction').find(':selected').text()].value);
             }
         });
+
+        $("#inClient, #inProject, #inWO").change(function() {
+            changeFunction(this.id);
+        })
     }
 
     // Service Request

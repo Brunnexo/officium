@@ -1,51 +1,51 @@
-// {
-//     "version": "0.2.0",
-//     "configurations": [
-//       {
-//         "name": "Debug",
-//         "type": "node",
-//         "request": "launch",
-//         "cwd": "${workspaceFolder}",
-//         "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
-//         "windows": {
-//           "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
-//         },
-//         "args" : ["."],
-//         "outputCapture": "std"
-//       }
-//     ]
-//   }
 {
-  "version": "0.2.0",
-  "configurations": [
+    "version": "0.2.0",
+    "configurations": [
       {
-          "name": "Launch",
-          "type": "node",
-          "request": "launch",
-          "program": "${workspaceRoot}/main.js",
-          "stopOnEntry": false,
-          "args": [],
-          "cwd": "${workspaceRoot}",
-          "preLaunchTask": null,
-          "runtimeExecutable": "electron",
-          "runtimeArgs": [
-              "./",
-              "--enable-logging"
-          ],
-          "env": {},
-          "console": "integratedTerminal",
-          "sourceMaps": false,
-      },
-      {
-          "name": "Attach",
-          "type": "node",
-          "request": "attach",
-          "port": 5858,
-          "address": "localhost",
-          "restart": false,
-          "sourceMaps": false,
-          "localRoot": "${workspaceRoot}",
-          "remoteRoot": null
+        "name": "Debug",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}",
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+        "windows": {
+          "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+        },
+        "args" : ["."],
+        "outputCapture": "std"
       }
-  ]
-}
+    ]
+  }
+// {
+//   "version": "0.2.0",
+//   "configurations": [
+//       {
+//           "name": "Launch",
+//           "type": "node",
+//           "request": "launch",
+//           "program": "${workspaceRoot}/main.js",
+//           "stopOnEntry": false,
+//           "args": [],
+//           "cwd": "${workspaceRoot}",
+//           "preLaunchTask": null,
+//           "runtimeExecutable": "electron",
+//           "runtimeArgs": [
+//               "./",
+//               "--enable-logging"
+//           ],
+//           "env": {},
+//           "console": "integratedTerminal",
+//           "sourceMaps": false,
+//       },
+//       {
+//           "name": "Attach",
+//           "type": "node",
+//           "request": "attach",
+//           "port": 5858,
+//           "address": "localhost",
+//           "restart": false,
+//           "sourceMaps": false,
+//           "localRoot": "${workspaceRoot}",
+//           "remoteRoot": null
+//       }
+//   ]
+// }
