@@ -1,0 +1,247 @@
+{
+    "Administrativo": {
+        "Controle": [
+            "Controle de Compras",
+            "Controle de Demanda",
+            "Controle de Horas"
+        ],
+        "Documentação": [
+            "Documentação de Máquina",
+            "Documentação Geral",
+            "Projeto"
+        ],
+        "Orçamento e Gestão": [
+            "Orçamento",
+            "Gestão de Projeto",
+            "Follow Up e Demanda"
+        ],
+        "Retrabalhos e Melhorias": [
+            "Retrabalho Interno",
+            "Retrabalho Externo",
+            "Melhorias"
+        ],
+        "Geral": [
+            "Testes e Protótipos",
+            "Manutenção",
+            "Almoxarifado",
+            "5S",
+            "Não Produtivos",
+            "Ausência"
+        ]
+    },
+    "Eletricista": {
+        "Montagem": [
+            "Montagem de Painel Elétrico",
+            "Montagem de Máquina",
+            "Montagem Geral"
+        ],
+        "Testes": [
+            "Testes de Sensores",
+            "Testes de Dispositivos",
+            "Testes de Funcionamento da Célula"
+        ],
+        "Identificação": [
+            "Identificação de Máquinas",
+            "Identificação de Painel Elétrico"
+        ],
+        "Documentos": [
+            "Esquema Elétrico",
+            "Lista de Peças",
+            "Documentação"
+        ],
+        "Orçamento": [
+            "Orçamento"
+        ],
+        "Gestão e Acompanhamento": [
+            "Gestão de Projeto",
+            "Acompanhamento de S.A.",
+            "Acompanhamento de Produção",
+            "Acompanhamento de Fornecedor",
+            "Acompanhamento de Evento",
+            "Acompanhamento de Montagem"
+        ],
+        "Retrabalhos e Melhorias": [
+            "Retrabalho Interno",
+            "Retrabalho Externo",
+            "Melhorias"
+        ],
+        "Geral": [
+            "Testes e Protótipos",
+            "Manutenção",
+            "Almoxarifado",
+            "5S",
+            "Não Produtivos",
+            "Ausência"
+        ]
+    },
+    "Mecânico": {
+        "Montagem": [
+            "Montagem Geral",
+            "Montagem de Sistema Pneumático",
+            "Montagem de Componentes"
+        ],
+        "Usinagem": [
+            "Fresadora",
+            "Torno",
+            "Furadeira",
+            "Geral"
+        ],
+        "Ajustes": [
+            "Ajuste de Posição de Peça",
+            "Calibração",
+            "Alinhamento"
+        ],
+        "Caldeiraria": [
+            "Chapas",
+            "Corte",
+            "Dobra",
+            "Solda",
+            "Traçagem"
+        ],
+        "Documentação": [
+            "Documentação Geral",
+            "Lista de Materiais"
+        ],
+        "Orçamento": [
+            "Orçamento de Máquina",
+            "Lista de Materiais"
+        ],
+        "Gestão de Projeto": [
+            "Gestão de Projeto"
+        ],
+        "Retrabalhos e Melhorias": [
+            "Retrabalho Interno",
+            "Retrabalho Externo",
+            "Melhorias"
+        ],
+        "Geral": [
+            "Testes e Protótipos",
+            "Manutenção",
+            "Almoxarifado",
+            "5S",
+            "Não Produtivos",
+            "Ausência"
+        ]
+    },
+    "Programador": {
+        "Programação": [
+            "Desenvolvimento",
+            "Programação",
+            "Ajustes",
+            "Correções",
+            "Backup"
+        ],
+        "Projeto Elétrico": [
+            "Desenvolvimento de Projeto",
+            "Correção"
+        ],
+        "Documentação": [
+            "Documentação Geral"
+        ],
+        "Orçamento": [
+            "Orçamento"
+        ],
+        "Gestão de Projeto": [
+            "Gestão de Projeto"
+        ],
+        "Retrabalhos e Melhorias": [
+            "Retrabalho Interno",
+            "Retrabalho Externo",
+            "Melhorias"
+        ],
+        "Geral": [
+            "Testes e Protótipos",
+            "Manutenção",
+            "Almoxarifado",
+            "5S",
+            "Não Produtivos",
+            "Ausência"
+        ]
+    },
+    "Projetista": {
+        "Desenvolvimento": [
+            "Desenvolvimento de Projeto",
+            "Controle de Projeto",
+            "Lista de Peças",
+            "Design Review"
+        ],
+        "Visita Técnica": [
+            "Forneçedor",
+            "Cliente"
+        ],
+        "Elaboração": [
+            "Termo de Abertura",
+            "Escopo"
+        ],
+        "Gestão e Acompanhamento": [
+            "Follow Up e Demanda",
+            "Gestão de Projeto",
+            "Acompanhamento de S.A.",
+            "Acompanhamento de Produção",
+            "Acompanhamento de Fornecedor",
+            "Acompanhamento de Evento",
+            "Acompanhamento de Montagem"
+        ],
+        "Documentação": [
+            "Documentação de Máquina",
+            "Documentação Geral",
+            "Orçamento"
+        ],
+        "Retrabalhos e Melhorias": [
+            "Retrabalho Interno",
+            "Retrabalho Externo",
+            "Melhorias"
+        ],
+        "Geral": [
+            "Testes e Protótipos",
+            "Manutenção",
+            "Almoxarifado",
+            "5S",
+            "Não Produtivos",
+            "Ausência"
+        ]
+    },
+    "Engenheiro": {
+        "Desenvolvimento": [
+            "Desenvolvimento de Projeto",
+            "Controle de Projeto",
+            "Lista de Peças",
+            "Design Review"
+        ],
+        "Visita Técnica": [
+            "Forneçedor",
+            "Cliente"
+        ],
+        "Elaboração": [
+            "Termo de Abertura",
+            "Escopo"
+        ],
+        "Gestão e Acompanhamento": [
+            "Follow Up e Demanda",
+            "Gestão de Projeto",
+            "Acompanhamento de S.A.",
+            "Acompanhamento de Produção",
+            "Acompanhamento de Fornecedor",
+            "Acompanhamento de Evento",
+            "Acompanhamento de Montagem"
+        ],
+        "Documentação": [
+            "Documentação de Máquina",
+            "Documentação Geral",
+            "Orçamento"
+        ],
+        "Retrabalhos e Melhorias": [
+            "Retrabalho Interno",
+            "Retrabalho Externo",
+            "Melhorias"
+        ],
+        "Geral": [
+            "Testes e Protótipos",
+            "Manutenção",
+            "Almoxarifado",
+            "5S",
+            "Não Produtivos",
+            "Ausência"
+        ]
+    }
+}

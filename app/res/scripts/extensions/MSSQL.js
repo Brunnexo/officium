@@ -12,25 +12,25 @@ var connection;
 
 function connectSQL(callback) {
     connection = new Connection({
-        server: '127.0.0.1',  //update me
+        server: '127.0.0.1', //update me
         authentication: {
             type: 'default',
             options: {
                 userName: 'SAT_LOGON', //update me
-                password: 'pAcMaN2@'  //update me
+                password: 'pAcMaN2@' //update me
             }
         },
         options: {
             // If you are on Microsoft Azure, you need encryption:
             encrypt: false,
-            database: 'SAT',  //update me
+            database: 'SAT', //update me
             enableArithAbort: true,
             appName: 'SAT',
             useColumnNames: true
         }
     });
-    
-    connection.on('connect', function (err) {
+
+    connection.on('connect', function(err) {
         if (err) {
             console.log("[MSSQL]: Erro de conexão!");
             console.log("[MSSQL]: " + err.message);
@@ -44,31 +44,30 @@ function connectSQL(callback) {
 
 function selectSQL(sql, callback) {
     var resultJSON = [];
-    request = new Request(sql, function (err) {
-        if (err) {
-            console.log("[MSSQL]: Erro no SQL");
-            console.log("[MSSQL]: " + err.message);
-        }
-    });
-    request.on('row', function (columns) {
-        resultJSON.push(columns);
-    });
-    request.on('requestCompleted', function () {
-        callback(resultJSON);
-    });
-    connection.execSql(request);
+    connection.execSql(
+        new Request(sql, function(err) {
+            if (err) {
+                console.log("[MSSQL]: Erro no SQL");
+                console.log("[MSSQL]: " + err.message);
+            }
+        }).on('row', function(columns) {
+            resultJSON.push(columns);
+        }).on('requestCompleted', function() {
+            callback(resultJSON);
+        })
+    );
+    // connection.execSql(request);
 }
 
-function executeSQL(SQL, callback) {  
-    request = new Request(SQL + ";", function(err) {  
-        if (err) {  
-            console.log("[MSSQL]: Erro no SQL");
-            console.log("[MSSQL]: " + err.message);
-        }  
-    });  
-
-    request.on('requestCompleted', function() {  
-        callback();
-    });       
-    connection.execSql(request);  
+function executeSQL(SQL, callback) {
+    connection.execSql(
+        new Request(SQL, function(err) {
+            if (err) {
+                console.log("[MSSQL]: Erro no SQL");
+                console.log("[MSSQL]: " + err.message);
+            }
+        }).on('requestCompleted', function() {
+            callback();
+        })
+    );
 }

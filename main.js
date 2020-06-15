@@ -5,6 +5,13 @@ let splash;
 let mainWindow;
 let workerScreen;
 
+// Variáveis globais
+global.defs = {
+    colaborador: {},
+    projetos: {},
+    srs: {}
+};
+
 // Tela de carregando (splash)
 function buildSplash(ready) {
     splash = new BrowserWindow({
@@ -49,28 +56,21 @@ function buildWorkerScreen(ready) {
         width: 1280,
         height: 720,
         show: false,
-        fullscreen: true,
+        // fullscreen: true,
         webPreferences: {
             nodeIntegration: true
         }
     });
     workerScreen.loadURL(`file://${__dirname}/app/build/workerScreen.html`);
     workerScreen.once('ready-to-show', () => {
-        workerScreen.setFullScreen(true);
+        // workerScreen.setFullScreen(true);
         ready();
     })
 }
 
 app.on('ready', function() {
-    // Criar Janela
     buildSplash(() => {
         splash.show();
-        buildMainWindow(() => {
-            setTimeout(() => {
-                splash.destroy();
-                mainWindow.show();
-            }, 1000);
-        });
     });
 });
 
@@ -78,16 +78,18 @@ app.on('window-all-closed', function() {
     app.quit();
 });
 
-// Variáveis globais
-global.defs = {
-    colaborador: {},
-    resumo: {},
-    inputs: {}
-};
-
 // Processos Inter-Comunicados
 
 // Abrir janela do colaborador
+ipc.on('ready', () => {
+    buildMainWindow(() => {
+        setTimeout(() => {
+            splash.destroy();
+            mainWindow.show();
+        }, 1000);
+    });
+});
+
 ipc.on('open-workerScreen', () => {
     buildWorkerScreen(() => {
         workerScreen.show();
