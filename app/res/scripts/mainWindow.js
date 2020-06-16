@@ -1,5 +1,6 @@
 const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
+const Tray = require('electron');
 
 // Dependências
 window.jQuery = window.$ = require('jquery');
@@ -16,15 +17,40 @@ $(function() {
     $('[data-toggle="tooltip"]').tooltip()
 });
 
-// Conecta ao banco de dados
 $(document).ready(function() {
+    $('.passwordField').hide();
     $("#inRegister").focus();
+});
+
+$("#inRegister").focus(function() {
+    $("#instruction").html('Insira seu registro');
+});
+
+$("#inPassword").focus(function() {
+    $("#instruction").html('Insira sua senha');
+});
+
+// Atualização ao digitar no campo de registro
+$("#inRegister").keyup(function(e) {
+    let register = $("#inRegister").val();
+    if (!(register === null || register === '') && !(e.keyCode == 9) && !(e.keyCode == 16)) {
+        connectSQL((e) => {
+            selectSQL(`SELECT [Funções] FROM [Colaboradores] WHERE [Registro] = ${register}`, (data) => {
+                if (!jQuery.isEmptyObject(data) && data[0].Funções.value.includes('A')) {
+                    $('.passwordField').fadeIn('slow');
+                    $('#inPassword').focus();
+                } else {
+                    $('.passwordField').fadeOut('slow');
+                }
+            })
+        });
+    }
+
 });
 
 // Ação do botão "Entrar"
 $("#btnEnter").click(function() {
     var registro = $("#inRegister").val();
-
     connectSQL((e) => {
         let notif;
         if (!e) {
@@ -40,6 +66,7 @@ $("#btnEnter").click(function() {
                     console.log("[mainWindow]: Colaborador não registrado/encontrado!");
                 } else {
                     remote.getGlobal("defs").colaborador = resultSet[0];
+                    remote.getGlobal("defs").colaborador.Funções.value = getFunctions();
                     ipc.send('open-workerScreen');
                 }
             });
@@ -54,3 +81,23 @@ $("#inRegister").keypress(function(e) {
         $("#btnEnter").click();
     }
 });
+
+// Funções do colaborador
+function getFunctions() {
+    let get = remote.getGlobal("defs").colaborador.Funções.value.split('');
+    let functions = {
+        "E": "Eletricista",
+        "M": "Mecânico",
+        "P": "Programador",
+        "R": "Projetista",
+        "A": "Administrativo",
+        "N": "Engenheiro"
+    };
+    let result = [];
+    get.forEach(function(e) {
+        if (!(e == ' ')) {
+            result.push(functions[e]);
+        }
+    });
+    return result;
+}

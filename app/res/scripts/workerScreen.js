@@ -7,23 +7,44 @@ window.jQuery = window.$ = require('jquery');
 const Popper = require('@popperjs/core');
 require('bootstrap');
 const fs = require('fs');
+const Chart = require('chart.js');
+const { connect } = require('http2');
 
 // Constantes
 const content = $("#content");
 const Menu = remote.Menu;
 const MenuItem = remote.MenuItem;
 
+// Variáveis JSON
 const clients = JSON.parse(fs.readFileSync(`${__dirname}/datas/clients.json`, 'utf-8'));
 const activities = JSON.parse(fs.readFileSync(`${__dirname}/datas/activities.json`, 'utf-8'));
 
 // Variáveis de página
+const pageResume = getInnerHtml('Resume');
 const pageProject = getInnerHtml('Project');
 const pageSr = getInnerHtml('SR');
 const pageGeneral = getInnerHtml('General');
 
+// Variáveis globais
 const colaborador = remote.getGlobal("defs").colaborador;
 const projetos = remote.getGlobal("defs").projetos;
 const srs = remote.getGlobal("defs").srs;
+
+// Funções ao carregar a página
+$(document).ready(function() {
+    $("#name").html(remote.getGlobal("defs").colaborador.Nome.value);
+    $("#name").attr({
+        "data-toggle": "tooltip",
+        "data-placement": "bottom",
+        "title": remote.getGlobal("defs").colaborador.Registro.value
+    });
+    document.getElementById("inDate").valueAsDate = new Date();
+    loadHTML(pageResume);
+    // Ativa balões de dicas
+    $(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+});
 
 // Ação do botão "fechar"
 $("#close").click(function() {
@@ -39,25 +60,12 @@ $("#iconify").click(function() {
     remote.getCurrentWindow().minimize();
 });
 
-// Funções ao carregar a página
-$(document).ready(function() {
-    $("#name").html(remote.getGlobal("defs").colaborador.Nome.value);
-    $("#name").attr({
-        "data-toggle": "tooltip",
-        "data-placement": "bottom",
-        "title": remote.getGlobal("defs").colaborador.Registro.value
-    });
-    document.getElementById("inDate").valueAsDate = new Date();
-});
-
 // Funções ao ter alterações na página
 new MutationObserver(() => {
     // Ativa balões de dicas
     $(function() {
         $('[data-toggle="tooltip"]').tooltip();
     });
-
-    // Funções
 }).observe(document.getElementById('content'), {
     attributes: true,
     childList: true,
@@ -68,6 +76,8 @@ new MutationObserver(() => {
 $("#resume").click(function() {
     $(".active").removeClass("active");
     $("#resume").addClass("active");
+    loadHTML(pageResume);
+    getHistory($('#history'));
 });
 
 // Eventos de cliques dos menus
@@ -77,15 +87,15 @@ $("#project, #sr, #general").click(function() {
 });
 // Projeto
 $("#project").click(function() {
-    loadHTML(pageProject, "Projeto");
+    loadHTML(pageProject);
 });
 // Service Request
 $("#sr").click(function() {
-    loadHTML(pageSr, "Service Request");
+    loadHTML(pageSr);
 });
 // Geral
 $("#general").click(function() {
-    loadHTML(pageGeneral, "Geral");
+    loadHTML(pageGeneral);
 });
 // Evento de mudança de data
 $("#inDate").change(function() {
@@ -115,7 +125,7 @@ function makeTable(dados, div) {
     if (dados.length >= 1) {
         var thead = document.createElement('thead');
         var table = document.createElement('table');
-        table.setAttribute('class', 'table');
+        $(table).addClass('table table-sm');
 
         thead.innerHTML = `
             <thead>
@@ -148,7 +158,6 @@ function makeTable(dados, div) {
         table.appendChild(tbody);
 
         div.html('');
-        div.html(`<h1 class="display-4">Seu resumo do dia ${dateFormat(document.getElementById('inDate').value)}</h1>`);
         div.append(table);
         div.fadeIn("slow");
 
@@ -168,102 +177,100 @@ function makeTable(dados, div) {
             }
         });
         menu.append(menuItem);
-
         // Menu de contexto
         $("tbody").contextmenu((e) => {
             // Evita ações padrões
             e.preventDefault();
-
             id = Number(e.target.parentElement.getElementsByTagName("th")[0].innerHTML);
             menu.popup(remote.getCurrentWindow());
         });
     } else {
         div.html('');
-        div.html(`<h1 class="display-4">Não há dados para mostrar...</h1>`);
-        div.fadeIn("slow");
+    }
+}
+// Carrega o conteúdo da página
+function loadHTML(pageHTML) {
+    content.hide();
+    content.html(pageHTML);
+    // Mostrar conteúdo da página
+    fillFields();
+    content.fadeIn('slow');
+}
+// Preenche campos da página
+function fillFields() {
+    if ($('.active')[0].id.includes('resume')) {
+
+    } else {
+        if ($('#title').html().includes('Projeto')) {
+            // Cliente
+            clients.forEach(function(k) {
+                $("#inClient").append(`<option value="${k}">${k}</option>`);
+            });
+            // Projetos
+            projetos.forEach(function(p) {
+                if (p.Cliente.value.includes($('#inClient').find(':selected').text())) {
+                    $("#inProject").append(`<option value="${p.ID.value}">${p.Projeto.value} - ${p.Descrição.value}</option>`);
+                }
+            });
+            // Funções do colaborador
+            colaborador.Funções.value.forEach(function(f) {
+                $("#inFunction").append(`<option>${f}</option>`);
+            });
+            // Atividades do colaborador
+            Object.keys(activities[$('#inFunction').find(':selected').text()]).forEach(function(val) {
+                $("#inActivity").append(`<option>${val}</option>`);
+            });
+            //Descrição das atividades do colaborador
+            activities[$('#inFunction').find(':selected').text()][$('#inActivity').find(':selected').text()].forEach(function(val) {
+                $("#inDescription").append(`<option>${val}</option>`);
+            });
+            // WO
+            let projeto = $('#inProject').find(':selected').text().split(' - ')[0];
+            let descrição = $('#inProject').find(':selected').text().split(' - ');
+            descrição = descrição[(descrição.length - 1)];
+            projetos.forEach(function(p) {
+                if ((p.Projeto.value.includes(projeto)) && (p.Descrição.value.includes(descrição))) {
+                    $("#inWO").val(p[$('#inFunction').find(':selected').text()].value);
+                }
+            });
+        } else if ($('#title').html().includes('Service Request')) {
+
+        } else {
+
+        }
     }
 }
 
-function loadHTML(pageHTML, title) {
-    content.hide();
-    content.html(pageHTML);
+function makeGraph(id, data, label, type = 'doughnut') {
+    let datas = [];
+    let labels = [];
 
-    // Scripts por página
-    // Todas
-    // Projeto
+    let ctx = document.getElementById(id).getContext('2d');
+    let grd = ctx.createRadialGradient(150, 150, 50, 300, 300, 100);
+    grd.addColorStop(0, "#f06c00");
+    grd.addColorStop(0.3, "#00f014");
+    grd.addColorStop(1, "#00e5ff");
+    ctx.fillStyle = grd;
 
-    var changeFunction;
 
-    if (title.includes("Projeto")) {
-        // Função para alterações
-        changeFunction = function(val) {
-            // #inClient, #inProject, #inWO
-            if (val.includes('inWO')) {
-                // Projeto
-                projetos.forEach(function(p) {
-                    if ($("#inWO").val().includes(p[$('#inFunction').find(':selected').text()].value)) {
-                        $("#inProject").find(`option[value="${p.ID.value}"]`).attr('selected', 'selected');
-                        $("#inClient").find(`option[value="${$('#inClient').find(':selected').text()}"]`).attr('selected', 'selected');
+    new Chart($(`#${id}`), {
+        type: type,
+        data: {
+            labels: labels,
+            datasets: [{
+                data: datas,
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
                     }
-                });
-            } else if (val.includes('inClient')) {
-
-            } else if (val.includes('inProject')) {
-
+                }]
             }
-        };
-
-        // Preenchimento inicial
-        // Cliente
-        clients.forEach(function(k) {
-            $("#inClient").append(`<option value="${k}">${k}</option>`);
-        });
-        // Projetos
-        projetos.forEach(function(p) {
-            if (p.Cliente.value.includes($('#inClient').find(':selected').text())) {
-                $("#inProject").append(`<option value="${p.ID.value}">${p.Projeto.value} - ${p.Descrição.value}</option>`);
-            }
-        });
-        // Funções do colaborador
-        getFunctions().forEach(function(f) {
-            $("#inFunction").append(`<option>${f}</option>`);
-        });
-        // Atividades do colaborador
-        Object.keys(activities[$('#inFunction').find(':selected').text()]).forEach(function(val) {
-            $("#inActivity").append(`<option>${val}</option>`);
-        });
-        //Descrição das atividades do colaborador
-        activities[$('#inFunction').find(':selected').text()][$('#inActivity').find(':selected').text()].forEach(function(val) {
-            $("#inDescription").append(`<option>${val}</option>`);
-        });
-        // WO
-        let projeto = $('#inProject').find(':selected').text().split(' - ')[0];
-        let descrição = $('#inProject').find(':selected').text().split(' - ');
-        descrição = descrição[(descrição.length - 1)];
-        projetos.forEach(function(p) {
-            if ((p.Projeto.value.includes(projeto)) && (p.Descrição.value.includes(descrição))) {
-                $("#inWO").val(p[$('#inFunction').find(':selected').text()].value);
-            }
-        });
-
-        $("#inClient, #inProject, #inWO").change(function() {
-            changeFunction(this.id);
-        })
-    }
-
-    // Service Request
-    if (title.includes("Service Request")) {
-
-    }
-
-    // Geral
-    if (title.includes("Geral")) {
-
-    }
-
-    // Mostrar conteúdo da página
-    content.fadeIn('slow');
-    getHistory($('#history'));
+        }
+    });
 }
 
 // Retorna o conteúdo HTML de uma tag com ID
@@ -272,28 +279,8 @@ function getInnerHtml(HTML) {
     let get = fs.readFileSync(`${__dirname}/views/${HTML}.html`, 'utf-8');
     return get;
 }
-
-// Formata a data no padrão brasileiro
+// Formata a data no padrão DD/MM/YYYY
 function dateFormat(date) {
     let get = date.split('-');
     return `${get[2]}/${get[1]}/${get[0]}`;
-}
-
-function getFunctions() {
-    let get = colaborador.Funções.value.split('');
-    let functions = {
-        "E": "Eletricista",
-        "M": "Mecânico",
-        "P": "Programador",
-        "R": "Projetista",
-        "A": "Administrativo",
-        "N": "Engenheiro"
-    };
-    let result = [];
-    get.forEach(function(e) {
-        if (!(e == ' ')) {
-            result.push(functions[e]);
-        }
-    });
-    return result;
 }

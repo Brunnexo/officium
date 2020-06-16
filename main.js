@@ -54,7 +54,7 @@ function buildWorkerScreen(ready) {
     workerScreen = new BrowserWindow({
         frame: false,
         width: 1280,
-        height: 720,
+        height: 725,
         show: false,
         // fullscreen: true,
         webPreferences: {
