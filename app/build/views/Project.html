@@ -18,10 +18,11 @@
             </select>
         </div>
     </div>
+    <hr />
     <div class="form-row">
         <div class="form-group col-auto">
             <label for="inFunction">Função</label>
-            <select id="inFunction" class="form-control"></select>
+            <select id="inFunction" class="form-control" data-toggle="tooltip" data-placement="top" title="Alterar a função atualizará a lista de projetos"></select>
         </div>
         <div class="form-group col-auto">
             <label for="inActivity">Atividade</label>
@@ -38,5 +39,12 @@
             <input id="inTime" type="number" class="form-control">
         </div>
     </div>
-    <button type="button" class="btn btn-primary mb-2" id="btnRegister">Registrar</button>
+    <div class="form-row">
+        <div class="form-group col-12">
+            <label for="inComment">Comentários</label>
+            <textarea class="form-control" id="inComment" rows="3" style="resize: none;" data-toggle="tooltip" data-placement="top" title="Este campo é opcional"></textarea>
+        </div>
+    </div>
+    <hr />
+    <button type="button" class="btn btn-primary mb-2 float-right" id="btnRegister">Registrar</button>
 </form>

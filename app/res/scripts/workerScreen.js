@@ -8,7 +8,7 @@ const Popper = require('@popperjs/core');
 require('bootstrap');
 const fs = require('fs');
 const Chart = require('chart.js');
-const { connect } = require('http2');
+const { isNumber } = require('util');
 
 // Constantes
 const content = $("#content");
@@ -192,8 +192,11 @@ function makeTable(dados, div) {
 function loadHTML(pageHTML) {
     content.hide();
     content.html(pageHTML);
-    // Mostrar conteúdo da página
+    // Preencher com dados
     fillFields();
+    // Eventos de alteração de campos
+    fieldsChanged();
+    // Mostrar conteúdo da página
     content.fadeIn('slow');
 }
 // Preenche campos da página
@@ -202,37 +205,157 @@ function fillFields() {
 
     } else {
         if ($('#title').html().includes('Projeto')) {
-            // Cliente
-            clients.forEach(function(k) {
-                $("#inClient").append(`<option value="${k}">${k}</option>`);
-            });
-            // Projetos
-            projetos.forEach(function(p) {
-                if (p.Cliente.value.includes($('#inClient').find(':selected').text())) {
-                    $("#inProject").append(`<option value="${p.ID.value}">${p.Projeto.value} - ${p.Descrição.value}</option>`);
-                }
-            });
             // Funções do colaborador
             colaborador.Funções.value.forEach(function(f) {
-                $("#inFunction").append(`<option>${f}</option>`);
+                let index = colaborador.Funções.value.indexOf(f);
+                $("#inFunction").append(`<option value="${index}">${f}</option>`);
             });
-            // Atividades do colaborador
-            Object.keys(activities[$('#inFunction').find(':selected').text()]).forEach(function(val) {
-                $("#inActivity").append(`<option>${val}</option>`);
+            // let função = $('#inFunction').find(':selected').text();
+            let função = $('#inFunction :selected').text();
+
+            // Cliente
+            clients.forEach(function(k) {
+                let index = clients.indexOf(k);
+                $("#inClient").append(`<option value="${index}">${k}</option>`);
             });
-            //Descrição das atividades do colaborador
-            activities[$('#inFunction').find(':selected').text()][$('#inActivity').find(':selected').text()].forEach(function(val) {
-                $("#inDescription").append(`<option>${val}</option>`);
-            });
-            // WO
-            let projeto = $('#inProject').find(':selected').text().split(' - ')[0];
-            let descrição = $('#inProject').find(':selected').text().split(' - ');
-            descrição = descrição[(descrição.length - 1)];
+
+            // Projetos e WO
+            let wo = [];
             projetos.forEach(function(p) {
-                if ((p.Projeto.value.includes(projeto)) && (p.Descrição.value.includes(descrição))) {
-                    $("#inWO").val(p[$('#inFunction').find(':selected').text()].value);
+                // let cliente = $('#inClient').find(':selected').text();
+                let cliente = $('#inClient :selected').text();
+                if (p.Cliente.value.includes(cliente)) {
+                    $("#inProject").append(`<option value="${p.ID.value}">${p.Descrição.value}</option>`);
+                    wo.push(p[função].value);
                 }
             });
+            $("#inWO").val(wo[0]);
+
+            // Atividades do colaborador
+            Object.keys(activities[função]).forEach(function(val) {
+                $("#inActivity").append(`<option value="${Object.keys(activities[função]).indexOf(val)}">${val}</option>`);
+            });
+
+            //Descrição das atividades do colaborador
+            // let atividade = $('#inActivity').find(':selected').text();
+            let atividade = $('#inActivity :selected').text();
+            activities[função][atividade].forEach(function(val) {
+                $("#inDescription").append(`<option>${val}</option>`);
+            });
+
+        } else if ($('#title').html().includes('Service Request')) {
+
+        } else {
+
+        }
+    }
+}
+
+// Função para alterações de campo
+function fieldsChanged() {
+    let delayInput;
+
+    // Remover tempo negativo
+    $("#inTime").change(function() {
+        let num = Number($(this).val());
+        if (num < 0) {
+            $(this).val((num * -1));
+        }
+    });
+
+
+    if ($('.active')[0].id.includes('resume')) {
+
+    } else {
+        if ($('#title').html().includes('Projeto')) {
+
+            // Alteração de WO
+            $("#inWO").keyup(function() {
+                console.log("KEYUP");
+                // let função = $('#inFunction').find(':selected').text();
+                let função = $('#inFunction :selected').text();
+                let wo = $("#inWO").val();
+                if (!(wo.length < 2) && !isNaN(Number(wo))) {
+                    // Limpa timeout, se houver
+                    clearTimeout(delayInput);
+                    // Atraso para validar entrada
+                    console.log("TIMEOUT");
+                    delayInput = setTimeout(function() {
+                        // Altera o cliente conforme WO
+                        let selCliente = $("#inClient :selected").text();
+                        projetos.forEach(function(p) {
+                            let index = clients.indexOf(p.Cliente.value);
+                            let id;
+
+                            // Se encontrada  a WO
+                            if (p[função].value == wo) {
+                                // Seleciona o ID
+                                id = p.ID.value;
+
+                                // Seleciona o cliente com base na WO
+                                $(`#inClient :selected`).removeAttr('selected');
+                                $(`#inClient option[value=${index}]`).attr('selected', 'selected');
+
+                                // Altera a lista de projetos caso haja alteração de cliente
+                                if (selCliente != $("#inClient :selected").text()) {
+                                    $("#inProject option").each(function() {
+                                        $(this).remove();
+                                    });
+                                    projetos.forEach(function(p) {
+                                        let cliente = $('#inClient :selected').text();
+                                        if (p.Cliente.value.includes(cliente)) {
+                                            $("#inProject").append(`<option value="${p.ID.value}">${p.Descrição.value}</option>`);
+                                        }
+                                    });
+                                }
+                                console.log("SELECT");
+                                $(`#inProject`).find(':selected').removeAttr('selected');
+                                console.log("ID: " + id);
+                                $(`#inProject option[value=${id}]`).attr('selected', 'selected');
+                            }
+                        });
+                    }, 500);
+                }
+            });
+
+            // Alteração da montadora
+            $("#inClient").change(function() {
+                let wo = [];
+                let função = $('#inFunction :selected').text();
+                // Remove os projetos da lista
+                $("#inProject option").each(function() {
+                    $(this).remove();
+                });
+                // Adiciona os projetos da montadora selecionada
+                projetos.forEach(function(p) {
+                    // let cliente = $('#inClient').find(':selected').text();
+                    let cliente = $('#inClient :selected').text();
+                    if (p.Cliente.value.includes(cliente)) {
+                        $("#inProject").append(`<option value="${p.ID.value}">${p.Descrição.value}</option>`);
+                        wo.push(p[função].value);
+                    }
+                });
+                $("#inWO").val(wo[0]);
+            });
+
+            // Alteração de projeto
+            $("#inProject").change(function() {
+                let id = $(this).val();
+                let função = $('#inFunction :selected').text();
+
+                // Altera a WO para associar-se ao projeto escolhido
+                projetos.forEach(function(p) {
+                    if (id == p.ID.value) {
+                        $("#inWO").val(p[função].value);
+                    }
+                });
+            });
+
+            // Alteração da função
+            $("#inFunction").change(function() {
+
+            });
+
         } else if ($('#title').html().includes('Service Request')) {
 
         } else {
