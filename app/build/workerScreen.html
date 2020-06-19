@@ -10,11 +10,11 @@
 
 <body class="bg-light">
     <!-- Barra de navegação -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" id="name"></a>
+    <nav class=" navbar navbar-expand-lg navbar-dark bg-dark" style="-webkit-app-region: drag;">
+        <a class="navbar-brand" id="name" style="-webkit-app-region: no-drag;"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#nav" aria-expanded="false"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="nav">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav" style="-webkit-app-region: no-drag;">
                 <li class="nav-item active" id="resume">
                     <a class="nav-link">Resumo</a>
                 </li>
@@ -30,15 +30,14 @@
             </ul>
         </div>
         <form>
-            <input id="inDate" type="date" class="form-control">
+            <input id="inDate" type="date" class="form-control" style="-webkit-app-region: no-drag;">
         </form>
         <div style="-webkit-app-region: no-drag; padding-left: 15px;">
-            <button type="button" id="close" class="close" data-toggle="tooltip" data-placement="bottom" title="Fechar"><span>&times;</span></button>
-            <button type="button" id="iconify" class="close" data-toggle="tooltip" data-placement="bottom" title="Minimizar"><span>&minus;</span></button>
-            <button type="button" id="back" class="close" data-toggle="tooltip" data-placement="bottom" title="Voltar"><span>&lt;</span></button>
+            <button type="button" id="close" class="close" data-toggle="tooltip" data-placement="bottom" title="Fechar" style="color: var(--light);"><span>&times;</span></button>
+            <button type="button" id="iconify" class="close" data-toggle="tooltip" data-placement="bottom" title="Minimizar" style="color: var(--light);"><span>&minus;</span></button>
+            <button type="button" id="back" class="close" data-toggle="tooltip" data-placement="bottom" title="Voltar" style="color: var(--light);"><span>&lt;</span></button>
         </div>
     </nav>
-
     <!-- Conteúdo dinâmico -->
     <div class="container-fluid" id="content"></div>
     <footer>

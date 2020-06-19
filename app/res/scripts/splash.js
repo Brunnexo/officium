@@ -17,11 +17,9 @@ let QuerySRs = `SELECT [SR], [WO], [Descrição], [Solicitante], [Responsável],
 $(document).ready(function() {
     connectSQL(() => {
         selectSQL(QueryProjetos, (projects) => {
-            console.log("[SPLASH]: Carregando projetos...");
             log("Carregando projetos...");
             remote.getGlobal("defs").projetos = projects;
             selectSQL(QuerySRs, (srs) => {
-                console.log("[SPLASH]: Carregando SRs...");
                 log("Carregando SRs...");
                 remote.getGlobal("defs").srs = srs;
                 ipc.send('ready');
@@ -31,5 +29,6 @@ $(document).ready(function() {
 });
 
 function log(val) {
+    console.log(`[SPLASH]: ${val}`);
     $("#description").html(val);
 }
