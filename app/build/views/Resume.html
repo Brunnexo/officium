@@ -1,1 +1,16 @@
-<div class="container-fluid overflow-auto fixed-bottom" id="history" style="height: 250px;"></div>
+<h1 class="display-4" id="title"></h1>
+<div class="container-fluid">
+    <div id="history" class="fixed-bottom overflow-auto tablecontainer"></div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-auto">
+            <canvas id="graph" width="400" height="400"></canvas>
+        </div>
+    </div>
+</div>
+
+<script>
+    eval(fs.readFileSync(`${__dirname}/views/scripts/Resume.js`, 'utf-8'));
+</script>

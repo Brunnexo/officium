@@ -1,0 +1,49 @@
+:root {
+    --transition-time: 1s;
+    --sidenav-width: 300px;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    z-index: 1;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: var(--darker);
+    color: var(--light);
+    overflow-x: hidden;
+    padding-top: 56px;
+    text-align: center;
+    transition: var(--transition-time);
+}
+
+.sidenav.active {
+    width: var(--sidenav-width);
+}
+
+.sidenav .navitem {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.pagecontainer {
+    margin-top: 56px;
+    margin-bottom: 56px;
+    transition: var(--transition-time);
+}
+
+.pagecontainer.active {
+    margin-left: var(--sidenav-width);
+}
+
+.tablecontainer {
+    margin-bottom: 56px;
+    height: 230px;
+    transition: var(--transition-time);
+}
+
+.tablecontainer.active {
+    margin-left: var(--sidenav-width);
+}

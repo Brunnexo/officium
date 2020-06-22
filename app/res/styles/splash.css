@@ -5,10 +5,8 @@ html {
 .center {
     display: flex;
     background-color: #E9ECEF;
-
     flex-direction: column;
     height: 300px;
-
     vertical-align: middle;
     align-items: center;
     justify-content: center;

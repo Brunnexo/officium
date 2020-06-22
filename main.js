@@ -9,7 +9,9 @@ let workerScreen;
 global.defs = {
     colaborador: {},
     projetos: {},
-    srs: {}
+    srs: {},
+    geral: {},
+    feriados: {}
 };
 
 // Tela de carregando (splash)
@@ -55,8 +57,8 @@ function buildWorkerScreen(ready) {
         frame: false,
         minWidth: 1280,
         width: 1280,
-        minHeight: 720,
-        height: 720,
+        minHeight: 820,
+        height: 820,
         show: false,
         // fullscreen: true,
         webPreferences: {
@@ -106,3 +108,6 @@ ipc.on('back-from-workerScreen', () => {
         mainWindow.show();
     });
 });
+
+// YmxpbWFwY29zdGFAZ21haWwuY29tJmhhc2g9MTQ3MTg4OTYw
+//https://api.calendario.com.br/?ano=2017&estado=SP&cidade=SAO_PAULO&token=YmxpbWFwY29zdGFAZ21haWwuY29tJmhhc2g9MTQ3MTg4OTYw

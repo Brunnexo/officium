@@ -1,7 +1,7 @@
-<h1 id="title" style="font-style: italic;">Service Request</h1>
+<h1 class="display-4 font-italic">Service Request</h1>
 <form>
     <div class="form-row">
-        <div class="form-group col-1">
+        <div class="form-group col-auto">
             <label for="inWO" style="font-style: italic;">Work Order</label>
             <input type="text" class="form-control" id="inWO">
         </div>
@@ -25,8 +25,7 @@
         </div>
     </div>
 </form>
-<div class="container-fluid fixed-bottom">
-    <hr />
-    <div class="text-primary spinner-border spinner-border float-left" role="status" id="loading"></div>
-    <button type="button" class="btn btn-primary mb-2 float-right" id="btnRegister">Registrar</button>
-</div>
+
+<script>
+    eval(fs.readFileSync(`${__dirname}/views/scripts/SR.js`, 'utf-8'));
+</script>
