@@ -34,12 +34,7 @@ const srs = remote.getGlobal("defs").srs;
 // Funções ao carregar a página
 $(document).ready(function() {
     $("#name").html(remote.getGlobal("defs").colaborador.Nome.value);
-    $("#name").attr({
-        "data-toggle": "tooltip",
-        "data-placement": "bottom",
-        "title": remote.getGlobal("defs").colaborador.Registro.value
-    });
-    $("#name").click(() => { toggleSidenav() });
+    $("#navToggle").click(() => { toggleSidenav() });
 
     document.getElementById("inDate").valueAsDate = new Date();
     loadHTML(pageResume, 'Resumo');
@@ -69,6 +64,14 @@ new MutationObserver(() => {
     $(function() {
         $('[data-toggle="tooltip"]').tooltip();
     });
+
+    // Notificações
+    $(".toast").toast({
+        animation: true,
+        autohide: true,
+        delay: 2000
+    });
+
 }).observe(document.getElementById('content'), {
     attributes: true,
     childList: true,
