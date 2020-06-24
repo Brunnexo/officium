@@ -8,7 +8,6 @@ const Popper = require('@popperjs/core');
 require('bootstrap');
 const fs = require('fs');
 const Chart = require('chart.js');
-const { Console } = require('console');
 
 // Constantes
 const content = $("#content");
@@ -38,10 +37,12 @@ $(document).ready(function() {
 
     document.getElementById("inDate").valueAsDate = new Date();
     loadHTML(pageResume, 'Resumo');
+
     // Ativa balões de dicas
     $(function() {
         $('[data-toggle="tooltip"]').tooltip();
     });
+
 });
 
 // Ação do botão "fechar"
@@ -132,9 +133,15 @@ function getInnerHtml(HTML) {
 }
 
 // Formata a data no padrão DD/MM/YYYY
-function dateFormat(date) {
-    var get = date.split('-');
-    return `${get[2]}/${get[1]}/${get[0]}`;
+function dateFormat(date, separator = '/') {
+    switch (separator) {
+        case '/':
+            var get = date.split('-');
+            return `${get[2]}/${get[1]}/${get[0]}`;
+        case '-':
+            var get = date.split('/');
+            return `${get[2]}-${get[1]}-${get[0]}`;
+    }
 }
 
 // Mensagem de erros

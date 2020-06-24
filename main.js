@@ -55,10 +55,10 @@ function buildMainWindow(ready) {
 function buildWorkerScreen(ready) {
     workerScreen = new BrowserWindow({
         frame: false,
-        minWidth: 1280,
         width: 1280,
-        minHeight: 820,
         height: 820,
+        minWidth: 1280,
+        minHeight: 820,
         show: false,
         // fullscreen: true,
         webPreferences: {

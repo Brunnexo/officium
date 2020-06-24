@@ -28,14 +28,20 @@ function getHistory(history, graphRemain, graphTotal) {
                     WHERE [Registro] = ${colaborador.Registro.value}
                         AND [Data] = '${document.getElementById('inDate').value}'`;
 
-    var GraphRemainQuery = `SELECT SUM([R].[Tempo]) AS [Soma]
-	                    FROM [SAT].[dbo].[Relatórios] AS [R]
-                            WHERE [R].[Registro] = ${colaborador.Registro.value}
-                                AND [R].[Data] = '${document.getElementById('inDate').value}'            
-                                    AND [R].[Extra] = 'FALSE'`;
+    var GraphRemainQuery = `SELECT [R].[Tempo], [R].[WO], [P].[Projeto]
+                            FROM [SAT].[dbo].[Relatórios] AS [R]
+                                INNER JOIN [SAT].[dbo].[WOs] AS [W] 
+                                    ON ([R].[WO] IN ([W].[Administrativo], [W].[Compras], [W].[Eletricista], [W].[Engenheiro], [W].[Ferramentaria], [W].[Mecânico], [W].[Programador], [W].[Projetista]))
+                                    LEFT JOIN [SAT].[dbo].[Projetos] AS [P] ON ([W].[ID] = [P].[ID])
+                                        WHERE [Registro] = ${colaborador.Registro.value}
+                                        AND [Data] = '${document.getElementById('inDate').value}' AND [Extra] = 'FALSE'
+                                        GROUP BY [R].[Tempo], [R].[WO], [P].[Projeto], [R].[Data]
+                                        ORDER BY [R].[Data]`;
 
-    var GraphTotalQuery = `SELECT TOP(7) FORMAT([Data], 'dd/MM/yyyy') AS [Data], [Tempo]
-                            FROM [SAT].[dbo].[Relatórios]
+    var GraphTotalQuery = `SELECT TOP(15) FORMAT([R].[Data], 'dd/MM/yyyy') AS [Data], [R].[Tempo], [P].[Projeto]
+                            FROM [SAT].[dbo].[Relatórios] AS [R]
+                                INNER JOIN [SAT].[dbo].[WOs] AS [W] ON ([R].[WO] IN ([W].[Administrativo], [W].[Compras], [W].[Eletricista], [W].[Engenheiro], [W].[Ferramentaria], [W].[Mecânico], [W].[Programador], [W].[Projetista]))
+                                LEFT JOIN [SAT].[dbo].[Projetos] AS [P] ON ([W].[ID] = [P].[ID])
                                 WHERE [Registro] = ${colaborador.Registro.value}
                                     AND [WO] != 0
                                         ORDER BY [Data] ASC`;
@@ -112,6 +118,7 @@ function makeTable(dados, div) {
             });
         }
     });
+
     menu.append(menuItem);
     // Menu de contexto
     $("tbody").contextmenu((e) => {
@@ -128,8 +135,30 @@ var renderGraphRemain;
 // Renderizar gráfico de tempo restante
 function makeGraphRemain(dados, div) {
     div.hide();
-    let data = [dados[0].Soma.value, (380 - dados[0].Soma.value)];
-    let colors = randomColors(data.length);
+
+    let tempos = [];
+    let projetos = [];
+
+    let restante = 0;
+
+    // Adiciona os valores a um array
+    dados.forEach(function(d) {
+        tempos.push(d.Tempo.value);
+        projetos.push(d.Projeto.value);
+        restante += Number(d.Tempo.value);
+    });
+
+    restante = ((380 - restante) < 0) ? 0 : (380 - restante);
+
+    if (restante != 0) {
+        projetos.push("Restante");
+        tempos.push(restante);
+    }
+
+    // Cores aleatórias
+
+
+    let colors = randomColors(projetos.length);
 
     if (!(typeof(renderGraphRemain) == 'undefined')) {
         renderGraphRemain.destroy();
@@ -138,9 +167,9 @@ function makeGraphRemain(dados, div) {
     renderGraphRemain = new Chart(div, {
         type: 'pie',
         data: {
-            labels: ['Total registrado', 'Restante'],
+            labels: projetos,
             datasets: [{
-                data: data,
+                data: tempos,
                 backgroundColor: colors,
                 borderColor: colors,
                 borderWidth: 1
@@ -155,6 +184,9 @@ function makeGraphRemain(dados, div) {
             title: {
                 display: true,
                 text: 'Tempo do dia'
+            },
+            tooltips: {
+                mode: "point"
             }
         }
     });
@@ -170,11 +202,13 @@ function makeGraphTotal(dados, div) {
 
     let dates = [];
     let times = [];
+    let projects = [];
     let colors = randomColors(dados.length);
 
     dados.forEach(function(d) {
         dates.push(d.Data.value);
         times.push(d.Tempo.value);
+        projects.push(d.Projeto.value);
     })
 
     if (!(typeof(renderGraphTotal) == 'undefined')) {
@@ -200,7 +234,13 @@ function makeGraphTotal(dados, div) {
             },
             title: {
                 display: true,
-                text: 'Últimos 7 dias'
+                text: 'Últimos 15 registros'
+            },
+            tooltips: {
+                label: (tooltipItem, data) => {
+                    console.log(data.datasets);
+                    // return projects[tooltipItem.datasetIndex];
+                }
             }
         }
     });
@@ -211,13 +251,16 @@ function makeGraphTotal(dados, div) {
 // Retorna cores aleatórias
 function randomColors(num) {
     let colors = [];
-    // Math.random() * (max - min) + min;
-    for (i = 0; i < num; i++) {
-        let r = Math.floor(Math.random() * (200));
-        let g = Math.floor(Math.random() * (200));
-        let b = Math.floor(Math.random() * (200));
 
+    // Math.random() * (max - min) + min;
+
+    for (i = 0; i < num; i++) {
+        let colorValue = Math.round(Math.random() * (191 - 52) + 52);
+        let r = colorValue;
+        let g = colorValue + 6;
+        let b = colorValue + 12;
         colors.push(`rgba(${r}, ${g}, ${b}, 1)`);
     }
+
     return colors;
 }
