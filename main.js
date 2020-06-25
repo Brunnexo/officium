@@ -4,6 +4,7 @@ const ipc = require('electron').ipcMain;
 let splash;
 let mainWindow;
 let workerScreen;
+let admScreen;
 
 // Variáveis globais
 global.defs = {
@@ -52,6 +53,7 @@ function buildMainWindow(ready) {
     });
 }
 
+// Tela do colaborador
 function buildWorkerScreen(ready) {
     workerScreen = new BrowserWindow({
         frame: false,
@@ -68,6 +70,26 @@ function buildWorkerScreen(ready) {
     workerScreen.loadURL(`file://${__dirname}/app/build/workerScreen.html`);
     workerScreen.once('ready-to-show', () => {
         // workerScreen.setFullScreen(true);
+        ready();
+    })
+}
+
+// Tela do administrativo
+function buildAdmScreen(ready) {
+    admScreen = new BrowserWindow({
+        frame: false,
+        width: 1280,
+        height: 820,
+        minWidth: 1280,
+        minHeight: 820,
+        show: false,
+        // fullscreen: true,
+        webPreferences: {
+            nodeIntegration: true
+        }
+    });
+    admScreen.loadURL(`file://${__dirname}/app/build/admScreen.html`);
+    admScreen.once('ready-to-show', () => {
         ready();
     })
 }
@@ -94,6 +116,7 @@ ipc.on('ready', () => {
     });
 });
 
+// Abrir janela do colaborador 
 ipc.on('open-workerScreen', () => {
     buildWorkerScreen(() => {
         workerScreen.show();
@@ -101,13 +124,33 @@ ipc.on('open-workerScreen', () => {
     });
 });
 
+// Abrir janela do administrativo
+ipc.on('open-admScreen', () => {
+    buildAdmScreen(() => {
+        admScreen.show();
+        mainWindow.destroy();
+    })
+});
+
 // Voltar ao menu principal
+
+// Da janela do colaborador
 ipc.on('back-from-workerScreen', () => {
     buildMainWindow(() => {
         workerScreen.destroy();
         mainWindow.show();
     });
 });
+
+// Da janela do administrativo
+ipc.on('back-from-workerScreen', () => {
+    buildMainWindow(() => {
+        admScreen.destroy();
+        mainWindow.show();
+    });
+});
+
+
 
 // YmxpbWFwY29zdGFAZ21haWwuY29tJmhhc2g9MTQ3MTg4OTYw
 //https://api.calendario.com.br/?ano=2017&estado=SP&cidade=SAO_PAULO&token=YmxpbWFwY29zdGFAZ21haWwuY29tJmhhc2g9MTQ3MTg4OTYw

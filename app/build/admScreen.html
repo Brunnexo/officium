@@ -5,18 +5,24 @@
     <meta charset="utf-8">
     <title>Officium</title>
     <link rel="stylesheet" type="text/css" href="../res/bootstrap/4.5.0/css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="../res/styles/workerScreen.css">
+    <link rel="stylesheet" type="text/css" href="../res/styles/admScreen.css">
 </head>
 
 <body class="bg-light">
     <!-- Barra de navegação -->
     <nav class=" navbar navbar-expand navbar-dark bg-dark fixed-top" style="-webkit-app-region: drag;">
-        <a class="navbar-brand" id="navToggle" style="-webkit-app-region: no-drag;" data-toggle="tooltip" data-placement="bottom" title="Notificações"><img width="20" height="20" src="../res/images/notification.svg" id="bell"><span class="notifPop"></span></a>
         <a class="navbar-brand" id="name" style="-webkit-app-region: no-drag;"></a>
         <div class="collapse navbar-collapse" id="nav">
             <ul class="navbar-nav" style="-webkit-app-region: no-drag;">
                 <li class="nav-item active" id="resume">
                     <a class="nav-link">Resumo</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="gerenciar" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gerenciar</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" id="worker">Colaborador</a>
+                        <a class="dropdown-item" id="extraHour">Horas Extras</a>
+                    </div>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="registro" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Registro</a>
@@ -39,24 +45,6 @@
         </div>
     </nav>
 
-    <!-- Conteúdo dinâmico -->
-    <div class="sidenav" id="notifications">
-        <div class="navitem">
-            <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header">
-                    <strong class="mr-auto">Bootstrap</strong>
-                    <small class="text-muted">just now</small>
-                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Fechar">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div class="toast-body">
-                    See? Just like this.
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="pagecontainer">
         <div class="container-fluid" id="content"></div>
     </div>
@@ -68,7 +56,7 @@
     </nav>
     <!-- Scripts -->
     <script src="../res/scripts/extensions/MSSQL.js"></script>
-    <script src="../res/scripts/workerScreen.js"></script>
+    <script src="../res/scripts/admScreen.js"></script>
 </body>
 
 </html>

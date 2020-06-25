@@ -69,7 +69,6 @@ $("#inRegister").keyup(function(e) {
 // Ação do botão "Entrar"
 $("#btnEnter").click(function() {
     if (jQuery.isEmptyObject(remote.getGlobal("defs").colaborador)) {
-        var registro = $("#inRegister").val();
         connectSQL((e) => {
             if (!e) {
                 new window.Notification('Joyson GMO', {
@@ -78,7 +77,7 @@ $("#btnEnter").click(function() {
                     remote.getCurrentWindow().focus();
                 };
             } else {
-                selectSQL("SELECT [Nome], [Registro], [Funções], [Jornada] FROM [Colaboradores] WHERE [Registro] = " + registro, (data) => {
+                selectSQL(`SELECT [Nome], [Registro], [Funções], [Jornada] FROM [Colaboradores] WHERE [Registro] = ${$("#inRegister").val()}`, (data) => {
                     if (jQuery.isEmptyObject(data)) {
                         setWarning();
                         console.log("[mainWindow]: Colaborador não registrado/encontrado!");
@@ -95,11 +94,47 @@ $("#btnEnter").click(function() {
     }
 });
 
+// Ação do botão "Administrativo"
+$("#btnAdm").click(function() {
+    connectSQL(() => {
+        selectSQL(`SELECT  CASE
+                    WHEN [Senha] = HASHBYTES('sha2_512', '${$("#inPassword").val()}') AND [Registro] = ${$("#inRegister").val()}
+                    THEN 'TRUE'
+                    ELSE 'FALSE'
+                    END AS [Autenticado]
+                        FROM [SAT].[dbo].[Logins]`, (data) => {
+            console.log(Boolean(data[0].Autenticado.value));
+            if ("TRUE" == data[0].Autenticado.value) {
+                selectSQL(`SELECT [Nome], [Registro], [Funções], [Jornada] FROM [Colaboradores] WHERE [Registro] = ${$("#inRegister").val()}`, (data) => {
+                    if (jQuery.isEmptyObject(data)) {
+                        setWarning();
+                        console.log("[mainWindow]: Colaborador não registrado/encontrado!");
+                    } else {
+                        remote.getGlobal("defs").colaborador = data[0];
+                        remote.getGlobal("defs").colaborador.Funções.value = getFunctions();
+                        ipc.send('open-admScreen');
+                    }
+                });
+            } else {
+                setWarning('inPassword');
+            }
+        });
+    });
+});
+
 // Ação do botão físico "Enter" - Entrar
 $('#inRegister').keypress(function(e) {
     if (e.keyCode === 13) {
         e.preventDefault();
         $("#btnEnter").click();
+    }
+});
+
+// Ação do botão físico "Enter" - Administrativo
+$('#inPassword').keypress(function(e) {
+    if (e.keyCode === 13) {
+        e.preventDefault();
+        $("#btnAdm").click();
     }
 });
 

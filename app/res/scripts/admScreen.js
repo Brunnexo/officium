@@ -19,7 +19,7 @@ const clients = JSON.parse(fs.readFileSync(`${__dirname}/datas/clients.json`, 'u
 const activities = JSON.parse(fs.readFileSync(`${__dirname}/datas/activities.json`, 'utf-8'));
 
 // Variáveis de página
-const pageResume = getInnerHtml('Resume');
+const pageResume = getInnerHtml('admResume');
 const pageProject = getInnerHtml('Project');
 const pageSr = getInnerHtml('SR');
 const pageGeneral = getInnerHtml('General');
@@ -154,11 +154,4 @@ function showErrorLog(log, id = 'errorLog') {
     setTimeout(function() {
         $(`#${id}`).fadeOut('slow');
     }, 3000);
-}
-
-// Alterna a barra lateral
-function toggleSidenav() {
-    $(".sidenav").toggleClass("active");
-    $(".pagecontainer").toggleClass("active");
-    $(".tablecontainer").toggleClass("active");
 }
