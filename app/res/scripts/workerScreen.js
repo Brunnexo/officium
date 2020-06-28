@@ -36,7 +36,7 @@ $(document).ready(function() {
     $("#navToggle").click(() => { toggleSidenav() });
 
     document.getElementById("inDate").valueAsDate = new Date();
-    loadHTML(pageResume, 'Resumo');
+    loadHTML(pageResume, 'Resume');
 
     // Ativa balões de dicas
     $(function() {
@@ -84,7 +84,7 @@ new MutationObserver(() => {
 $("#resume").click(function() {
     $(".active").removeClass("active");
     $("#resume").addClass("active");
-    loadHTML(pageResume);
+    loadHTML(pageResume, 'Resume');
 });
 
 // Eventos de cliques dos menus
@@ -94,20 +94,20 @@ $("#project, #sr, #general").click(function() {
 });
 // Projeto
 $("#project").click(function() {
-    loadHTML(pageProject);
+    loadHTML(pageProject, 'Project');
 });
 // Service Request
 $("#sr").click(function() {
-    loadHTML(pageSr);
+    loadHTML(pageSr, 'SR');
 });
 // Geral
 $("#general").click(function() {
-    loadHTML(pageGeneral);
+    loadHTML(pageGeneral, 'General');
 });
 
 // Funções
 // Carrega o conteúdo da página
-function loadHTML(pageHTML) {
+function loadHTML(pageHTML, script) {
     content.hide();
     content.html(pageHTML);
     // Mostrar conteúdo da página

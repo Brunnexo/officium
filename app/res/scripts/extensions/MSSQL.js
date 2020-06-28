@@ -34,10 +34,10 @@ function connectSQL(callback) {
         if (err) {
             console.log("[MSSQL]: Erro de conexão!");
             console.log("[MSSQL]: " + err.message);
-            callback(false);
+            callback(true);
         } else {
             console.log("[MSSQL]: Conectado!");
-            callback(true);
+            callback(connection);
         }
     });
 }

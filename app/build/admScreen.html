@@ -14,8 +14,12 @@
         <a class="navbar-brand" id="name" style="-webkit-app-region: no-drag;"></a>
         <div class="collapse navbar-collapse" id="nav">
             <ul class="navbar-nav" style="-webkit-app-region: no-drag;">
-                <li class="nav-item active" id="resume">
-                    <a class="nav-link">Resumo</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="resume" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Resumo</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" id="personalResume">Pessoal</a>
+                        <a class="dropdown-item" id="everybodyResume">Todos</a>
+                    </div>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" id="gerenciar" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Gerenciar</a>
@@ -51,8 +55,8 @@
 
     <!-- Navegação de fundo -->
     <nav class="fixed-bottom navbar navbar-dark bg-dark mr-auto">
-        <a class="navbar-brand" id="pageName" data-toggle="tooltip" data-placement="right" title="Desenvolvido por: Bruno Costa">Officium</a>
-        <span class="navbar-text text-danger font-weight-bold" id="errorLog"></span>
+        <a class="navbar-brand" data-toggle="tooltip" data-placement="right" title="Desenvolvido por: Bruno Costa">Officium</a>
+        <span class="navbar-text text-danger font-weight-bold text-center" id="errorLog"></span>
     </nav>
     <!-- Scripts -->
     <script src="../res/scripts/extensions/MSSQL.js"></script>

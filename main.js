@@ -1,10 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 const ipc = require('electron').ipcMain;
 
-let splash;
-let mainWindow;
-let workerScreen;
-let admScreen;
+let splash, mainWindow, workerScreen, admScreen;
 
 // Variáveis globais
 global.defs = {
@@ -83,7 +80,6 @@ function buildAdmScreen(ready) {
         minWidth: 1280,
         minHeight: 820,
         show: false,
-        // fullscreen: true,
         webPreferences: {
             nodeIntegration: true
         }
@@ -143,7 +139,7 @@ ipc.on('back-from-workerScreen', () => {
 });
 
 // Da janela do administrativo
-ipc.on('back-from-workerScreen', () => {
+ipc.on('back-from-admScreen', () => {
     buildMainWindow(() => {
         admScreen.destroy();
         mainWindow.show();

@@ -51,7 +51,7 @@ $("#close").click(function() {
 });
 // Ação do botão "voltar"
 $("#back").click(function() {
-    ipc.send('back-from-workerScreen');
+    ipc.send('back-from-admScreen');
 });
 // Ação do botão "minimizar"
 $("#iconify").click(function() {
