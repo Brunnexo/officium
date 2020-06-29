@@ -8,6 +8,9 @@ const Popper = require('@popperjs/core');
 require('bootstrap');
 
 // Variáveis
+// Contador de tentativa errada de senha
+var wrongPasswordAttempt = 0;
+
 // Atraso de consulta para input
 var delayInput;
 
@@ -116,6 +119,10 @@ $("#btnAdm").click(function() {
                     }
                 });
             } else {
+                wrongPasswordAttempt++;
+                if (wrongPasswordAttempt > 3) {
+                    $("#forgot").removeClass('invisible');
+                }
                 setWarning('inPassword');
             }
         });
