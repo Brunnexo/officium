@@ -1,3 +1,8 @@
+// Selecionar navegação
+$(".active").removeClass("active");
+$("#register").addClass("active");
+$("#btn").removeClass("invisible");
+
 // Inserção de dados
 //
 // Funções do colaborador

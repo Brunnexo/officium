@@ -19,7 +19,7 @@ const clients = JSON.parse(fs.readFileSync(`${__dirname}/datas/clients.json`, 'u
 const activities = JSON.parse(fs.readFileSync(`${__dirname}/datas/activities.json`, 'utf-8'));
 
 // Variáveis de página
-const pageResume = getInnerHtml('admResume');
+const pageResume = getInnerHtml('Resume');
 const pageProject = getInnerHtml('Project');
 const pageSr = getInnerHtml('SR');
 const pageGeneral = getInnerHtml('General');
@@ -34,7 +34,7 @@ const srs = remote.getGlobal("defs").srs;
 $(document).ready(function() {
     $("#name").html(remote.getGlobal("defs").colaborador.Nome.value);
     document.getElementById("inDate").valueAsDate = new Date();
-    loadHTML(pageResume, 'Resumo');
+    loadHTML(pageResume);
 
     // Ativa balões de dicas
     $(function() {
@@ -79,17 +79,11 @@ new MutationObserver(() => {
 });
 
 // Ação do botão resumo
-$("#resume").click(function() {
+$("#personalResume, #everybodyResume").click(function() {
     $(".active").removeClass("active");
     $("#resume").addClass("active");
-    loadHTML(pageResume);
 });
 
-// Eventos de cliques dos menus
-$("#project, #sr, #general").click(function() {
-    $(".active").removeClass("active");
-    $("#registro").addClass("active");
-});
 // Projeto
 $("#project").click(function() {
     loadHTML(pageProject);
@@ -103,18 +97,21 @@ $("#general").click(function() {
     loadHTML(pageGeneral);
 });
 
+// Resumo pessoal
+$("#personalResume").click(function() {
+    loadHTML(pageResume);
+});
+
 // Funções
 // Carrega o conteúdo da página
 function loadHTML(pageHTML) {
     content.hide();
     content.html(pageHTML);
-    // Mostrar conteúdo da página
     content.fadeIn('slow');
 }
 
 // Retorna WO ou espaço em branco
 function getWO() {
-    // WO
     var wo = $("#inProject :selected").attr('wo');
     if (wo == 'null') {
         $("#inWO").val('');

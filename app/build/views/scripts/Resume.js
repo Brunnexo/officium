@@ -1,13 +1,14 @@
+// Selecionar navegação
+$(".active").removeClass("active");
+$("#resume").addClass("active");
+$("#btn").addClass("invisible");
+
 const history = $("#history");
 
 const graphRemain = $("#graphRemain");
 const graphTotal = $("#graphTotal");
 
 getHistory(history, graphRemain, graphTotal);
-
-// setTimeout(function() {
-//     $(".toast").toast('show');
-// }, 3000);
 
 // Evento de mudança de data
 var inputDelay;
@@ -62,48 +63,54 @@ function getHistory(history, graphRemain, graphTotal) {
 // Gera a tabela com base no JSON do MSSQL
 function makeTable(dados, div) {
     div.hide();
-    var thead = document.createElement('thead');
-    var table = document.createElement('table');
-    $(table).addClass('table');
+    if (!$.isEmptyObject(dados)) {
+        var thead = document.createElement('thead');
+        var table = document.createElement('table');
+        $(table).addClass('table');
 
-    thead.innerHTML = `
-            <thead>
-                <tr>
-                    <th scope="col">ID</th>
-                    <th scope="col">Função</th>
-                    <th scope="col">WO</th>
-                    <th scope="col">Descrição</th>
-                    <th scope="col">Tempo</th>
-                    <th scope="col">Extra</th>
-                </tr>
-            </thead>`;
+        thead.innerHTML = `
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Função</th>
+                        <th scope="col">WO</th>
+                        <th scope="col">Descrição</th>
+                        <th scope="col">Tempo</th>
+                        <th scope="col">Extra</th>
+                    </tr>
+                </thead>`;
 
-    table.appendChild(thead);
-    var tbody = document.createElement('tbody');
+        table.appendChild(thead);
+        var tbody = document.createElement('tbody');
 
-    dados.forEach(function(arr) {
-        // Dados da tabela
-        var tr = document.createElement('tr');
-        // Conteúdo HTML da tabela
-        tr.innerHTML = `
-                <th scope="row">${arr.ID.value}</th>
-                <th>${arr.Função.value}</th>
-                <th>${arr.WO.value}</th>
-                <th>${arr.Descrição.value}</th>
-                <th>${arr.Tempo.value}</th>
-                <th>${arr.Extra.value}</th>`;
-        tbody.appendChild(tr);
-    });
-    table.appendChild(tbody);
+        dados.forEach(function(arr) {
+            // Dados da tabela
+            var tr = document.createElement('tr');
+            // Conteúdo HTML da tabela
+            tr.innerHTML = `
+                    <th scope="row">${arr.ID.value}</th>
+                    <th>${arr.Função.value}</th>
+                    <th>${arr.WO.value}</th>
+                    <th>${arr.Descrição.value}</th>
+                    <th>${arr.Tempo.value}</th>
+                    <th>${arr.Extra.value}</th>`;
+            tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
 
-    div.html('');
-    $("#title").html('');
+        div.html('');
+        $("#title").html('');
 
-    $("#title").html(`Resumo de ${dateFormat(document.getElementById('inDate').value)}`);
-    $("#title").append("<hr />");
+        $("#title").html(`Resumo de ${dateFormat(document.getElementById('inDate').value)}`);
+        $("#title").append("<hr />");
 
-    div.append(table);
-    div.fadeIn('slow');
+        div.append(table);
+        div.fadeIn('slow');
+    } else {
+        div.html('<h5 class="display-4 text-center">Não há registros para mostrar...</h5>');
+        div.fadeIn('slow');
+    }
+
     // Variável de posição do mouse
     var id;
     // Menu

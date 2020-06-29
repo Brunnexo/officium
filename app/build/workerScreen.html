@@ -19,7 +19,7 @@
                     <a class="nav-link">Resumo</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="registro" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Registro</a>
+                    <a class="nav-link dropdown-toggle" id="register" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Registrar serviço</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" id="project">Projeto</a>
                         <a class="dropdown-item" id="sr"><i>Service Request</i></a>
@@ -76,7 +76,8 @@
     <!-- Navegação de fundo -->
     <nav class="fixed-bottom navbar navbar-dark bg-dark mr-auto">
         <a class="navbar-brand" data-toggle="tooltip" data-placement="right" title="Desenvolvido por: Bruno Costa">Officium</a>
-        <span class="navbar-text text-danger text-center font-weight-bold" id="errorLog"></span>
+        <span class="navbar-text text-warning text-center" id="errorLog"></span>
+        <button type="button" id="btn" class="btn btn-light float-right invisible">Registrar</button>
     </nav>
     <!-- Scripts -->
     <script src="../res/scripts/extensions/MSSQL.js"></script>

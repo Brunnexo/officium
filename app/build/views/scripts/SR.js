@@ -1,3 +1,9 @@
+// Selecionar navegação
+$(".active").removeClass("active");
+$("#register").addClass("active");
+$("#btn").removeClass("invisible");
+
+
 // Alterações de campo
 // WO
 $("#inWO").keyup(function(e) {
