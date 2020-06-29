@@ -33,8 +33,6 @@ const srs = remote.getGlobal("defs").srs;
 // Funções ao carregar a página
 $(document).ready(function() {
     $("#name").html(remote.getGlobal("defs").colaborador.Nome.value);
-    $("#navToggle").click(() => { toggleSidenav() });
-
     document.getElementById("inDate").valueAsDate = new Date();
     loadHTML(pageResume, 'Resumo');
 

@@ -1,6 +1,7 @@
 :root {
     --transition-time: 1s;
     --sidenav-width: 250px;
+    --navitem-width: 240px;
 }
 
 .sidenav {
@@ -21,9 +22,11 @@
     width: var(--sidenav-width);
 }
 
-.sidenav .navitem {
-    margin: 5px;
+.navitem {
+    display: block;
+    width: var(--navitem-width);
     padding: 5px;
+    margin: 5px;
 }
 
 .pagecontainer {
