@@ -55,9 +55,9 @@ function buildWorkerScreen(ready) {
     workerScreen = new BrowserWindow({
         frame: false,
         width: 1280,
-        height: 820,
+        height: 830,
         minWidth: 1280,
-        minHeight: 820,
+        minHeight: 830,
         show: false,
         // fullscreen: true,
         webPreferences: {
@@ -76,9 +76,7 @@ function buildAdmScreen(ready) {
     admScreen = new BrowserWindow({
         frame: false,
         width: 1280,
-        height: 820,
-        minWidth: 1280,
-        minHeight: 820,
+        height: 830,
         show: false,
         webPreferences: {
             nodeIntegration: true

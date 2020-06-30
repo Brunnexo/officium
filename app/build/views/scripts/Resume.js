@@ -4,11 +4,10 @@ $("#resume").addClass("active");
 $("#btn").addClass("invisible");
 
 const history = $("#history");
-
 const graphRemain = $("#graphRemain");
 const graphTotal = $("#graphTotal");
 
-getHistory(history, graphRemain, graphTotal);
+getHistory();
 
 // Evento de mudança de data
 var inputDelay;
@@ -16,12 +15,12 @@ $("#inDate").change(function() {
     // Função ao alterar data
     clearTimeout(inputDelay);
     inputDelay = setTimeout(function() {
-        getHistory(history, graphRemain, graphTotal);
+        getHistory();
     }, 500);
 });
 
 // Histórico do colaborador
-function getHistory(history, graphRemain, graphTotal) {
+function getHistory() {
     let tTotal = 380;
 
     var TableQuery = `SELECT
@@ -63,6 +62,8 @@ function getHistory(history, graphRemain, graphTotal) {
 // Gera a tabela com base no JSON do MSSQL
 function makeTable(dados, div) {
     div.hide();
+    $("#title").hide();
+
     if (!$.isEmptyObject(dados)) {
         var thead = document.createElement('thead');
         var table = document.createElement('table');
@@ -105,8 +106,10 @@ function makeTable(dados, div) {
         $("#title").append("<hr />");
 
         div.append(table);
+        $("#title").fadeIn('slow');
         div.fadeIn('slow');
     } else {
+        $("#title").html('');
         div.html('<h5 class="display-4 text-center">Não há registros para mostrar...</h5>');
         div.fadeIn('slow');
     }
@@ -120,7 +123,7 @@ function makeTable(dados, div) {
         click: () => {
             connectSQL(() => {
                 executeSQL("DELETE FROM [Relatórios] WHERE [ID] = " + id, () => {
-                    getHistory(history, graphRemain, graphTotal);
+                    getHistory();
                 });
             });
         }

@@ -20,6 +20,7 @@ const activities = JSON.parse(fs.readFileSync(`${__dirname}/datas/activities.jso
 
 // Variáveis de página
 const pageResume = getInnerHtml('Resume');
+const pageWorkersResume = getInnerHtml('WorkersResume');
 const pageProject = getInnerHtml('Project');
 const pageSr = getInnerHtml('SR');
 const pageGeneral = getInnerHtml('General');
@@ -47,10 +48,12 @@ $(document).ready(function() {
 $("#close").click(function() {
     remote.getCurrentWindow().close();
 });
+
 // Ação do botão "voltar"
 $("#back").click(function() {
     ipc.send('back-from-admScreen');
 });
+
 // Ação do botão "minimizar"
 $("#iconify").click(function() {
     $("#iconify").blur();
@@ -100,6 +103,12 @@ $("#general").click(function() {
 // Resumo pessoal
 $("#personalResume").click(function() {
     loadHTML(pageResume);
+});
+
+// Resumo do setor
+$("#everybodyResume").click(function() {
+    // loadHTML(pageWorkersResume);
+    loadHTML(getInnerHtml('WorkersResume'));
 });
 
 // Funções
