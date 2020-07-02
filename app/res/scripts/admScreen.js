@@ -108,7 +108,7 @@ $("#personalResume").click(function() {
 // Resumo do setor
 $("#everybodyResume").click(function() {
     // loadHTML(pageWorkersResume);
-    loadHTML(getInnerHtml('WorkersResume'));
+    loadHTML(pageWorkersResume);
 });
 
 // Funções

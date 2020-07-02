@@ -77,6 +77,8 @@ function buildAdmScreen(ready) {
         frame: false,
         width: 1280,
         height: 830,
+        minWidth: 1280,
+        minHeight: 830,
         show: false,
         webPreferences: {
             nodeIntegration: true

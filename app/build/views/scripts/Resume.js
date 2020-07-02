@@ -1,3 +1,5 @@
+const { TouchBarColorPicker } = require("electron");
+
 // Selecionar navegação
 $(".active").removeClass("active");
 $("#resume").addClass("active");
@@ -62,7 +64,11 @@ function getHistory() {
 // Gera a tabela com base no JSON do MSSQL
 function makeTable(dados, div) {
     div.hide();
+
     $("#title").hide();
+    $("#title").html(`Resumo de ${dateFormat(document.getElementById('inDate').value)}`);
+    $("#title").append("<hr />");
+    $("#title").fadeIn('slow');
 
     if (!$.isEmptyObject(dados)) {
         var thead = document.createElement('thead');
@@ -100,16 +106,9 @@ function makeTable(dados, div) {
         table.appendChild(tbody);
 
         div.html('');
-        $("#title").html('');
-
-        $("#title").html(`Resumo de ${dateFormat(document.getElementById('inDate').value)}`);
-        $("#title").append("<hr />");
-
         div.append(table);
-        $("#title").fadeIn('slow');
         div.fadeIn('slow');
     } else {
-        $("#title").html('');
         div.html('<h5 class="display-4 text-center">Não há registros para mostrar...</h5>');
         div.fadeIn('slow');
     }
@@ -264,13 +263,17 @@ function randomColors(num) {
 
     // Math.random() * (max - min) + min;
 
+    let diff = 0;
     for (i = 0; i < num; i++) {
-        let colorValue = Math.round(Math.random() * (191 - 52) + 52);
-        let r = colorValue;
-        let g = colorValue + 6;
-        let b = colorValue + 12;
-        colors.push(`rgba(${r}, ${g}, ${b}, 1)`);
-    }
+        if (i <= 51) {
+            let r = Math.round(Math.random() * ((255 - diff) - (0 + diff) + 1) + (0 + diff));
+            let g = Math.round(Math.random() * ((255 - diff) - (0 + diff) + 1) + (0 + diff));
+            let b = Math.round(Math.random() * ((255 - diff) - (0 + diff) + 1) + (0 + diff));
 
+            colors.push(`rgba(${r}, ${g}, ${b}, 5)`);
+
+            diff += 5;
+        }
+    }
     return colors;
 }

@@ -1,3 +1,19 @@
+// Caminhos de imagens de logo das clientes
+var clientLogos = {
+    "GM": `${__dirname}/../res/images/generalmotors.png`,
+    "VW": `${__dirname}/../res/images/vw.png`,
+    "FORD": `${__dirname}/../res/images/ford.png`,
+    "FCA": `${__dirname}/../res/images/fca.png`,
+    "RENAULT": `${__dirname}/../res/images/renault.png`,
+    "HONDA": `${__dirname}/../res/images/honda.png`,
+    "NISSAN": `${__dirname}/../res/images/nissan.png`,
+    "TOYOTA": `${__dirname}/../res/images/toyota.png`,
+    "HYUNDAI": `${__dirname}/../res/images/hyundai.png`,
+    "MERCEDES": `${__dirname}/../res/images/mercedes.png`,
+    "PSA": `${__dirname}/../res/images/psa.png`,
+    "MAN": `${__dirname}/../res/images/man.png`
+};
+
 // Selecionar navegação
 $(".active").removeClass("active");
 $("#register").addClass("active");
@@ -17,7 +33,8 @@ colaborador.Funções.value.forEach(function(f) {
     var index = colaborador.Funções.value.indexOf(f);
     $("#inFunction").append(`<option index="${index}">${f}</option>`);
 });
-var função = $('#inFunction :selected').text();
+
+var função = $('#inFunction').val();
 
 // Atividades do colaborador
 Object.keys(activities[função]).forEach(function(val) {
@@ -30,6 +47,7 @@ activities[função][atividade].forEach(function(val) {
     $("#inDescription").append(`<option>${val}</option>`);
 });
 
+
 // Clientes
 clients.forEach(function(k) {
     var index = clients.indexOf(k);
@@ -38,7 +56,7 @@ clients.forEach(function(k) {
 
 // Projetos
 projetos.forEach(function(p) {
-    var cliente = $('#inClient :selected').text();
+    var cliente = $('#inClient').val();
     if (p.Cliente.value.includes(cliente)) {
         $("#inProject").append(`<option index="${p.ID.value}" client="${clients.indexOf(p.Cliente.value)}" proj="${p.Projeto.value}" wo="${p[função].value}">${p.Descrição.value}</option>`);
     }
@@ -46,6 +64,22 @@ projetos.forEach(function(p) {
 
 // WO
 getWO();
+
+$(".functionSelected").hide()
+    .html(`<h5>${função}</h5>`)
+    .fadeIn('slow');
+
+$(".descriptionSelected").hide()
+    .html(`<h5>${$("#inDescription").val()}</h5>`)
+    .fadeIn('slow');
+
+$(".clientLogo").hide()
+    .html(`<img src="${clientLogos[$("#inClient").val()]}" alt="${$("#inClient").val()}">`)
+    .fadeIn('slow');
+
+$(".projectSelected").hide()
+    .html(`<h6>${$("#inProject").val().substr(0, 50)}...</h6>`)
+    .fadeIn('slow');
 
 // Alteração dos campos
 //
@@ -83,6 +117,14 @@ $("#inWO").keyup(function(e) {
                 });
                 $(`#inProject option[wo=${wo}]`).prop("selected", true);
                 $(`#inClient [index=${$("#inProject :selected").attr("client")}]`).prop("selected", true);
+
+                $(".woSelected").hide()
+                    .html(`<h5>${wo}</h5>`)
+                    .fadeIn('slow');
+            } else {
+                $(".woSelected").hide()
+                    .html(`<h5 class="text-danger">WO inexistente</h5>`)
+                    .fadeIn('slow');
             }
         }
     }, 500);
@@ -91,10 +133,18 @@ $("#inWO").keyup(function(e) {
 // Projeto -> WO
 $("#inProject").change(function() {
     getWO();
+
+    $(".projectSelected").hide()
+        .html(`<h6>${$("#inProject").val().substr(0, 50)}...</h6>`)
+        .fadeIn('slow');
 });
 
 // Cliente -> Projeto && WO
 $("#inClient").change(function() {
+    $(".clientLogo").hide()
+        .html(`<img src="${clientLogos[$("#inClient").val()]}" alt="${$("#inClient").val()}">`)
+        .fadeIn('slow');
+
     // Remove projetos da lista
     $("#inProject option").each(function() {
         $(this).remove();
@@ -113,7 +163,11 @@ $("#inClient").change(function() {
 
 // Função -> tudo
 $("#inFunction").change(function() {
-    var função = $('#inFunction :selected').text();
+    var função = $('#inFunction').val();
+
+    $(".functionSelected").hide()
+        .html(`<h5>${função}</h5>`)
+        .fadeIn('slow');
 
     // Atividades do colaborador
     // Remove as atividades atuais na lista
@@ -169,3 +223,31 @@ $("#inActivity").change(function() {
         $("#inDescription").append(`<option>${val}</option>`);
     });
 });
+
+// Descrição
+$("#inDescription").change(function() {
+    $(".descriptionSelected").hide()
+        .html(`<h5>${$("#inDescription").val()}</h5>`)
+        .fadeIn('slow');
+});
+
+// Retorna WO ou espaço em branco
+function getWO() {
+    // WO
+    var wo = $("#inProject :selected").attr('wo');
+    if (wo == 'null') {
+        $("#inWO").val('');
+
+        $(".woSelected").hide()
+            .html(`<h5 class="text-danger">Sem WO</h5>`)
+            .fadeIn('slow');
+
+        showErrorLog("Não há WO deste projeto para esta função!");
+    } else {
+        $("#inWO").val(wo);
+
+        $(".woSelected").hide()
+            .html(`<h5>${wo}</h5>`)
+            .fadeIn('slow');
+    }
+}

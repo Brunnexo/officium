@@ -5,7 +5,6 @@ $("#resume").addClass("active");
 const graphFunctions = $("#graphFunctions");
 const graphProjects = $("#graphProjects");
 const graphExtra = $("#graphExtra");
-const graphProjectsHistory = $("#graphProjectsHistory");
 
 // Inicializar gráficos
 getHistory();
@@ -28,12 +27,6 @@ function getHistory() {
                             WHERE [R].[Extra] = 'TRUE'
                                 GROUP BY MONTH([R].[Data])`;
 
-    var projectHistoryQuery = `SELECT SUM([R].[Tempo]) AS [Tempo], MONTH([R].[Data]) AS [Data], [P].[Projeto]
-                                FROM [SAT].[dbo].[Relatórios] AS [R]
-                                    INNER JOIN [SAT].[dbo].[WOs] AS [W] ON ([R].[WO] IN ([W].[Administrativo], [W].[Compras], [W].[Eletricista], [W].[Engenheiro], [W].[Ferramentaria], [W].[Mecânico], [W].[Programador], [W].[Projetista]))
-                                    LEFT JOIN [SAT].[dbo].[Projetos] AS [P] ON ([W].[ID] = [P].[ID])
-                                        GROUP BY MONTH([R].[Data]), [P].[Projeto]`;
-
     connectSQL(function() {
         selectSQL(functionsQuery, (data) => {
             makeGraphFunctions(data, graphFunctions);
@@ -41,9 +34,6 @@ function getHistory() {
                 makeGraphProjects(data, graphProjects);
                 selectSQL(extraQuery, (data) => {
                     makeGraphExtra(data, graphExtra);
-                    selectSQL(projectHistoryQuery, (data) => {
-                        makeGraphProjectsHistory(data, graphProjectsHistory);
-                    });
                 });
             });
         });
@@ -186,71 +176,23 @@ function makeGraphExtra(data, div) {
     div.fadeIn('slow');
 }
 
-// Variável de gráfico de histórico de projetos
-var renderGraphProjectsHistory;
-// Renderizar o gráfico de histórico de projetos
-function makeGraphProjectsHistory(data, div) {
-    div.hide();
-
-    let months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
-    let labelsValues = [];
-    let dataValues = [];
-
-    data.forEach(function(d) {
-        labelsValues.push(months[6]);
-        dataValues.push({
-            label: d.Projeto.value,
-            data: d.Tempo.value,
-            borderColor: randomColors(1),
-            borderWidth: 1
-        });
-    });
-
-    if (!(typeof(renderGraphProjectsHistory) == 'undefined')) {
-        renderGraphProjectsHistory.destroy();
-    }
-
-    renderGraphProjectsHistory = new Chart(div, {
-        type: 'line',
-        data: {
-            labels: labelsValues,
-            datasets: dataValues
-        },
-        options: {
-            responsive: false,
-            maintainAspectRatio: false,
-            legend: {
-                position: 'bottom'
-            },
-            title: {
-                display: true,
-                text: 'Trabalho dos projetos no ano'
-            }
-        }
-    });
-    div.fadeIn('slow');
-}
-
 // Retorna cores aleatórias
 function randomColors(num) {
     let colors = [];
 
     // Math.random() * (max - min) + min;
 
-    if (num == 1) {
-        let colorValue = Math.round(Math.random() * (191 - 52) + 52);
-        let r = colorValue;
-        let g = colorValue + 6;
-        let b = colorValue + 12;
-        return `rgba(${r}, ${g}, ${b}, 1)`;
-    } else {
-        for (i = 0; i < num; i++) {
-            let colorValue = Math.round(Math.random() * (191 - 52) + 52);
-            let r = colorValue;
-            let g = colorValue + 6;
-            let b = colorValue + 12;
-            colors.push(`rgba(${r}, ${g}, ${b}, 1)`);
+    let diff = 0;
+    for (i = 0; i < num; i++) {
+        if (i <= 51) {
+            let r = Math.round(Math.random() * ((255 - diff) - (0 + diff) + 1) + (0 + diff));
+            let g = Math.round(Math.random() * ((255 - diff) - (0 + diff) + 1) + (0 + diff));
+            let b = Math.round(Math.random() * ((255 - diff) - (0 + diff) + 1) + (0 + diff));
+
+            colors.push(`rgba(${r}, ${g}, ${b}, 0.5)`);
+
+            diff += 5;
         }
-        return colors;
     }
+    return colors;
 }

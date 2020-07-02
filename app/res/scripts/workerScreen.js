@@ -114,18 +114,6 @@ function loadHTML(pageHTML, script) {
     content.fadeIn('slow');
 }
 
-// Retorna WO ou espaço em branco
-function getWO() {
-    // WO
-    var wo = $("#inProject :selected").attr('wo');
-    if (wo == 'null') {
-        $("#inWO").val('');
-        showErrorLog("Não há WO deste projeto para esta função!");
-    } else {
-        $("#inWO").val(wo);
-    }
-}
-
 // Retorna o conteúdo HTML de uma tag com ID
 function getInnerHtml(HTML) {
     // __dirname representa o caminho de onde está usando o JS
