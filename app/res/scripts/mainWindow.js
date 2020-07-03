@@ -74,7 +74,7 @@ $("#btnEnter").click(function() {
     if (jQuery.isEmptyObject(remote.getGlobal("defs").colaborador)) {
         connectSQL((e) => {
             if (!e) {
-                new window.Notification('Joyson GMO', {
+                new Notification('Officium', {
                     body: "Erro de conexão com o servidor!",
                 }).onclick = () => {
                     remote.getCurrentWindow().focus();
@@ -106,7 +106,6 @@ $("#btnAdm").click(function() {
                     ELSE 'FALSE'
                     END AS [Autenticado]
                         FROM [SAT].[dbo].[Logins]`, (data) => {
-            console.log(Boolean(data[0].Autenticado.value));
             if ("TRUE" == data[0].Autenticado.value) {
                 selectSQL(`SELECT [Nome], [Registro], [Funções], [Jornada] FROM [Colaboradores] WHERE [Registro] = ${$("#inRegister").val()}`, (data) => {
                     if (jQuery.isEmptyObject(data)) {

@@ -74,11 +74,11 @@ $(".descriptionSelected").hide()
     .fadeIn('slow');
 
 $(".clientLogo").hide()
-    .html(`<img src="${clientLogos[$("#inClient").val()]}" alt="${$("#inClient").val()}">`)
+    .html(`<img src="${clientLogos[$("#inClient").val()]}" alt="${$("#inClient").val()}" width="128" height="128">`)
     .fadeIn('slow');
 
 $(".projectSelected").hide()
-    .html(`<h6>${$("#inProject").val().substr(0, 50)}...</h6>`)
+    .html(`<h6>${$("#inProject").val()}</h6>`)
     .fadeIn('slow');
 
 // Alteração dos campos
@@ -135,14 +135,14 @@ $("#inProject").change(function() {
     getWO();
 
     $(".projectSelected").hide()
-        .html(`<h6>${$("#inProject").val().substr(0, 50)}...</h6>`)
+        .html(`<h6>${$("#inProject").val()}</h6>`)
         .fadeIn('slow');
 });
 
 // Cliente -> Projeto && WO
 $("#inClient").change(function() {
     $(".clientLogo").hide()
-        .html(`<img src="${clientLogos[$("#inClient").val()]}" alt="${$("#inClient").val()}">`)
+        .html(`<img src="${clientLogos[$("#inClient").val()]}" alt="${$("#inClient").val()}" width="128" height="128">`)
         .fadeIn('slow');
 
     // Remove projetos da lista
@@ -156,6 +156,17 @@ $("#inClient").change(function() {
             $("#inProject").append(`<option index="${p.ID.value}" client="${clients.indexOf(p.Cliente.value)}" proj="${p.Projeto.value}" wo="${p[função].value}">${p.Descrição.value}</option>`);
         }
     });
+
+    if ($("#inProject option").length == 0) {
+        $(".projectSelected").hide()
+            .html(`<h6>Não há projetos</h6>`)
+            .fadeIn('slow');
+    } else {
+        $(".projectSelected").hide()
+            .html(`<h6>${$("#inProject").val()}</h6>`)
+            .fadeIn('slow');
+    }
+
 
     // WO do projeto selecionado
     getWO();
@@ -192,6 +203,10 @@ $("#inFunction").change(function() {
         $("#inDescription").append(`<option>${val}</option>`);
     });
 
+    $(".descriptionSelected").hide()
+        .html(`<h5>${$("#inDescription").val()}</h5>`)
+        .fadeIn('slow');
+
     // Projetos
     // Remove os projetos atuais (WO da antiga função selecionada)
     $("#inProject option").each(function() {
@@ -222,6 +237,10 @@ $("#inActivity").change(function() {
     activities[função][atividade].forEach(function(val) {
         $("#inDescription").append(`<option>${val}</option>`);
     });
+
+    $(".descriptionSelected").hide()
+        .html(`<h5>${$("#inDescription").val()}</h5>`)
+        .fadeIn('slow');
 });
 
 // Descrição
@@ -235,7 +254,7 @@ $("#inDescription").change(function() {
 function getWO() {
     // WO
     var wo = $("#inProject :selected").attr('wo');
-    if (wo == 'null') {
+    if (wo == 'null' || typeof(wo) == 'undefined') {
         $("#inWO").val('');
 
         $(".woSelected").hide()

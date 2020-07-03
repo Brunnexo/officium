@@ -6172,6 +6172,7 @@ a.badge-dark.focus {
     text-shadow: 0 1px 0 #fff;
     opacity: .5;
     outline-color: transparent;
+    outline: none;
 }
 
 .close:hover {
@@ -10655,6 +10656,15 @@ a.text-dark:focus {
     margin-top: 56px;
     margin-bottom: 56px;
     margin-left: 300px;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    height: 300px;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
 }
 
 

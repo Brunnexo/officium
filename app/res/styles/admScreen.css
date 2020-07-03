@@ -35,30 +35,3 @@
 .pagecontainer.active {
     margin-left: var(--sidenav-width);
 }
-
-
-/* Ícone de notificações */
-
-.notifPop {
-    border-style: solid;
-    border-width: 1px;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background-color: #FF3333;
-    position: absolute;
-    transition: 0.3s;
-    visibility: hidden;
-}
-
-.notifPop.show {
-    width: 10px;
-    height: 10px;
-    visibility: visible;
-}
-
-.clientLogo {
-    text-align: center;
-    width: 300px;
-    height: 200px;
-}

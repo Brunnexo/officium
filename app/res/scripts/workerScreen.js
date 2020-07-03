@@ -150,3 +150,60 @@ function toggleSidenav() {
     $(".pagecontainer").toggleClass("active");
     $(".tablecontainer").toggleClass("active");
 }
+
+// Teste
+function popNotify(title, date, body) {
+    let id = ($("#notifications .navitem").length + 1);
+    let navInject = `<div class="navitem" id="id${id}">
+                        <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                            <div class="toast-header">
+                                <strong class="mr-auto">${title}</strong>
+                                <small class="text-muted">${date}</small>
+                                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Fechar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="toast-body">
+                                ${body}
+                            </div>
+                        </div>
+                    </div>`;
+    $("#notifications").append(navInject);
+
+    var notifCheck = function() {
+        if ($("#notifications .navitem").length > 0 && ($(".notifPop").hasClass("show") == false)) {
+            $(".notifPop").addClass("show");
+
+            new Notification('Officium', {
+                body: "Você tem novas notificações!",
+            }).onclick = () => {
+                remote.getCurrentWindow().focus();
+                $('.sidenav, .pagecontainer').addClass('active');
+            };
+
+        } else if ($("#notifications .navitem").length == 0) {
+            $(".notifPop").removeClass("show");
+        }
+    };
+
+    notifCheck();
+
+    $(`.navitem#id${id}`).on('hidden.bs.toast', function() {
+        this.remove();
+        notifCheck();
+    });
+
+
+}
+
+$("#btn").click(function() {
+    popNotify("Teste", "03/07/2020", "Atrasou!");
+
+    // Notificações
+    $(".toast").toast({
+        animation: true,
+        autohide: false,
+        delay: 2000
+    });
+    $(".toast").toast('show');
+});
