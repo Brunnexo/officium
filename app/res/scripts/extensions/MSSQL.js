@@ -28,7 +28,7 @@ function connectSQL(callback) {
             appName: 'SAT',
             useColumnNames: true
         }
-    });
+    })
 
     connection.on('connect', function(err) {
         if (err) {
