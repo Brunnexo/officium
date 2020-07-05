@@ -121,6 +121,10 @@ $("#inWO").keyup(function(e) {
                 $(".woSelected").hide()
                     .html(`<h5>${wo}</h5>`)
                     .fadeIn('slow');
+
+                $(".clientLogo").hide()
+                    .html(`<img src="${clientLogos[$("#inClient").val()]}" alt="${$("#inClient").val()}" width="128" height="128">`)
+                    .fadeIn('slow');
             } else {
                 $(".woSelected").hide()
                     .html(`<h5 class="text-danger">WO inexistente</h5>`)

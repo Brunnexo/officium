@@ -57,9 +57,11 @@ $("#inRegister").keyup(function(e) {
                         remote.getGlobal("defs").colaborador = data[0];
                         remote.getGlobal("defs").colaborador.Funções.value = getFunctions();
                     }
-                    if (!jQuery.isEmptyObject(data) && data[0].Funções.value.includes('A')) {
-                        $('.passwordField').fadeIn('slow');
-                        $('#inPassword').focus();
+                    if (!jQuery.isEmptyObject(data)) {
+                        if (data[0].Funções.value.includes('A')) {
+                            $('.passwordField').fadeIn('slow');
+                            $('#inPassword').focus();
+                        }
                     } else {
                         $('.passwordField').fadeOut('slow');
                     }
@@ -71,6 +73,7 @@ $("#inRegister").keyup(function(e) {
 
 // Ação do botão "Entrar"
 $("#btnEnter").click(function() {
+    clearTimeout(delayInput);
     if (jQuery.isEmptyObject(remote.getGlobal("defs").colaborador)) {
         connectSQL((e) => {
             if (!e) {
@@ -132,6 +135,7 @@ $("#btnAdm").click(function() {
 $('#inRegister').keypress(function(e) {
     if (e.keyCode === 13) {
         e.preventDefault();
+        clearTimeout(delayInput);
         $("#btnEnter").click();
     }
 });

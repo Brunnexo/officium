@@ -145,10 +145,18 @@ function showErrorLog(log, id = 'errorLog') {
 }
 
 // Alterna a barra lateral
-function toggleSidenav() {
-    $(".sidenav").toggleClass("active");
-    $(".pagecontainer").toggleClass("active");
-    $(".tablecontainer").toggleClass("active");
+function toggleSidenav(val = 'toggle') {
+    switch (val) {
+        case 'toggle':
+            $(".sidenav, .pagecontainer, .tablecontainer").toggleClass("active");
+            break;
+        case 'active':
+            $(".sidenav, .pagecontainer, .tablecontainer").addClass("active");
+            break;
+        case 'inactive':
+            $(".sidenav, .pagecontainer, .tablecontainer").removeClass("active");
+    }
+
 }
 
 // Teste
