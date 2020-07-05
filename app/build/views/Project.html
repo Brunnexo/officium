@@ -4,6 +4,22 @@
     <div class="col">
         <form>
             <div class="form-row">
+                <div class="form-group col-4">
+                    <label for="inFunction">Função</label>
+                    <select id="inFunction" class="form-control" data-toggle="tooltip" data-placement="top" title="Alterar a função atualizará a lista de projetos"></select>
+                </div>
+                <div class="form-group col-5">
+                    <label for="inActivity">Atividade</label>
+                    <select id="inActivity" class="form-control"></select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-12">
+                    <label for="inDescription">Descrição</label>
+                    <select id="inDescription" class="form-control"></select>
+                </div>
+            </div>
+            <div class="form-row">
                 <div class="form-group col-3">
                     <label for="inClient">Montadora</label>
                     <select id="inClient" class="form-control"></select>
@@ -17,22 +33,6 @@
                 <div class="form-group col-12">
                     <label for="inProject">Projeto</label>
                     <select id="inProject" class="form-control"></select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-3">
-                    <label for="inFunction">Função</label>
-                    <select id="inFunction" class="form-control" data-toggle="tooltip" data-placement="top" title="Alterar a função atualizará a lista de projetos"></select>
-                </div>
-                <div class="form-group col-5">
-                    <label for="inActivity">Atividade</label>
-                    <select id="inActivity" class="form-control"></select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-12">
-                    <label for="inDescription">Descrição</label>
-                    <select id="inDescription" class="form-control"></select>
                 </div>
             </div>
             <div class="form-row">
@@ -54,19 +54,19 @@
         <div class="row justify-content-center">
             <div class="clientLogo"></div>
         </div>
-        <hr class="w-75" />
+        <hr class="w-25" />
         <div class="row justify-content-center">
             <div class="functionSelected"></div>
         </div>
-        <hr class="w-75" />
+        <hr class="w-25" />
         <div class="row justify-content-center">
             <div class="descriptionSelected"></div>
         </div>
-        <hr class="w-75" />
+        <hr class="w-25" />
         <div class="row justify-content-center">
             <div class="woSelected"></div>
         </div>
-        <hr class="w-75" />
+        <hr class="w-25" />
         <div class="row justify-content-center text-center">
             <div class="projectSelected"></div>
         </div>
