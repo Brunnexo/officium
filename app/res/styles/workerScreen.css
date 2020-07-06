@@ -46,13 +46,16 @@
 .notifPop {
     border-style: solid;
     border-width: 1px;
+    border-radius: 50%;
+    border-color: var(--dark);
     width: 0;
     height: 0;
-    border-radius: 50%;
-    background-color: #FF3333;
-    position: absolute;
+    background-color: var(--red);
+    position: fixed;
     transition: 0.3s;
     visibility: hidden;
+    top: 20px;
+    left: 28px;
 }
 
 .notifPop.show {

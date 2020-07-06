@@ -1,4 +1,4 @@
-const { TouchBarColorPicker } = require("electron");
+const { TouchBarColorPicker, ipcMain } = require("electron");
 
 // Selecionar navegação
 $(".active").removeClass("active");
@@ -158,7 +158,11 @@ function makeGraphRemain(dados, div) {
         restante += Number(d.Tempo.value);
     });
 
-    restante = ((380 - restante) < 0) ? 0 : (380 - restante);
+    if (colaborador.Jornada.value == 'H') {
+        restante = ((maxTimeH - restante) < 0) ? 0 : (maxTimeH - restante);
+    } else {
+        restante = ((maxTimeM - restante) < 0) ? 0 : (maxTimeM - restante);
+    }
 
     if (restante != 0) {
         projetos.push("Restante");
@@ -166,8 +170,6 @@ function makeGraphRemain(dados, div) {
     }
 
     // Cores aleatórias
-
-
     let colors = randomColors(projetos.length);
 
     if (!(typeof(renderGraphRemain) == 'undefined')) {
@@ -230,7 +232,6 @@ function makeGraphTotal(dados, div) {
         data: {
             labels: dates,
             datasets: [{
-                label: projects,
                 data: times,
                 backgroundColor: colors,
                 borderColor: colors,

@@ -1,6 +1,10 @@
 const { app, BrowserWindow } = require('electron');
 const ipc = require('electron').ipcMain;
 
+const { connectSQL, selectSQL, executeSQL } = require('./app/res/scripts/extensions/MSSQL');
+
+const fs = require('fs');
+
 let splash, mainWindow, workerScreen, admScreen;
 
 // Variáveis globais
@@ -145,8 +149,6 @@ ipc.on('back-from-admScreen', () => {
         mainWindow.show();
     });
 });
-
-
 
 // YmxpbWFwY29zdGFAZ21haWwuY29tJmhhc2g9MTQ3MTg4OTYw
 //https://api.calendario.com.br/?ano=2017&estado=SP&cidade=SAO_PAULO&token=YmxpbWFwY29zdGFAZ21haWwuY29tJmhhc2g9MTQ3MTg4OTYw

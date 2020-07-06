@@ -31,6 +31,11 @@ const projetos = remote.getGlobal("defs").projetos;
 const geral = remote.getGlobal("defs").geral;
 const srs = remote.getGlobal("defs").srs;
 
+// Tempos máximos
+const maxTimeH = 528;
+const maxTimeM = 522;
+const maxExtraTime = 60;
+
 // Funções ao carregar a página
 $(document).ready(function() {
     $("#name").html(remote.getGlobal("defs").colaborador.Nome.value);

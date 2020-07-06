@@ -1,5 +1,7 @@
 const sql = require('tedious');
 
+
+
 // Classes do SQL
 var Connection = sql.Connection;
 var Request = sql.Request;
@@ -71,3 +73,9 @@ function executeSQL(SQL, callback) {
         })
     );
 }
+
+module.exports = {
+    executeSQL,
+    selectSQL,
+    connectSQL
+};
