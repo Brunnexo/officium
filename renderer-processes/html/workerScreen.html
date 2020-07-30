@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Officium</title>
+    <link rel="stylesheet" type="text/css" href="../../node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+
+<body class="bg-light">
+    <!-- Navegação -->
+    <nav class="navbar navbar-expand navbar-dark bg-dark">
+        <a class="navbar-brand" id="nav-name"></a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle active" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="nav-resume">Resumo</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" id="nav-personal">Pessoal</a>
+                        <a class="dropdown-item" style="display: none;" id="nav-adm">Administrativo</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="nav-register">Registrar serviço</a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" id="nav-project">Projeto</a>
+                        <a class="dropdown-item" id="nav-sr">Service Request</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" id="nav-general">Geral</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="nav-manage-workers" style="display: none;">Gerenciar colaboradores</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid" c-loader-container></div>
+
+    <!-- Resumo pessoal -->
+    <div class="container-fluid" id="personal-resume" c-loader>
+        <h1 class="display-4" id="personal-title"></h1>
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <canvas width="300" height="300" id="personal-resume-graph-remain"></canvas>
+            </div>
+            <div class="col-auto">
+                <canvas height="300" id="personal-resume-graph-total"></canvas>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div id="personal-resume-table-history"></div>
+        </div>
+    </div>
+
+    <!-- Resumo administrativo -->
+    <div class="container-fluid" id="adm-resume" c-loader>
+        <h1 class="display-4" id="adm-title">Resumo geral</h1>
+        <hr />
+        <div class="row justify-content-center align-middle">
+            <!-- Tempo de trabalho por funções -->
+            <div class="col-auto">
+                <canvas width="600" height="300" id="adm-resume-graph-functions"></canvas>
+            </div>
+            <!-- Tempo de trabalho por projetos -->
+            <div class="col-auto">
+                <canvas width="600" height="300" id="adm-resume-graph-projects"></canvas>
+            </div>
+        </div>
+        <div class="row justify-content-center align-middle">
+            <!-- Tempo de hora extra -->
+            <div class="col-auto">
+                <canvas width="500" height="300" id="adm-resume-graph-extra"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Registrar projeto -->
+    <div class="container-fluid" id="register-project" c-loader>
+        <h1 class="display-4">Projeto</h1>
+        <hr />
+        <form>
+            <div class="form-row">
+                <div class="form-group col-auto">
+                    <label for="register-project-function">Função</label>
+                    <select id="register-project-function" class="form-control" data-toggle="tooltip" data-placement="top" title="Alterar a função atualizará a lista de projetos"></select>
+                </div>
+                <div class="form-group col-auto">
+                    <label for="register-project-activity">Atividade</label>
+                    <select id="register-project-activity" class="form-control"></select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-auto">
+                    <label for="register-project-description">Descrição</label>
+                    <select id="register-project-description" class="form-control"></select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-auto">
+                    <label for="register-project-client">Montadora</label>
+                    <select id="register-project-client" class="form-control"></select>
+                </div>
+                <div class="form-group col-auto">
+                    <label for="register-project-wo" style="font-style: italic;">Work Order</label>
+                    <input type="text" class="form-control" id="register-project-wo" data-toggle="tooltip" data-placement="bottom" title="Digite a WO ou procure pelo projeto">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-auto">
+                    <label for="register-project-project">Projeto</label>
+                    <select id="register-project-project" class="form-control"></select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label for="register-project-comment">Comentários</label>
+                    <textarea class="form-control" id="register-project-comment" rows="3" style="resize: none;" data-toggle="tooltip" data-placement="top" title="Este campo é opcional"></textarea>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-1">
+                    <label for="register-project-time">Tempo</label>
+                    <input id="register-project-time" type="number" min="0" class="form-control">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Registrar SRs -->
+    <div class="container-fluid" id="register-srs" c-loader>
+        <h1 class="display-4 font-italic">Service Request</h1>
+        <hr />
+        <form>
+            <div class="form-row">
+                <div class="form-group col-auto">
+                    <label for="wo" style="font-style: italic;">Work Order</label>
+                    <input type="text" class="form-control" id="register-srs-wo">
+                </div>
+                <div class="form-group col-auto">
+                    <label for="register-srs-sr" style="font-style: italic;">Service Request</label>
+                    <input type="text" class="form-control" id="register-srs-sr">
+                </div>
+            </div>
+            <hr />
+            <div class="form-row">
+                <div class="form-group col">
+                    <label for="register-srs-service">Serviço</label>
+                    <textarea readonly class="form-control" id="register-srs-service" rows="8" style="resize: none;" data-toggle="tooltip" data-placement="top" title="Pesquise pela SR ou WO, a descrição aparecerá aqui"></textarea>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <input id="register-srs-requester" class="form-control" type="text" placeholder="Solicitante" readonly>
+                </div>
+                <div class="form-group col">
+                    <input id="register-srs-responsible" class="form-control" type="text" placeholder="Responsável" readonly>
+                </div>
+                <div class="form-group col">
+                    <input id="register-srs-type" class="form-control" type="text" placeholder="Tipo" readonly>
+                </div>
+            </div>
+            <hr />
+            <div class="form-row">
+                <div class="form-group col-1">
+                    <label for="register-srs-time">Tempo</label>
+                    <input id="register-srs-time" type="number" min="0" class="form-control">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Registrar geral -->
+    <div class="container-fluid" id="register-general" c-loader>
+        <h1 class="display-4">Geral</h1>
+        <hr />
+        <form>
+            <div class="form-row">
+                <div class="form-group col-2">
+                    <label for="register-general-function">Função</label>
+                    <select id="register-general-function" class="form-control" data-toggle="tooltip" data-placement="top" title="Alterar a função atualizará a lista de projetos"></select>
+                </div>
+                <div class="form-group col-2">
+                    <label for="register-general-wo" style="font-style: italic;">Work Order</label>
+                    <input type="text" class="form-control" id="register-general-wo" data-toggle="tooltip" data-placement="top" title="Digite a WO ou procure pelo projeto">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-8">
+                    <label for="register-general-project">Projeto</label>
+                    <select id="register-general-project" class="form-control">
+                    </select>
+                </div>
+            </div>
+            <hr />
+            <div class="form-row">
+                <div class="form-group col-6">
+                    <label for="register-general-comment">Comentários</label>
+                    <textarea class="form-control" id="register-general-comment" rows="3" style="resize: none;" data-toggle="tooltip" data-placement="top" title="Este campo é opcional"></textarea>
+                </div>
+            </div>
+            <hr />
+            <div class="form-row">
+                <div class="form-group col-1">
+                    <label for="register-general-time">Tempo</label>
+                    <input id="register-general-time" type="number" min="0" class="form-control">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Navegação de fundo -->
+    <nav class="navbar navbar-dark bg-dark fixed-bottom">
+        <a class="navbar-brand" data-toggle="tooltip" data-placement="top" title="Desenvolvido por: Bruno Costa">Officium</a>
+
+        <div class="text-center">
+            <img id="home" data-toggle="tooltip" data-placement="top" title="Voltar ao início" src="../assets/images/home.svg" width="30" height="30">
+        </div>
+
+        <div class="float-left d-inline-flex">
+            <input id="date" type="date" class="form-control" data-toggle="tooltip" data-placement="top" title="Altere a data para ver o resumo e registrar serviços do dia">
+        </div>
+    </nav>
+    <!-- Scripts -->
+    <script src="../../renderer-processes/js/workerScreen.js"></script>
+</body>
+
+</html>

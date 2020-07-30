@@ -1,0 +1,11 @@
+{
+    "name": "pages",
+    "version": "1.0.0",
+    "description": "Officium Pages",
+    "main": "index.js",
+    "author": "Bruno Costa",
+    "license": "ISC",
+    "dependencies": {
+        "jquery": "^3.5.1"
+    }
+}

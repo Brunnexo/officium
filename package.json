@@ -2,7 +2,7 @@
     "name": "officium",
     "version": "1.0.0",
     "description": "Gerenciador de Mão de Obra",
-    "main": "main.js",
+    "main": "index.js",
     "keywords": [
         "joyson",
         "jss",
@@ -11,18 +11,20 @@
         "relger",
         "officium"
     ],
+    "scripts": {
+        "package": "electron-packager ./ --platform=win32 --arch=x64"
+    },
     "author": "Bruno Costa",
     "license": "ISC",
     "dependencies": {
         "@popperjs/core": "^2.4.0",
         "bootstrap": "^4.5.0",
         "chart.js": "^2.9.3",
-        "electron": "^9.0.5",
         "jquery": "^3.5.1",
         "mssql": "^6.2.0",
-        "popper.js": "^1.16.0",
-        "smb2": "^0.2.11",
-        "xlsx": "^0.16.2"
+        "popper.js": "^1.16.0"
     },
-    "devDependencies": {}
+    "devDependencies": {
+        "electron": "^9.0.5"
+    }
 }
