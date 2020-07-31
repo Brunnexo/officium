@@ -98,8 +98,8 @@ module.exports.Pages = class {
                 });
 
                 // Clientes
-                remote.getGlobal('data').clients.forEach((c) => {
-                    $("#register-project-client").append(`<option>${c}</option>`);
+                remote.getGlobal('data').clients.some((c, index) => {
+                    $("#register-project-client").append(`<option index=${index}>${c}</option>`);
                 });
                 var selectedClient = $("#register-project-client").val();
 
@@ -120,7 +120,110 @@ module.exports.Pages = class {
                 var selectedWo = $("#register-project-project :selected").attr('wo');
                 $('#register-project-wo').val(
                     selectedWo == 'null' || typeof(selectedWo) == 'undefined' ? '' : selectedWo
-                )
+                );
+
+                // Alteração de WO
+                $('#register-project-wo').keyup((e) => {
+                    clearTimeout(inputDelay);
+                    var inputDelay = setTimeout(() => {
+                        selectedWo = $('#register-project-wo').val();
+                        if (Number(selectedWo) > 0) {
+                            this.Projects.data.some((value) => {
+                                if (value[selectedFunction].value == selectedWo) {
+                                    $('#register-project-project option').remove();
+                                    this.Projects.data.forEach((p) => {
+                                        $("#register-project-project").append(p.Cliente.value.includes(value.Cliente.value) ? `
+                                        <option
+                                            index="${p.ID.value}"
+                                            client="${remote.getGlobal('data').clients.indexOf(p.Cliente.value)}"
+                                            proj="${p.Projeto.value}"
+                                            wo="${p[selectedFunction].value}">
+                                            ${p.Descrição.value}
+                                        </option>` : '');
+                                    });
+                                    $(`#register-project-project option[wo=${selectedWo}]`).prop("selected", true);
+                                    $(`#register-project-client [index=${$("#register-project-project :selected").attr("client")}]`).prop("selected", true);
+                                }
+                            });
+                        }
+                    }, 500);
+                });
+
+                // Alteração de projeto
+                $('#register-project-project').change(() => {
+                    selectedWo = $('#register-project-project :selected').attr('wo');
+                    $('#register-project-wo').val((selectedWo == 'null' || typeof(selectedWo) == 'undefined') ? '' : selectedWo);
+                });
+
+                // Alteração de cliente
+                $('#register-project-client').change(() => {
+                    $('#register-project-project option').remove();
+
+                    selectedClient = $('#register-project-client').val();
+                    this.Projects.data.forEach((p) => {
+                        $("#register-project-project").append(p.Cliente.value.includes(selectedClient) ? `
+                            <option
+                                index="${p.ID.value}"
+                                client="${remote.getGlobal('data').clients.indexOf(p.Cliente.value)}"
+                                proj="${p.Projeto.value}"
+                                wo="${p[selectedFunction].value}">
+                                ${p.Descrição.value}
+                            </option>` : '');
+                    });
+
+                    selectedWo = $('#register-project-project :selected').attr('wo');
+                    $('#register-project-wo').val((selectedWo == 'null' || typeof(selectedWo) == 'undefined') ? '' : selectedWo);
+                });
+
+                // Alteração de função
+                $('#register-project-function').change(() => {
+                    selectedFunction = $('#register-project-function').val();
+
+                    $('#register-project-activity option').remove();
+
+                    Object.keys(remote.getGlobal('data').activities[selectedFunction]).forEach((a) => {
+                        $('#register-project-activity').append(`<option>${a}</option>`);
+                    });
+
+                    $('#register-project-description option').remove();
+
+                    selectedActivity = $('#register-project-activity').val();
+
+                    remote.getGlobal('data').activities[selectedFunction][selectedActivity].forEach((d) => {
+                        $('#register-project-description').append(`<option>${d}</option>`);
+                    });
+
+                    $('#register-project-project option').remove();
+
+                    selectedClient = $('#register-project-client').val();
+
+                    this.Projects.data.forEach((p) => {
+                        $("#register-project-project").append(p.Cliente.value.includes(selectedClient) ? `
+                            <option
+                                index="${p.ID.value}"
+                                client="${remote.getGlobal('data').clients.indexOf(p.Cliente.value)}"
+                                proj="${p.Projeto.value}"
+                                wo="${p[selectedFunction].value}">
+                                ${p.Descrição.value}
+                            </option>` : '');
+                    });
+
+                    selectedWo = $('#register-project-project :selected').attr('wo');
+                    $('#register-project-wo').val((selectedWo == 'null' || typeof(selectedWo) == 'undefined') ? '' : selectedWo);
+                });
+
+                // Alteração de atividade
+                $('#register-project-activity').change(() => {
+                    selectedActivity = $('#register-project-activity').val();
+                    selectedFunction = $('#register-project-function').val();
+
+                    $('#register-project-description option').remove();
+
+                    remote.getGlobal('data').activities[selectedFunction][selectedActivity].forEach((d) => {
+                        $('#register-project-description').append(`<option>${d}</option>`);
+                    });
+
+                });
             }
         };
     }
