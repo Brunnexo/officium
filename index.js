@@ -56,25 +56,12 @@ global = {
                 "Documentação": [
                     "Documentação de Máquina",
                     "Documentação Geral",
-                    "Projeto"
+                    "Projeto",
                 ],
                 "Orçamento e Gestão": [
                     "Orçamento",
                     "Gestão de Projeto",
                     "Follow Up e Demanda"
-                ],
-                "Retrabalhos e Melhorias": [
-                    "Retrabalho Interno",
-                    "Retrabalho Externo",
-                    "Melhorias"
-                ],
-                "Geral": [
-                    "Testes e Protótipos",
-                    "Manutenção",
-                    "Almoxarifado",
-                    "5S",
-                    "Não Produtivos",
-                    "Ausência"
                 ]
             },
             "Eletricista": {
@@ -107,19 +94,6 @@ global = {
                     "Acompanhamento de Fornecedor",
                     "Acompanhamento de Evento",
                     "Acompanhamento de Montagem"
-                ],
-                "Retrabalhos e Melhorias": [
-                    "Retrabalho Interno",
-                    "Retrabalho Externo",
-                    "Melhorias"
-                ],
-                "Geral": [
-                    "Testes e Protótipos",
-                    "Manutenção",
-                    "Almoxarifado",
-                    "5S",
-                    "Não Produtivos",
-                    "Ausência"
                 ]
             },
             "Mecânico": {
@@ -156,19 +130,6 @@ global = {
                 ],
                 "Gestão de Projeto": [
                     "Gestão de Projeto"
-                ],
-                "Retrabalhos e Melhorias": [
-                    "Retrabalho Interno",
-                    "Retrabalho Externo",
-                    "Melhorias"
-                ],
-                "Geral": [
-                    "Testes e Protótipos",
-                    "Manutenção",
-                    "Almoxarifado",
-                    "5S",
-                    "Não Produtivos",
-                    "Ausência"
                 ]
             },
             "Programador": {
@@ -191,19 +152,6 @@ global = {
                 ],
                 "Gestão de Projeto": [
                     "Gestão de Projeto"
-                ],
-                "Retrabalhos e Melhorias": [
-                    "Retrabalho Interno",
-                    "Retrabalho Externo",
-                    "Melhorias"
-                ],
-                "Geral": [
-                    "Testes e Protótipos",
-                    "Manutenção",
-                    "Almoxarifado",
-                    "5S",
-                    "Não Produtivos",
-                    "Ausência"
                 ]
             },
             "Projetista": {
@@ -234,19 +182,6 @@ global = {
                     "Documentação de Máquina",
                     "Documentação Geral",
                     "Orçamento"
-                ],
-                "Retrabalhos e Melhorias": [
-                    "Retrabalho Interno",
-                    "Retrabalho Externo",
-                    "Melhorias"
-                ],
-                "Geral": [
-                    "Testes e Protótipos",
-                    "Manutenção",
-                    "Almoxarifado",
-                    "5S",
-                    "Não Produtivos",
-                    "Ausência"
                 ]
             },
             "Engenheiro": {
@@ -277,21 +212,23 @@ global = {
                     "Documentação de Máquina",
                     "Documentação Geral",
                     "Orçamento"
-                ],
-                "Retrabalhos e Melhorias": [
-                    "Retrabalho Interno",
-                    "Retrabalho Externo",
-                    "Melhorias"
-                ],
-                "Geral": [
-                    "Testes e Protótipos",
-                    "Manutenção",
-                    "Almoxarifado",
-                    "5S",
-                    "Não Produtivos",
-                    "Ausência"
                 ]
-            }
+            },
+        },
+        generalActivities: {
+            "Retrabalhos e Melhorias": [
+                "Retrabalho Interno",
+                "Retrabalho Externo",
+                "Melhorias"
+            ],
+            "Geral": [
+                "Testes e Protótipos",
+                "Manutenção",
+                "Almoxarifado",
+                "5S",
+                "Não Produtivos",
+                "Ausência"
+            ]
         }
     }
 };

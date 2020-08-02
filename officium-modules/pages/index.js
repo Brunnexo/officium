@@ -4,71 +4,6 @@ const { remote } = require('electron');
 
 module.exports.Pages = class {
     constructor() {
-        this.General = {
-            data: remote.getGlobal('sql').general,
-            loadScript: () => {
-                // Preenche as funções do colaborador
-                var functionNames = {
-                    "E": "Eletricista",
-                    "M": "Mecânico",
-                    "P": "Programador",
-                    "R": "Projetista",
-                    "N": "Engenheiro",
-                    "A": "Administrativo"
-                }
-                WORKER.functions.split('').forEach((f) => {
-                    if (typeof(functionNames[f]) != "undefined")
-                        $('#register-general-function').append(`<option index="${f}">${functionNames[f]}</option>`);
-                });
-                var selectedFunction = $('#register-general-function :selected').text();
-
-                // Preenche a lista de projetos
-                this.General.data.forEach((g) => {
-                    $('#register-general-project').append(`
-                        <option
-                            index="${g.ID.value}"
-                            wo="${g[selectedFunction].value}">
-                            ${g.Descrição.value}
-                        </option>`);
-                });
-
-                // Preenche o WO
-                var selectedWO = $('#register-general-project :selected').attr('wo');
-                $('#register-general-wo').val(selectedWO == 'null' ? '' : selectedWO);
-
-                var inputDelay;
-
-                // Alteração de WO
-                $('#register-general-wo').keyup((e) => {
-                    clearTimeout(inputDelay);
-                    inputDelay = setTimeout(() => {
-                        selectedWO = $('#register-general-wo').val();
-                        $(`#register-general-project option[wo=${selectedWO}`).prop('selected', true);
-                    });
-                });
-
-                // Alteração de projeto
-                $('#register-general-project').change(() => {
-                    selectedWO = $('#register-general-project :selected').attr('wo');
-                    $('#register-general-wo').val(selectedWO == 'null' ? '' : selectedWO);
-                });
-
-                // Alteração da função
-                $('#register-general-function').change(() => {
-                    selectedFunction = $('#register-general-function :selected').text();
-                    $('#register-general-project option').remove();
-                    this.General.data.forEach((g) => {
-                        $('#register-general-project').append(`
-                        <option index="${g.ID.value}"
-                        wo="${g[selectedFunction].value}">
-                        ${g.Descrição.value}</option>`);
-                    });
-                    selectedWO = $('#register-general-project :selected').attr('wo');
-                    $('#register-general-wo').val(selectedWO == 'null' ? '' : selectedWO);
-                });
-            }
-        };
-
         this.Projects = {
             // Preenche as funções do colaborador
             data: remote.getGlobal('sql').projects,
@@ -224,6 +159,88 @@ module.exports.Pages = class {
                     });
 
                 });
+            }
+        };
+
+        this.General = {
+            data: remote.getGlobal('sql').general,
+            loadScript: () => {
+                // Preenche as funções do colaborador
+                var functionNames = {
+                    "E": "Eletricista",
+                    "M": "Mecânico",
+                    "P": "Programador",
+                    "R": "Projetista",
+                    "N": "Engenheiro",
+                    "A": "Administrativo"
+                }
+                WORKER.functions.split('').forEach((f) => {
+                    if (typeof(functionNames[f]) != "undefined")
+                        $('#register-general-function').append(`<option index="${f}">${functionNames[f]}</option>`);
+                });
+                var selectedFunction = $('#register-general-function :selected').text();
+
+                // Preenche a lista de projetos
+                this.General.data.forEach((g) => {
+                    $('#register-general-project').append(`
+                        <option
+                            index="${g.ID.value}"
+                            wo="${g[selectedFunction].value}">
+                            ${g.Descrição.value}
+                        </option>`);
+                });
+
+                // Preenche o WO
+                var selectedWO = $('#register-general-project :selected').attr('wo');
+                $('#register-general-wo').val(selectedWO == 'null' ? '' : selectedWO);
+
+                var inputDelay;
+
+                // Alteração de WO
+                $('#register-general-wo').keyup((e) => {
+                    clearTimeout(inputDelay);
+                    inputDelay = setTimeout(() => {
+                        selectedWO = $('#register-general-wo').val();
+                        $(`#register-general-project option[wo=${selectedWO}`).prop('selected', true);
+                    });
+                });
+
+                // Alteração de projeto
+                $('#register-general-project').change(() => {
+                    selectedWO = $('#register-general-project :selected').attr('wo');
+                    $('#register-general-wo').val(selectedWO == 'null' ? '' : selectedWO);
+                });
+
+                // Alteração da função
+                $('#register-general-function').change(() => {
+                    selectedFunction = $('#register-general-function :selected').text();
+                    $('#register-general-project option').remove();
+                    this.General.data.forEach((g) => {
+                        $('#register-general-project').append(`
+                        <option index="${g.ID.value}"
+                        wo="${g[selectedFunction].value}">
+                        ${g.Descrição.value}</option>`);
+                    });
+                    selectedWO = $('#register-general-project :selected').attr('wo');
+                    $('#register-general-wo')
+                        .val(selectedWO == 'null' ? '' : selectedWO);
+                });
+            }
+        };
+
+        this.SRs = {
+            data: remote.getGlobal('sql').srs,
+            loadScript: () => {
+                var inputDelay;
+
+                $('').keyup((e) => {
+                    clearTimeout(inputDelay);
+                    inputDelay = setTimeout(() => {
+                        this.SRs.data.some((value) => {
+
+                        });
+                    }, 500);
+                })
             }
         };
     }
