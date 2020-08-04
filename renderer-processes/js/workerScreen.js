@@ -60,7 +60,8 @@ $('#nav-project').click(() => {
         officiumPages.Projects.loadScript);
 });
 $('#nav-sr').click(() => {
-    HTML.load('register-srs');
+    HTML.load('register-srs',
+        officiumPages.SRs.loadScript);
 });
 $('#nav-general').click(() => {
     HTML.load('register-general',

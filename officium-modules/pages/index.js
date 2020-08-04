@@ -2,21 +2,21 @@ const $ = require('jquery');
 const fs = require('fs');
 const { remote } = require('electron');
 
+const functionNames = {
+    "E": "Eletricista",
+    "M": "Mecânico",
+    "P": "Programador",
+    "R": "Projetista",
+    "N": "Engenheiro",
+    "A": "Administrativo"
+};
+
 module.exports.Pages = class {
     constructor() {
         this.Projects = {
             // Preenche as funções do colaborador
             data: remote.getGlobal('sql').projects,
             loadScript: () => {
-                // Preenche as funções do colaborador
-                var functionNames = {
-                    "E": "Eletricista",
-                    "M": "Mecânico",
-                    "P": "Programador",
-                    "R": "Projetista",
-                    "N": "Engenheiro",
-                    "A": "Administrativo"
-                }
                 WORKER.functions.split('').forEach((f) => {
                     if (typeof(functionNames[f]) != "undefined")
                         $('#register-project-function').append(`<option index="${f}">${functionNames[f]}</option>`);
@@ -165,15 +165,6 @@ module.exports.Pages = class {
         this.General = {
             data: remote.getGlobal('sql').general,
             loadScript: () => {
-                // Preenche as funções do colaborador
-                var functionNames = {
-                    "E": "Eletricista",
-                    "M": "Mecânico",
-                    "P": "Programador",
-                    "R": "Projetista",
-                    "N": "Engenheiro",
-                    "A": "Administrativo"
-                }
                 WORKER.functions.split('').forEach((f) => {
                     if (typeof(functionNames[f]) != "undefined")
                         $('#register-general-function').append(`<option index="${f}">${functionNames[f]}</option>`);
@@ -232,15 +223,47 @@ module.exports.Pages = class {
             data: remote.getGlobal('sql').srs,
             loadScript: () => {
                 var inputDelay;
-
-                $('').keyup((e) => {
+                $('#register-srs-wo').keyup(() => {
+                    $(`#register-srs-sr,
+                        #register-srs-service,
+                            #register-srs-requester,
+                                #register-srs-responsible,
+                                    #register-srs-type`).val('');
                     clearTimeout(inputDelay);
                     inputDelay = setTimeout(() => {
                         this.SRs.data.some((value) => {
-
+                            if (value.WO.value == Number($('#register-srs-wo').val())) {
+                                $('#register-srs-sr').val(value.SR.value != 'null' ? value.SR.value : '');
+                                $('#register-srs-service').val(value.Descrição.value != 'null' ? value.Descrição.value : '');
+                                $('#register-srs-requester').val(value.Solicitante.value != 'null' ? value.Solicitante.value : '');
+                                $('#register-srs-responsible').val(value.Responsável.value != 'null' ? value.Responsável.value : '');
+                                $('#register-srs-type').val(value.Tipo.value != 'null' ? value.Tipo.value : '');
+                            }
+                            return value.WO.value == Number($('#register-srs-wo').val());
                         });
                     }, 500);
-                })
+                });
+
+                $('#register-srs-sr').keyup(() => {
+                    $(`#register-srs-wo,
+                        #register-srs-service,
+                            #register-srs-requester,
+                                #register-srs-responsible,
+                                    #register-srs-type`).val('');
+                    clearTimeout(inputDelay);
+                    inputDelay = setTimeout(() => {
+                        this.SRs.data.some((value) => {
+                            if (value.SR.value == Number($('#register-srs-sr').val())) {
+                                $('#register-srs-wo').val(value.WO.value != 'null' ? value.WO.value : '');
+                                $('#register-srs-service').val(value.Descrição.value != 'null' ? value.Descrição.value : '');
+                                $('#register-srs-requester').val(value.Solicitante.value != 'null' ? value.Solicitante.value : '');
+                                $('#register-srs-responsible').val(value.Responsável.value != 'null' ? value.Responsável.value : '');
+                                $('#register-srs-type').val(value.Tipo.value != 'null' ? value.Tipo.value : '');
+                            }
+                            return value.SR.value == Number($('#register-srs-sr').val());
+                        });
+                    }, 500);
+                });
             }
         };
     }

@@ -9,21 +9,15 @@
 
 .sidenav {
     height: 100%;
-    width: 0;
-    z-index: 0;
-    position: fixed;
-    top: 0;
-    left: 0;
-    background-color: var(--darker);
+    display: block;
+    text-align: center;
+    width: var(--sidenav-width);
+    background-color: var(--gray);
+    color: var(--light);
     overflow-x: hidden;
     padding-top: 56px;
     padding-bottom: 56px;
-    text-align: center;
-    transition: var(--transition-time);
-}
-
-.sidenav.active {
-    width: var(--sidenav-width);
+    border-radius: 15px;
 }
 
 .navitem {
