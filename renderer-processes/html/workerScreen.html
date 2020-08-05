@@ -37,15 +37,7 @@
         </div>
     </nav>
 
-    <div class="sidenav">
-        <div class="navitem">
-            Teste
-        </div>
-    </div>
-
-    <div style="margin-left: 300px;">
-        <div class="container-fluid" c-loader-container></div>
-    </div>
+    <div class="container-fluid" c-loader-container></div>
 
     <!-- Resumo pessoal -->
     <div class="container-fluid" id="personal-resume" c-loader>
@@ -87,136 +79,148 @@
 
     <!-- Registrar projeto -->
     <div class="container-fluid" id="register-project" c-loader>
-        <h1 class="display-4">Projeto</h1>
-        <hr />
-        <form>
-            <div class="form-row">
-                <div class="form-group col-auto">
-                    <label for="register-project-function">Função</label>
-                    <select id="register-project-function" class="form-control" data-toggle="tooltip" data-placement="top" title="Alterar a função atualizará a lista de projetos"></select>
-                </div>
-                <div class="form-group col-auto">
-                    <label for="register-project-activity">Atividade</label>
-                    <select id="register-project-activity" class="form-control"></select>
-                </div>
+        <div class="row">
+            <div class="col">
+                <h1 class="display-4">Projeto</h1>
+                <hr />
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-auto">
+                            <label for="register-project-function">Função</label>
+                            <select id="register-project-function" class="form-control" data-toggle="tooltip" data-placement="top" title="Alterar a função atualizará a lista de projetos"></select>
+                        </div>
+                        <div class="form-group col-auto">
+                            <label for="register-project-activity">Atividade</label>
+                            <select id="register-project-activity" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-auto">
+                            <label for="register-project-description">Descrição</label>
+                            <select id="register-project-description" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-auto">
+                            <label for="register-project-client">Montadora</label>
+                            <select id="register-project-client" class="form-control"></select>
+                        </div>
+                        <div class="form-group col-auto">
+                            <label for="register-project-wo" style="font-style: italic;">Work Order</label>
+                            <input type="text" class="form-control" id="register-project-wo" data-toggle="tooltip" data-placement="bottom" title="Digite a WO ou procure pelo projeto">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-auto">
+                            <label for="register-project-project">Projeto</label>
+                            <select id="register-project-project" class="form-control"></select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label for="register-project-comment">Comentários</label>
+                            <textarea class="form-control" id="register-project-comment" rows="3" style="resize: none;" data-toggle="tooltip" data-placement="top" title="Este campo é opcional"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-1">
+                            <label for="register-project-time">Tempo</label>
+                            <input id="register-project-time" type="number" min="0" class="form-control">
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="form-row">
-                <div class="form-group col-auto">
-                    <label for="register-project-description">Descrição</label>
-                    <select id="register-project-description" class="form-control"></select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-auto">
-                    <label for="register-project-client">Montadora</label>
-                    <select id="register-project-client" class="form-control"></select>
-                </div>
-                <div class="form-group col-auto">
-                    <label for="register-project-wo" style="font-style: italic;">Work Order</label>
-                    <input type="text" class="form-control" id="register-project-wo" data-toggle="tooltip" data-placement="bottom" title="Digite a WO ou procure pelo projeto">
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-auto">
-                    <label for="register-project-project">Projeto</label>
-                    <select id="register-project-project" class="form-control"></select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-6">
-                    <label for="register-project-comment">Comentários</label>
-                    <textarea class="form-control" id="register-project-comment" rows="3" style="resize: none;" data-toggle="tooltip" data-placement="top" title="Este campo é opcional"></textarea>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-1">
-                    <label for="register-project-time">Tempo</label>
-                    <input id="register-project-time" type="number" min="0" class="form-control">
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 
     <!-- Registrar SRs -->
     <div class="container-fluid" id="register-srs" c-loader>
-        <h1 class="display-4 font-italic">Service Request</h1>
-        <hr />
-        <form>
-            <div class="form-row">
-                <div class="form-group col-auto">
-                    <label for="register-srs-wo" style="font-style: italic;">Work Order</label>
-                    <input type="text" class="form-control" id="register-srs-wo">
-                </div>
-                <div class="form-group col-auto">
-                    <label for="register-srs-sr" style="font-style: italic;">Service Request</label>
-                    <input type="text" class="form-control" id="register-srs-sr">
-                </div>
+        <div class="row">
+            <div class="col">
+                <h1 class="display-4 font-italic">Service Request</h1>
+                <hr />
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-auto">
+                            <label for="register-srs-wo" style="font-style: italic;">Work Order</label>
+                            <input type="text" class="form-control" id="register-srs-wo">
+                        </div>
+                        <div class="form-group col-auto">
+                            <label for="register-srs-sr" style="font-style: italic;">Service Request</label>
+                            <input type="text" class="form-control" id="register-srs-sr">
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <label for="register-srs-service">Serviço</label>
+                            <textarea readonly class="form-control" id="register-srs-service" rows="8" style="resize: none;" data-toggle="tooltip" data-placement="top" title="Pesquise pela SR ou WO, a descrição aparecerá aqui"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col">
+                            <input id="register-srs-requester" class="form-control" type="text" placeholder="Solicitante" readonly>
+                        </div>
+                        <div class="form-group col">
+                            <input id="register-srs-responsible" class="form-control" type="text" placeholder="Responsável" readonly>
+                        </div>
+                        <div class="form-group col">
+                            <input id="register-srs-type" class="form-control" type="text" placeholder="Tipo" readonly>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-row">
+                        <div class="form-group col-1">
+                            <label for="register-srs-time">Tempo</label>
+                            <input id="register-srs-time" type="number" min="0" class="form-control">
+                        </div>
+                    </div>
+                </form>
             </div>
-            <hr />
-            <div class="form-row">
-                <div class="form-group col">
-                    <label for="register-srs-service">Serviço</label>
-                    <textarea readonly class="form-control" id="register-srs-service" rows="8" style="resize: none;" data-toggle="tooltip" data-placement="top" title="Pesquise pela SR ou WO, a descrição aparecerá aqui"></textarea>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col">
-                    <input id="register-srs-requester" class="form-control" type="text" placeholder="Solicitante" readonly>
-                </div>
-                <div class="form-group col">
-                    <input id="register-srs-responsible" class="form-control" type="text" placeholder="Responsável" readonly>
-                </div>
-                <div class="form-group col">
-                    <input id="register-srs-type" class="form-control" type="text" placeholder="Tipo" readonly>
-                </div>
-            </div>
-            <hr />
-            <div class="form-row">
-                <div class="form-group col-1">
-                    <label for="register-srs-time">Tempo</label>
-                    <input id="register-srs-time" type="number" min="0" class="form-control">
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 
     <!-- Registrar geral -->
     <div class="container-fluid" id="register-general" c-loader>
-        <h1 class="display-4">Geral</h1>
-        <hr />
-        <form>
-            <div class="form-row">
-                <div class="form-group col-2">
-                    <label for="register-general-function">Função</label>
-                    <select id="register-general-function" class="form-control" data-toggle="tooltip" data-placement="top" title="Alterar a função atualizará a lista de projetos"></select>
-                </div>
-                <div class="form-group col-2">
-                    <label for="register-general-wo" style="font-style: italic;">Work Order</label>
-                    <input type="text" class="form-control" id="register-general-wo" data-toggle="tooltip" data-placement="top" title="Digite a WO ou procure pelo projeto">
-                </div>
+        <div class="row">
+            <div class="col">
+                <h1 class="display-4">Geral</h1>
+                <hr />
+                <form>
+                    <div class="form-row">
+                        <div class="form-group col-2">
+                            <label for="register-general-function">Função</label>
+                            <select id="register-general-function" class="form-control" data-toggle="tooltip" data-placement="top" title="Alterar a função atualizará a lista de projetos"></select>
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="register-general-wo" style="font-style: italic;">Work Order</label>
+                            <input type="text" class="form-control" id="register-general-wo" data-toggle="tooltip" data-placement="top" title="Digite a WO ou procure pelo projeto">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-8">
+                            <label for="register-general-project">Projeto</label>
+                            <select id="register-general-project" class="form-control">
+                            </select>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-row">
+                        <div class="form-group col-6">
+                            <label for="register-general-comment">Comentários</label>
+                            <textarea class="form-control" id="register-general-comment" rows="3" style="resize: none;" data-toggle="tooltip" data-placement="top" title="Este campo é opcional"></textarea>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="form-row">
+                        <div class="form-group col-1">
+                            <label for="register-general-time">Tempo</label>
+                            <input id="register-general-time" type="number" min="0" class="form-control">
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="form-row">
-                <div class="form-group col-8">
-                    <label for="register-general-project">Projeto</label>
-                    <select id="register-general-project" class="form-control">
-                    </select>
-                </div>
-            </div>
-            <hr />
-            <div class="form-row">
-                <div class="form-group col-6">
-                    <label for="register-general-comment">Comentários</label>
-                    <textarea class="form-control" id="register-general-comment" rows="3" style="resize: none;" data-toggle="tooltip" data-placement="top" title="Este campo é opcional"></textarea>
-                </div>
-            </div>
-            <hr />
-            <div class="form-row">
-                <div class="form-group col-1">
-                    <label for="register-general-time">Tempo</label>
-                    <input id="register-general-time" type="number" min="0" class="form-control">
-                </div>
-            </div>
-        </form>
+        </div>
     </div>
 
     <!-- Navegação de fundo -->

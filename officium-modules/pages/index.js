@@ -1,6 +1,9 @@
-const $ = require('jquery');
-const fs = require('fs');
 const { remote } = require('electron');
+const fs = require('fs');
+const $ = require('jquery');
+const { queryBuilder, MSSQL } = require('../sqlutils');
+
+const conn = new MSSQL(remote.getGlobal('sql').config);
 
 const functionNames = {
     "E": "Eletricista",
@@ -266,5 +269,48 @@ module.exports.Pages = class {
                 });
             }
         };
+
+        this.Resume = {
+            Personal = {
+                data: {
+                    report: [],
+                    remain: [],
+                    total: [],
+                },
+
+                loadScript: () => {
+                    const WORKER = {
+                        name: remote.getGlobal('data').worker.Nome.value,
+                        register: remote.getGlobal('data').worker.Registro.value,
+                        functions: remote.getGlobal('data').worker.Funções.value,
+                        journey: remote.getGlobal('data').worker.Jornada.value
+                    };
+
+                    var selectedDate = $('#date').val();
+
+                    $('#date').change(() => {
+                        selectedDate = $(this).val();
+                        loadData();
+                    });
+
+
+                    async function loadData() {
+                        await conn.select(queryBuilder('Report', WORKER.register, selectedDate), (row) => {
+                            this.Resume.Personal.data.report.push(row);
+                        });
+                        await conn.select(queryBuilder('Remain', WORKER.register, selectedDate), (row) => {
+                            this.Resume.Personal.data.remain.push(row);
+                        });
+                        await conn.select(queryBuilder('Total', WORKER.register), (row) => {
+                            this.Resume.Personal.data.total.push(row);
+                        });
+
+                        return new Promise((resolve, reject) => {
+
+                        });
+                    }
+                }
+            }
+        }
     }
 }
