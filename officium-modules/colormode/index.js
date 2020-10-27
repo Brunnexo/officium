@@ -1,0 +1,55 @@
+module.exports.ColorMode = function(mode) {
+    switch (mode) {
+        case 'light':
+            $('.view').addClass('light')
+                .removeClass('dark');
+            $('.btn').addClass('btn-dark')
+                .removeClass('btn-light');
+            $('.navbar').addClass('navbar-light')
+                .removeClass('navbar-dark');
+            $('hr').addClass('bg-light')
+                .removeClass('bg-dark');
+            break;
+        case 'dark':
+            $('.view').addClass('dark')
+                .removeClass('light');
+            $('.btn').addClass('btn-light')
+                .removeClass('btn-dark');
+            $('.navbar').addClass('navbar-dark')
+                .removeClass('navbar-light');
+            $('hr').addClass('bg-dark')
+                .removeClass('bg-light');
+            break;
+        case 'auto':
+            watch((m) => {
+                switch (m) {
+                    case 'light':
+                        $('.view').addClass('light')
+                            .removeClass('dark');
+                        $('.btn').addClass('btn-dark')
+                            .removeClass('btn-light');
+                        $('.navbar').addClass('navbar-light')
+                            .removeClass('navbar-dark');
+                        $('hr').addClass('bg-light')
+                            .removeClass('bg-dark');
+                        break;
+                    case 'dark':
+                        $('.view').addClass('dark')
+                            .removeClass('light');
+                        $('.btn').addClass('btn-light')
+                            .removeClass('btn-dark');
+                        $('.navbar').addClass('navbar-dark')
+                            .removeClass('navbar-light');
+                        $('hr').addClass('bg-dark')
+                            .removeClass('bg-light');
+                        break;
+                }
+            });
+            break;
+    }
+}
+
+function watch(execute) {
+    let hour = new Date().getHours();
+    execute((6 <= hour && hour < 18) ? 'light' : 'dark');
+}

@@ -1,0 +1,11 @@
+{
+    "name": "cloader",
+    "version": "1.0.0",
+    "description": "Officium Content Loader",
+    "main": "index.js",
+    "author": "Bruno Costa",
+    "license": "ISC",
+    "dependencies": {
+        "jquery": "^3.5.1"
+    }
+}

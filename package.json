@@ -1,28 +1,23 @@
 {
     "name": "officium",
-    "version": "1.0.0",
-    "description": "Gerenciador de Mão de Obra",
-    "main": "main.js",
-    "keywords": [
-        "joyson",
-        "jss",
-        "gmo",
-        "labor",
-        "relger",
-        "officium"
-    ],
+    "version": "0.0.1",
+    "description": "Sistema de Relatório de Mão-de-obra",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
     "author": "Bruno Costa",
     "license": "ISC",
     "dependencies": {
-        "@popperjs/core": "^2.4.0",
-        "bootstrap": "^4.5.0",
+        "bootstrap": "^4.5.2",
         "chart.js": "^2.9.3",
-        "electron": "^9.0.5",
+        "electron": "^10.1.3",
         "jquery": "^3.5.1",
-        "mssql": "^6.2.0",
-        "popper.js": "^1.16.0",
-        "smb2": "^0.2.11",
-        "xlsx": "^0.16.2"
+        "mssql": "^6.2.3",
+        "popper.js": "^1.16.1",
+        "typescript": "^4.0.3"
     },
-    "devDependencies": {}
+    "devDependencies": {
+        "@types/jquery": "^3.5.3"
+    }
 }

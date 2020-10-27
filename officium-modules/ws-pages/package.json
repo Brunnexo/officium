@@ -1,0 +1,14 @@
+{
+    "name": "ws-pages",
+    "version": "0.0.1",
+    "description": "Workerscreen Pages",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Bruno Costa",
+    "dependencies": {
+        "electron": "^10.1.3"
+    },
+    "license": "ISC"
+}
