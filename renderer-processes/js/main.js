@@ -13,6 +13,7 @@ window.jQuery = window.$ = require('jquery');
 // Página pronta
 $(document).ready(() => {
     ColorMode(localStorage.getItem('colorMode'));
+    $('#welcome').text(welcome());
 });
 
 // Processo inter-comunicação
@@ -81,6 +82,11 @@ function warning(sel) {
             .text(t)
             .fadeIn();
     }, 3000);
+}
+
+function welcome() {
+    let d = new Date().getHours();
+    return (d >= 18 ? 'Boa noite!' : d >= 12 ? 'Boa tarde!' : 'Bom dia!');
 }
 
 const validateIP = (ipaddr) => (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddr));

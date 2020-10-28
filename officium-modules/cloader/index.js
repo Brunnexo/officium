@@ -13,17 +13,27 @@ module.exports.HTMLLoader = class {
                 script: $(`[c-loader-script='${LOADER[index].id}']`).text()
             };
         });
-        LOADER.remove();
-        SCRIPT.remove();
+        this.executed = false;
+    };
+
+    execute() {
+        if (!this.executed) {
+            LOADER.remove();
+            SCRIPT.remove();
+            this.executed = true;
+            console.log('Executing c-loader...');
+        } else {
+            throw new Error('An instance is already running!');
+        }
     };
     // Carrega o conteúdo
     load(arg, execute) {
-        CONTAINER.hide().html(this.contents[arg].html).fadeIn('slow');
-        eval(this.contents[arg].script);
-        execute();
-    };
-    // Remove o conteúdo
-    dispose() {
-        CONTAINER.hide().html('');
+        if (this.executed) {
+            CONTAINER.hide().html(this.contents[arg].html).fadeIn('slow');
+            eval(this.contents[arg].script);
+            execute();
+        } else {
+            throw new Error(`Module not running! Use execute() to run!`);
+        }
     };
 }
