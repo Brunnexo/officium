@@ -21,7 +21,6 @@ module.exports.HTMLLoader = class {
             LOADER.remove();
             SCRIPT.remove();
             this.executed = true;
-            console.log('Executing c-loader...');
         } else {
             throw new Error('An instance is already running!');
         }

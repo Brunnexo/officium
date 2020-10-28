@@ -11,6 +11,10 @@ window.jQuery = window.$ = require('jquery');
 
 const SQL_DRIVER = new MSSQL(remote.getGlobal('sql').config);
 const DATA = {
+    projects: new Array,
+    srs: new Array,
+    general: new Array,
+
     load: async function() {
         $("#description").html('Carregando projetos...');
         await SQL_DRIVER.select(QueryBuilder('Project'), (data) => { DATA.projects.push(data); }).then(() => {
@@ -26,11 +30,7 @@ const DATA = {
             $("#description").html('Pronto!');
             ipc.send('show-main');
         });
-    },
-
-    projects: [],
-    srs: [],
-    general: []
+    }
 };
 
 $(document).ready(() => {
@@ -42,5 +42,5 @@ $(document).ready(() => {
 });
 
 $('.close-btn').click(() => {
-    remote.getCurrentWindow().close();
+    remote.app.quit();
 });

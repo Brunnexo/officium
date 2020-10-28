@@ -87,17 +87,8 @@
     color: var(--max-button);
 }
 
-.refresh-btn {
-    color: #008144;
-}
-
-.refresh-btn::after {
-    content: '↻';
-}
-
 .close-btn,
-.max-btn,
-.refresh-btn {
+.max-btn {
     transition: var(--transition-time);
 }
 
