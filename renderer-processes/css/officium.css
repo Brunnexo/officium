@@ -268,6 +268,16 @@
     justify-content: center;
 }
 
+.toolbar {
+    position: absolute;
+    display: flex;
+    flex-flow: row;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    justify-content: center;
+}
+
 .sidebar .pop {
     cursor: pointer;
     text-align: center;
@@ -281,21 +291,38 @@
     transition: var(--transition-in);
 }
 
-.light .sidebar .pop {
+.toolbar .pop {
+    cursor: pointer;
+    text-align: center;
+    margin: 2px 2px 5px 2px;
+    width: 40px;
+    height: 40px;
+    padding: 5px 5px 5px 5px;
+    align-content: center;
+    justify-items: center;
+    border-radius: 20px;
+    transition: var(--transition-in);
+}
+
+.light .sidebar .pop,
+.light .toolbar .pop {
     background-color: var(--dark-primary-color);
     color: var(--light);
 }
 
-.dark .sidebar .pop {
+.dark .sidebar .pop,
+.dark .toolbar .pop {
     background-color: var(--light-primary-color);
     color: var(--dark);
 }
 
-.sidebar .pop:hover {
+.sidebar .pop:hover,
+.toolbar .pop:hover {
     width: 150px;
 }
 
-.sidebar .pop>.tab {
+.sidebar .pop>.tab,
+.toolbar .pop>.tab {
     margin-top: 7px;
     display: flex;
     flex-flow: row;
@@ -304,7 +331,8 @@
     justify-content: center;
 }
 
-.sidebar .pop>.tab>.name {
+.sidebar .pop>.tab>.name,
+.toolbar .pop>.tab>.name {
     position: relative;
     top: -5px;
     font-weight: bold;
@@ -313,24 +341,28 @@
     width: 0;
     height: 0;
     opacity: 0;
+    font-size: 0;
     align-content: center;
     justify-content: center;
 }
 
-.sidebar .pop>.tab>.icon {
+.sidebar .pop>.tab>.icon,
+.toolbar .pop>.tab>.icon {
     width: 15px;
     height: 15px;
 }
 
-.light .sidebar .pop>.tab>.icon {
+.light .sidebar .pop>.tab>.icon,
+.light .toolbar .pop>.tab>.icon {
     filter: invert();
 }
 
-.sidebar .pop:hover>.tab>.name {
+.sidebar .pop:hover>.tab>.name,
+.toolbar .pop:hover>.tab>.name {
     margin-left: 5px;
     transition: var(--transition-in);
-    transition-delay: var(--transition-delay);
     width: auto;
     height: auto;
     opacity: 1;
+    font-size: medium;
 }

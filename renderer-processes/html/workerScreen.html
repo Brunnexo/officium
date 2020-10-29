@@ -18,24 +18,14 @@
             <a class="navbar-brand" id="nav-name"></a>
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle active" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="nav-resume">Resumo</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" id="nav-personal">Pessoal</a>
-                            <a class="dropdown-item" style="display: none;" id="nav-adm">Administrativo</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="nav-register">Registrar serviço</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" id="nav-project">Projeto</a>
-                            <a class="dropdown-item" id="nav-sr">Service Request</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" id="nav-general">Geral</a>
-                        </div>
+                    <li class="nav-item">
+                        <a class="nav-link active" id="nav-resume">Resumo</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="nav-manage-workers" style="display: none;">Gerenciar colaboradores</a>
+                        <a class="nav-link" id="nav-reg">Registrar serviço</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" id="nav-manage-workers">Gerenciar colaboradores</a>
                     </li>
                 </ul>
             </div>
@@ -76,6 +66,51 @@
             <div class="table-container">
                 <div class="container-fluid">
                     <div id="history"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="reg-service" class="container" c-loader>
+
+            <div class="">
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+            <div class="toolbar">
+                <div class="pop" index="1">
+                    <div class="tab">
+                        <img class="icon" src="../assets/images/1.svg">
+                        <div class="name">Tipo</div>
+                    </div>
+                </div>
+                <div class="pop" index="2" style="display: none;">
+                    <div class="tab">
+                        <img class="icon" src="../assets/images/2.svg">
+                        <div class="name">Início</div>
+                    </div>
+                </div>
+                <div class="pop" index="3" style="display: none;">
+                    <div class="tab">
+                        <img class="icon" src="../assets/images/3.svg">
+                        <div class="name">Cliente</div>
+                    </div>
+                </div>
+                <div class="pop" index="4" style="display: none;">
+                    <div class="tab">
+                        <img class="icon" src="../assets/images/4.svg">
+                        <div class="name">Resumo</div>
+                    </div>
                 </div>
             </div>
         </div>

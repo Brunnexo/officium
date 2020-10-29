@@ -37,7 +37,7 @@ $(document).ready(function() {
     // Executa módulo
     HTML.execute();
     // Esquema de cores
-    ColorMode(localStorage.getItem('colorMode'));
+    ColorMode('light' /*localStorage.getItem('colorMode')*/ );
     // Nome do colaborador
     $('#nav-name').text(worker.Nome.value);
     // Carrega data atual
@@ -81,9 +81,19 @@ $('.refresh-btn').click(() => {
 });
 
 // Botões de navegação
-$('#nav-personal').click(() => {
+$('#nav-resume').click(() => {
     HTML.load('personal-resume', () => {
         Pages.Resume.Personal.getData(
             document.getElementById('date').value);
+        $('.active').removeClass('active');
+        $('#nav-resume').addClass('active');
+    });
+});
+
+$('#nav-reg').click(() => {
+    HTML.load('reg-service', () => {
+        $('[index]').click((e) => {
+
+        });
     });
 });
