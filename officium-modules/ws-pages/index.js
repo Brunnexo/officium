@@ -39,24 +39,23 @@ class PersonalResume {
                 .fadeIn('slow');
 
             if (!$.isEmptyObject(this.resume)) {
-                var thead = document.createElement('thead');
-                var table = document.createElement('table');
+                let thead = document.createElement('thead');
+                let table = document.createElement('table');
 
-                $(table).addClass(`table`);
+                $(table).addClass(`table`)
+                    .html(
+                        `<thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Função</th>
+                                <th scope="col">WO</th>
+                                <th scope="col">Descrição</th>
+                                <th scope="col">Tempo</th>
+                                <th scope="col">Extra</th>
+                            </tr>
+                        </thead>`
+                    );
 
-                $().html(`
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Função</th>
-                        <th scope="col">WO</th>
-                        <th scope="col">Descrição</th>
-                        <th scope="col">Tempo</th>
-                        <th scope="col">Extra</th>
-                    </tr>
-                </thead>`);
-                // thead.innerHTML = `
-                // `;
 
                 table.appendChild(thead);
                 var tbody = document.createElement('tbody');
@@ -187,9 +186,9 @@ class PersonalResume {
             */
             $(this.charts.total).hide();
 
-            let dates = [];
-            let times = [];
-            let projects = [];
+            let dates = new Array;
+            let times = new Array;
+            let projects = new Array;
             let colors = randomColors(this.total.length);
 
             this.total.forEach(function(d) {

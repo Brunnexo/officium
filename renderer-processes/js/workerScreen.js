@@ -32,21 +32,33 @@ const Pages = {
     }
 };
 
+
+// Carregar resumo pessoal
+var load = {
+    PersonalResume: () => {
+        HTML.load('personal-resume', () => {
+            Pages.Resume.Personal.getData(
+                document.getElementById('date').value);
+        });
+        this.last = PersonalResume;
+    }
+    Update: () => {
+        load.last();
+    }
+}
+
 // Funções ao carregar a página
 $(document).ready(function() {
     // Executa módulo
     HTML.execute();
     // Esquema de cores
-    ColorMode('light' /*localStorage.getItem('colorMode')*/ );
+    ColorMode(localStorage.getItem('colorMode'));
     // Nome do colaborador
     $('#nav-name').text(worker.Nome.value);
     // Carrega data atual
     document.getElementById("date").valueAsDate = new Date();
     // Carrega inicialmente o resumo pessoal
-    HTML.load('personal-resume', () => {
-        Pages.Resume.Personal.getData(
-            document.getElementById('date').value);
-    });
+    loadPersonalResume();
 });
 
 // Alteração de data
@@ -54,10 +66,7 @@ $("#date").change(function() {
     // Função ao alterar data
     clearTimeout(this.inputDelay);
     this.inputDelay = setTimeout(function() {
-        HTML.load('personal-resume', () => {
-            Pages.Resume.Personal.getData(
-                document.getElementById('date').value);
-        });
+        HTML.update();
     }, 500);
 });
 
