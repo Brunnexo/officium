@@ -63,6 +63,7 @@
                     <canvas id="graphTotal" height="300"></canvas>
                 </div>
             </div>
+            <hr>
             <div class="table-container">
                 <div class="container-fluid">
                     <div id="history"></div>
@@ -72,39 +73,89 @@
 
         <div id="reg-service" class="container" c-loader>
 
-            <div class="">
+            <div r-loader-container></div>
 
+            <!-- 0 -->
+            <div id="reg-type" r-loader>
+                <div class="center-buttons">
+                    <div class="choose-button">
+                        <button type="button" id="btn-sr">
+                                <h6>Service Request</h6>
+                                <hr>
+                                <p>Serviços que envolvem setores da empresa, excluíndo projetos de clientes</p>
+                        </button>
+                    </div>
+                    <div class="choose-button">
+                        <button type="button">
+                                <h6>Projetos/Atividades do Setor</h6>
+                        </button>
+                    </div>
+                </div>
             </div>
 
+            <!-- 1 -->
+            <div id="reg-sr" r-loader>
+                <h1 class="display-4 font-italic">Service Request</h1>
+                <hr />
+                <div class="center-forms">
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-auto">
+                                <label for="input-wo" style="font-style: italic;">Work Order</label>
+                                <input type="text" class="form-control" id="input-wo">
+                            </div>
+                            <div class="form-group col-auto">
+                                <label for="input-sr" style="font-style: italic;">Service Request</label>
+                                <input type="text" class="form-control" id="input-sr">
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <label for="input-service">Serviço</label>
+                                <textarea readonly class="form-control" id="input-service" rows="8" style="resize: none;"></textarea>
+                            </div>
+                        </div>
+                        <div class="buttons-container">
+                            <div class="action-button">
+                                <button type="button" btn-back="0">Voltar</button>
+                            </div>
+                            <div class="action-button" style="display: none;">
+                                <button type="button">Próximo</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-            <div class="indexbar">
-                <div class="pop" index="1">
+            <!-- Barra de índice -->
+            <div class="indexbar" r-indexbar>
+                <div class="pop" index="0">
                     <div class="tab">
                         <a class="number">1</a>
                         <div class="name">Tipo</div>
                     </div>
                 </div>
-                <div class="pop" index="2" style="display: none;">
+                <div class="pop" index="1">
                     <div class="tab">
                         <a class="number">2</a>
-                        <div class="name">Início</div>
+                        <div class="name">SR</div>
                     </div>
                 </div>
-                <div class="pop" index="3" style="display: none;">
+                <div class="pop" index="2">
                     <div class="tab">
                         <a class="number">3</a>
                         <div class="name">Cliente</div>
                     </div>
                 </div>
-                <div class="pop" index="4" style="display: none;">
+                <div class="pop" index="3">
                     <div class="tab">
                         <a class="number">4</a>
                         <div class="name">Resumo</div>
                     </div>
                 </div>
             </div>
-
-
+            <!-- Barra de índice -->
         </div>
     </div>
     <!-- Scripts -->

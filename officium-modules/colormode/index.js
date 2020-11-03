@@ -7,8 +7,6 @@ module.exports.ColorMode = function(mode) {
                 .removeClass('btn-light');
             $('.navbar').addClass('navbar-light')
                 .removeClass('navbar-dark');
-            $('hr').addClass('bg-light')
-                .removeClass('bg-dark');
             break;
         case 'dark':
             $('.view').addClass('dark')
@@ -17,8 +15,6 @@ module.exports.ColorMode = function(mode) {
                 .removeClass('btn-dark');
             $('.navbar').addClass('navbar-dark')
                 .removeClass('navbar-light');
-            $('hr').addClass('bg-dark')
-                .removeClass('bg-light');
             break;
         case 'auto':
             watch((m) => {
@@ -30,8 +26,6 @@ module.exports.ColorMode = function(mode) {
                             .removeClass('btn-light');
                         $('.navbar').addClass('navbar-light')
                             .removeClass('navbar-dark');
-                        $('hr').addClass('bg-light')
-                            .removeClass('bg-dark');
                         break;
                     case 'dark':
                         $('.view').addClass('dark')
@@ -40,8 +34,6 @@ module.exports.ColorMode = function(mode) {
                             .removeClass('btn-dark');
                         $('.navbar').addClass('navbar-dark')
                             .removeClass('navbar-light');
-                        $('hr').addClass('bg-dark')
-                            .removeClass('bg-light');
                         break;
                 }
             });

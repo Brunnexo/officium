@@ -1,5 +1,5 @@
 {
-    "name": "cloader",
+    "name": "pageloader",
     "version": "1.0.0",
     "description": "Officium Content Loader",
     "main": "index.js",

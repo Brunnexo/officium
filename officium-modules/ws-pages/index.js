@@ -39,8 +39,8 @@ class PersonalResume {
                 .fadeIn('slow');
 
             if (!$.isEmptyObject(this.resume)) {
-                let thead = document.createElement('thead');
-                let table = document.createElement('table');
+                let thead = document.createElement('thead'),
+                    table = document.createElement('table');
 
                 $(table).addClass(`table`)
                     .html(
@@ -89,16 +89,16 @@ class PersonalResume {
             */
             var id, elmnt;
             // Menu
-            const menu = new Menu();
-            const menuItem = new MenuItem({
-                label: 'Apagar',
-                click: () => {
-                    SQL_DRIVER.execute(`DELETE FROM [Relatórios] WHERE [ID] = ${id}`)
-                        .then(
-                            $(elmnt).fadeOut('slow')
-                        );
-                }
-            });
+            const menu = new Menu(),
+                menuItem = new MenuItem({
+                    label: 'Apagar',
+                    click: () => {
+                        SQL_DRIVER.execute(`DELETE FROM [Relatórios] WHERE [ID] = ${id}`)
+                            .then(
+                                $(elmnt).fadeOut('slow')
+                            );
+                    }
+                });
             menu.append(menuItem);
 
             // Menu de contexto
@@ -122,9 +122,9 @@ class PersonalResume {
             */
             $(this.charts.remain).hide();
 
-            let times = new Array;
-            let projects = new Array;
-            let remain = 0;
+            let times = new Array,
+                projects = new Array,
+                remain = 0;
 
             // Adiciona os valores a um array
             this.remain.forEach(function(d) {
@@ -186,10 +186,10 @@ class PersonalResume {
             */
             $(this.charts.total).hide();
 
-            let dates = new Array;
-            let times = new Array;
-            let projects = new Array;
-            let colors = randomColors(this.total.length);
+            let dates = new Array,
+                times = new Array,
+                projects = new Array,
+                colors = randomColors(this.total.length);
 
             this.total.forEach(function(d) {
                 dates.push(d.Data.value);
