@@ -8,21 +8,29 @@ const RCONTAINER = '[r-loader-container]';
 
 const RINDEXBAR = '[r-indexbar]';
 
-var r_index, r_selected;
+// Índice atual
+var r_index;
+
+// Índice anterior
+var r_index_previous;
+
+// Página R selecionada
+var r_selected;
 
 module.exports.CLoader = class {
     constructor() {
         this.c_contents = new Object;
         this.r_contents = new Object;
 
-        $(RLOADER).each((index) => {
+        $(RLOADER).each((index, element) => {
             this.r_contents[
                 $(RLOADER)[index].id
             ] = {
                 html: $(`#${$(RLOADER)[index].id}`).html(),
-                index: index
+                index: Number($(element).attr('r-loader'))
             }
             this.crid = $(`#${$(RLOADER)[index].id}`).closest(CLOADER)[0].id;
+            console.log($(element).attr('r-loader'));
         });
         $(RLOADER).remove();
 
@@ -41,6 +49,7 @@ module.exports.CLoader = class {
         this.r_execute = function() {
             let html = this.r_contents[Object.keys(this.r_contents)[0]].html;
             r_index = this.r_contents[Object.keys(this.r_contents)[0]].index;
+            r_index_previous = r_index;
             $(RCONTAINER).hide()
                 .html(html)
                 .fadeIn('slow');
@@ -71,11 +80,12 @@ module.exports.CLoader = class {
                 .html(this.r_contents[arg].html)
                 .fadeIn('slow');
 
+            r_index_previous = r_index;
             r_index = this.r_contents[arg].index;
 
             $(RINDEXBAR)
                 .find(`[index=${this.r_contents[arg].index}]`)
-                .fadeIn('slow');
+                .show();
             if (typeof(execute) == 'function') execute();
         } else throw new Error('R_page not loaded!');
     };
@@ -90,9 +100,16 @@ module.exports.CLoader = class {
                                 .html(this.r_contents[val].html)
                                 .fadeIn('slow');
 
+                            r_index_previous = r_index;
                             r_index = this.r_contents[val].index;
                         }
                     });
+
+                    $(RINDEXBAR)
+                        .find('.pop')
+                        .each((index, element) => {
+                            index > r_index ? $(element).hide() : null;
+                        });
                     break;
                 case 'string':
                     break;
@@ -104,30 +121,36 @@ module.exports.CLoader = class {
     // Próxima página linha
     r_next() {
         if (r_selected) {
+            let ip, ia, f;
             Object.keys(this.r_contents).forEach((val, i) => {
                 if (this.r_contents[val].index == (r_index + 1)) {
                     $(RCONTAINER).hide()
                         .html(this.r_contents[val].html)
                         .fadeIn('slow');
-
-                    r_index = this.r_contents[val].index;
+                    ip = r_index;
+                    ia = this.r_contents[val].index;
+                    f = true;
                 }
             });
+            if (f) {
+                r_index_previous = ip;
+                r_index = ia;
+            }
         } else throw new Error('R_page not loaded!');
     };
 
     // Página linha anterior
     r_previous() {
         if (r_selected) {
-
+            let ip, ia, f;
             Object.keys(this.r_contents).forEach((val, i) => {
-                if (this.r_contents[val].index == (r_index - 1)) {
+                if (this.r_contents[val].index === r_index_previous) {
                     $(RCONTAINER).hide()
                         .html(this.r_contents[val].html)
                         .fadeIn('slow');
-
-                    r_index = this.r_contents[val].index;
-
+                    ip = r_index;
+                    ia = this.r_contents[val].index;
+                    f = true;
                     $(RINDEXBAR)
                         .find('.pop')
                         .each((index, element) => {
@@ -135,8 +158,10 @@ module.exports.CLoader = class {
                         });
                 }
             });
-
-
+            if (f) {
+                r_index_previous = ip;
+                r_index = ia;
+            }
         } else throw new Error('R_page not loaded!');
     };
 }

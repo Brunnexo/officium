@@ -34,8 +34,9 @@ const DATA = {
 };
 
 $(document).ready(() => {
-    let colorMode = localStorage.getItem('colorMode');
-    localStorage.setItem('colorMode', colorMode == 'null' ? 'auto' : colorMode);
+    //let colorMode = localStorage.getItem('colorMode');
+    //localStorage.setItem('colorMode', colorMode == 'null' ? 'auto' : colorMode);
+    localStorage.setItem('colorMode', 'light');
     ColorMode(localStorage.getItem('colorMode'));
     DATA.load();
 });

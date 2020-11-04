@@ -240,7 +240,7 @@ function dateFormat(date, separator = '/') {
             var get = date.split('/');
             return `${get[2]}-${get[1]}-${get[0]}`;
     }
-}
+};
 
 function randomColors(num) {
     let colors = new Array;
@@ -264,10 +264,10 @@ function randomColors(num) {
         colors.push(randDarkColor());
     }
     return colors;
-}
+};
 
 
 
 module.exports = {
     PersonalResume: PersonalResume
-}
+};

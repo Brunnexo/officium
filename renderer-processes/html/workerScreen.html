@@ -76,25 +76,27 @@
             <div r-loader-container></div>
 
             <!-- 0 -->
-            <div id="reg-type" r-loader>
+            <div id="reg-type" r-loader="0">
                 <div class="center-buttons">
                     <div class="choose-button">
                         <button type="button" id="btn-sr">
                                 <h6>Service Request</h6>
                                 <hr>
-                                <p>Serviços que envolvem setores da empresa, excluíndo projetos de clientes</p>
+                                <img src="../assets/images/tools.png">
                         </button>
                     </div>
                     <div class="choose-button">
                         <button type="button">
                                 <h6>Projetos/Atividades do Setor</h6>
+                                <hr>
+                                <img src="../assets/images/project.svg">
                         </button>
                     </div>
                 </div>
             </div>
 
             <!-- 1 -->
-            <div id="reg-sr" r-loader>
+            <div id="reg-sr" r-loader="1">
                 <h1 class="display-4 font-italic">Service Request</h1>
                 <hr />
                 <div class="center-forms">
@@ -120,12 +122,17 @@
                             <div class="action-button">
                                 <button type="button" btn-back="0">Voltar</button>
                             </div>
-                            <div class="action-button" style="display: none;">
-                                <button type="button">Próximo</button>
+                            <div class="action-button btn-next" style="display: none;">
+                                <button type="button" btn-next="4">Próximo</button>
                             </div>
                         </div>
                     </form>
                 </div>
+            </div>
+
+            <!-- 2 -->
+            <div id="reg-function" r-loader="2">
+
             </div>
 
             <!-- Barra de índice -->
@@ -145,12 +152,24 @@
                 <div class="pop" index="2">
                     <div class="tab">
                         <a class="number">3</a>
-                        <div class="name">Cliente</div>
+                        <div class="name">Função</div>
                     </div>
                 </div>
                 <div class="pop" index="3">
                     <div class="tab">
                         <a class="number">4</a>
+                        <div class="name">Cliente</div>
+                    </div>
+                </div>
+                <div class="pop" index="4">
+                    <div class="tab">
+                        <a class="number">5</a>
+                        <div class="name">Projeto</div>
+                    </div>
+                </div>
+                <div class="pop" index="5">
+                    <div class="tab">
+                        <a class="number">6</a>
                         <div class="name">Resumo</div>
                     </div>
                 </div>

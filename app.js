@@ -1,7 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 const ipc = require('electron').ipcMain;
 
-var splash, main, workerScreen;
+var splash, main, workerScreen, preferences;
 
 // Variáveis globais
 global = {
@@ -61,6 +61,13 @@ ipc.on('open-workerScreen', (evt, arg) => {
             main.destroy();
         });
     }
+});
+
+// Preferências
+ipc.on('open-preferences', (evt, arg) => {
+    buildPreferences(() => {
+        preferences.show();
+    });
 });
 
 // Voltar ao início
@@ -133,6 +140,30 @@ function buildWorkerScreen(ready) {
     });
     workerScreen.loadURL(`${__dirname}/renderer-processes/html/workerScreen.html`);
     workerScreen.once('ready-to-show', () => {
+        ready();
+    });
+}
+
+// Preferências
+function buildPreferences(ready) {
+    preferences = new BrowserWindow({
+        "show": false,
+        "frame": false,
+        "minWidth": 640,
+        "minHeight": 480,
+        "width": 640,
+        "height": 480,
+        "modal": true,
+        "parent": workerScreen,
+        "resizable": false,
+        "transparent": true,
+        "webPreferences": {
+            "nodeIntegration": true,
+            "enableRemoteModule": true
+        }
+    });
+    preferences.loadURL(`${__dirname}/renderer-processes/html/preferences.html`);
+    preferences.once('ready-to-show', () => {
         ready();
     });
 }
