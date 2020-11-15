@@ -3,7 +3,7 @@ const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
 // Extensões internas
-const { MSSQL, QueryBuilder } = require('../../officium-modules/sqlutils/');
+const { MSSQL } = require('../../officium-modules/sqlutils');
 const { ColorMode } = require('../../officium-modules/colormode');
 
 const SQL_DRIVER = new MSSQL(remote.getGlobal('sql').config);
@@ -50,7 +50,7 @@ function authenticate(registry, password) {
     if (password == '') {
         if (registry == '') warning('Registro inválido!');
         else {
-            SQL_DRIVER.select(QueryBuilder('Registry', registry), (data) => {
+            SQL_DRIVER.select(MSSQL.QueryBuilder('Registry', registry), (data) => {
                     worker.push(data);
                 })
                 .then(() => {
@@ -62,7 +62,7 @@ function authenticate(registry, password) {
                 });
         }
     } else {
-        SQL_DRIVER.select(QueryBuilder('Authenticate', $(':password').val(), $(':text').val()), (data) => {
+        SQL_DRIVER.select(MSSQL.QueryBuilder('Authenticate', $(':password').val(), $(':text').val()), (data) => {
             ipc.send('open-workerScreen', data.Autenticado.value);
         });
     }

@@ -53,7 +53,7 @@
         <div class="container-fluid" c-loader-container></div>
 
         <!-- Resumo pessoal -->
-        <div id="personal-resume" class="container" c-loader>
+        <div id="personal-resume" class="container" c-loader updateable>
             <h1 class="display-4" id="title"></h1>
             <div class="row justify-content-center">
                 <div class="col-auto">
@@ -72,7 +72,6 @@
         </div>
 
         <div id="reg-service" class="container" c-loader>
-
             <div r-loader-container></div>
 
             <!-- 0 -->
@@ -81,14 +80,12 @@
                     <div class="choose-button">
                         <button type="button" id="btn-sr">
                                 <h6>Service Request</h6>
-                                <hr>
                                 <img src="../assets/images/tools.png">
                         </button>
                     </div>
                     <div class="choose-button">
                         <button type="button">
                                 <h6>Projetos/Atividades do Setor</h6>
-                                <hr>
                                 <img src="../assets/images/project.svg">
                         </button>
                     </div>
@@ -96,7 +93,7 @@
             </div>
 
             <!-- 1 -->
-            <div id="reg-sr" r-loader="1">
+            <div id="reg-sr" r-loader="1" r-previous="reg-type">
                 <h1 class="display-4 font-italic">Service Request</h1>
                 <hr />
                 <div class="center-forms">
@@ -130,44 +127,39 @@
                 </div>
             </div>
 
-            <!-- 2 -->
-            <div id="reg-function" r-loader="2">
-
-            </div>
-
             <!-- Barra de índice -->
             <div class="indexbar" r-indexbar>
-                <div class="pop" index="0">
+                <div class="pop" r-index="0">
                     <div class="tab">
                         <a class="number">1</a>
                         <div class="name">Tipo</div>
                     </div>
                 </div>
-                <div class="pop" index="1">
+                <div class="pop" r-index="1">
                     <div class="tab">
                         <a class="number">2</a>
                         <div class="name">SR</div>
                     </div>
                 </div>
-                <div class="pop" index="2">
+                <div class="pop" r-index="2">
                     <div class="tab">
                         <a class="number">3</a>
                         <div class="name">Função</div>
                     </div>
                 </div>
-                <div class="pop" index="3">
+                <div class="pop" r-index="3">
                     <div class="tab">
                         <a class="number">4</a>
                         <div class="name">Cliente</div>
                     </div>
                 </div>
-                <div class="pop" index="4">
+                <div class="pop" r-index="4">
                     <div class="tab">
                         <a class="number">5</a>
                         <div class="name">Projeto</div>
                     </div>
                 </div>
-                <div class="pop" index="5">
+                <div class="pop" r-index="5">
                     <div class="tab">
                         <a class="number">6</a>
                         <div class="name">Resumo</div>
@@ -179,6 +171,9 @@
     </div>
     <!-- Scripts -->
     <script type="text/javascript" src="../../renderer-processes/js/workerScreen.js"></script>
+
+    <script type="text/javascript">
+    </script>
 </body>
 
 </html>

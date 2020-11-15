@@ -1,7 +1,7 @@
 const Menu = remote.Menu;
 const MenuItem = remote.MenuItem;
 
-const { MSSQL, QueryBuilder } = require('../sqlutils');
+const { MSSQL, QueryBuilder } = require('./sqlutils');
 const SQL_DRIVER = new MSSQL(remote.getGlobal('sql').config);
 
 const Chart = require('chart.js');

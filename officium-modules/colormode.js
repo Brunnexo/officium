@@ -41,12 +41,6 @@ module.exports.ColorMode = function(mode) {
     }
 }
 
-module.exports.GetColor = function() {
-    watch((e) => {
-        return e;
-    });
-}
-
 function watch(execute) {
     let hour = new Date().getHours();
     execute((6 <= hour && hour < 18) ? 'light' : 'dark');

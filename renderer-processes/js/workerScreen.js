@@ -4,16 +4,16 @@ const ipc = require('electron').ipcRenderer;
 
 // Extensões internas
 const { ColorMode } = require('../../officium-modules/colormode');
-const { CLoader } = require('../../officium-modules/pageloader');
+const { PageLoader } = require('../../officium-modules/pageloader');
 
 // Dependências
 window.jQuery = window.$ = require('jquery');
 require('bootstrap');
 
 // Instâncias
-const HTML = new CLoader();
+const HTML = new PageLoader();
 const worker = remote.getGlobal('data').worker;
-const { PersonalResume } = require('../../officium-modules/ws-pages');
+//const { PersonalResume } = require('../../officium-modules/ws-pages');
 
 
 // Variáveis remotas globais
@@ -22,13 +22,14 @@ const srs = remote.getGlobal('sql').srs;
 // Funções ao carregar a página
 $(document).ready(function() {
     // Esquema de cores
-    ColorMode(localStorage.getItem('colorMode'));
+    ColorMode('dark' /*localStorage.getItem('colorMode')*/ );
     // Nome do colaborador
     $('#nav-name').text(worker.Nome.value);
     // Carrega data atual
     document.getElementById("date").valueAsDate = new Date();
     // Carrega inicialmente o resumo pessoal
-    Pages.load('personal-resume');
+    //Pages.load('personal-resume');
+    HTML.load('personal-resume');
 });
 
 // Alteração de data
@@ -36,20 +37,20 @@ $("#date").change(function() {
     // Função ao alterar data
     clearTimeout(this.inputDelay);
     this.inputDelay = setTimeout(function() {
-        Pages.update();
+        //Pages.update();
     }, 500);
 });
 
 // Navegar para o resumo
 $('#nav-resume').click(() => {
-    Pages.load('personal-resume');
+    //Pages.load('personal-resume');
     $('.active').removeClass('active');
     $('#nav-resume').addClass('active');
 });
 
 // Navegar para o registro
 $('#nav-reg').click(() => {
-    Pages.load('reg-service');
+    //Pages.load('reg-service');
 });
 
 // Abrir preferências
@@ -68,55 +69,55 @@ $('.close-btn').click(() => {
 });
 
 // Páginas modulares
-const Pages = {
-    Resume: {
-        Personal: new PersonalResume({
-            title: '#title',
-            registry: worker.Registro.value,
-            journey: worker.Jornada.value,
-            charts: {
-                history: '#history',
-                remain: '#graphRemain',
-                total: '#graphTotal'
-            }
-        })
-    },
-    lastPage: {},
-    load: (pageName) => {
-        switch (pageName) {
-            // Carregar resumo pessoal
-            case 'personal-resume':
-                changeListener.disconnect();
-                HTML.c_load(pageName, () => {
-                    Pages.Resume.Personal.getData(
-                        document.getElementById('date').value);
-                });
-                Pages.lastPage = {
-                    name: pageName,
-                    updateable: true
-                };
-                break;
-            case 'reg-service':
-                changeListener.observe(document, {
-                    attributes: false,
-                    childList: true,
-                    subtree: true
-                });
-                HTML.c_load(pageName);
-                Pages.lastPage = {
-                    name: pageName,
-                    updateable: false
-                };
-                break;
-        }
-    },
-    update: () => {
-        if (Pages.lastPage.updateable) {
-            changeListener.disconnect();
-            Pages.load(Pages.lastPage.name);
-        }
-    }
-};
+// const Pages = {
+//     Resume: {
+//         Personal: new PersonalResume({
+//             title: '#title',
+//             registry: worker.Registro.value,
+//             journey: worker.Jornada.value,
+//             charts: {
+//                 history: '#history',
+//                 remain: '#graphRemain',
+//                 total: '#graphTotal'
+//             }
+//         })
+//     },
+//     lastPage: {},
+//     load: (pageName) => {
+//         switch (pageName) {
+//             // Carregar resumo pessoal
+//             case 'personal-resume':
+//                 changeListener.disconnect();
+//                 HTML.c_load(pageName, () => {
+//                     Pages.Resume.Personal.getData(
+//                         document.getElementById('date').value);
+//                 });
+//                 Pages.lastPage = {
+//                     name: pageName,
+//                     updateable: true
+//                 };
+//                 break;
+//             case 'reg-service':
+//                 changeListener.observe(document, {
+//                     attributes: false,
+//                     childList: true,
+//                     subtree: true
+//                 });
+//                 HTML.c_load(pageName);
+//                 Pages.lastPage = {
+//                     name: pageName,
+//                     updateable: false
+//                 };
+//                 break;
+//         }
+//     },
+//     update: () => {
+//         if (Pages.lastPage.updateable) {
+//             changeListener.disconnect();
+//             Pages.load(Pages.lastPage.name);
+//         }
+//     }
+// };
 
 // Observador de alterações
 const changeListener = new MutationObserver(() => {

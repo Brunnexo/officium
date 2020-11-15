@@ -3,7 +3,7 @@ const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
 // Extensões internas
-const { MSSQL, QueryBuilder } = require('../../officium-modules/sqlutils/');
+const { MSSQL } = require('../../officium-modules/sqlutils');
 const { ColorMode } = require('../../officium-modules/colormode');
 
 // Dependências
@@ -17,15 +17,15 @@ const DATA = {
 
     load: async function() {
         $("#description").html('Carregando projetos...');
-        await SQL_DRIVER.select(QueryBuilder('Project'), (data) => { DATA.projects.push(data); }).then(() => {
+        await SQL_DRIVER.select(MSSQL.QueryBuilder('Project'), (data) => { DATA.projects.push(data); }).then(() => {
             remote.getGlobal('sql').projects = DATA.projects;
         });
         $("#description").html('Carregando SRs...');
-        await SQL_DRIVER.select(QueryBuilder('SRs'), (data) => { DATA.srs.push(data); }).then(() => {
+        await SQL_DRIVER.select(MSSQL.QueryBuilder('SRs'), (data) => { DATA.srs.push(data); }).then(() => {
             remote.getGlobal('sql').srs = DATA.srs;
         });
         $("#description").html('Carregando geral...');
-        await SQL_DRIVER.select(QueryBuilder('General'), (data) => { DATA.general.push(data); }).then(() => {
+        await SQL_DRIVER.select(MSSQL.QueryBuilder('General'), (data) => { DATA.general.push(data); }).then(() => {
             remote.getGlobal('sql').general = DATA.general;
             $("#description").html('Pronto!');
             ipc.send('show-main');
