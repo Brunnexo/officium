@@ -3,8 +3,7 @@ const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
 // Extensões internas
-const { MSSQL } = require('../../officium-modules/sqlutils');
-const { ColorMode } = require('../../officium-modules/colormode');
+const { MSSQL, ColorMode } = require('../../officium-modules/officium');
 
 // Dependências
 window.jQuery = window.$ = require('jquery');
@@ -34,9 +33,8 @@ const DATA = {
 };
 
 $(document).ready(() => {
-    //let colorMode = localStorage.getItem('colorMode');
-    //localStorage.setItem('colorMode', colorMode == 'null' ? 'auto' : colorMode);
-    localStorage.setItem('colorMode', 'light');
+    let colorMode = localStorage.getItem('colorMode');
+    localStorage.setItem('colorMode', colorMode == 'null' ? 'auto' : colorMode);
     ColorMode(localStorage.getItem('colorMode'));
     DATA.load();
 });
