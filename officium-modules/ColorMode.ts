@@ -1,8 +1,9 @@
 function ColorMode(mode: 'light' | 'dark' | 'auto') {
-    let color = (mode == 'light' || mode == 'dark') ? mode : () => {
+    let color: string = mode;
+    if (color === 'auto') {
         let h = new Date().getHours();
-        return (6 <= h && h < 18) ? 'light' : 'dark'
-    };
+        color = ((6 <= h && h < 18) ? 'light' : 'dark');
+    }
     switch (color) {
         case 'light':
             document.querySelector('.view')!.classList.add('light');

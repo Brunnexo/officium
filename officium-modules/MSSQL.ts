@@ -37,11 +37,8 @@ class MSSQL {
         };
         if (typeof(config) != 'object')
             throw new Error(`SQL 'Tedious' configuration not defined! (${typeof(config)})`);
-        else {
-            console.log('SQL Configuration set!');
-            console.log(JSON.stringify(config, null,'\t'));
+        else
             this.Config = config;
-        }
     };
 
     static setVariable(variable: string) {

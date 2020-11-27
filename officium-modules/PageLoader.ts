@@ -94,7 +94,7 @@ class PageLoader {
             });
     }
 
-    load(id: string, execute?: Function) {
+    load(id: string, execute?: Function | string) {
         let Row = this.content.pages!.Row;
         let Column = this.content.pages!.Column;
        if (Row!.some(page => page.id === id)) {
@@ -110,7 +110,19 @@ class PageLoader {
                     type: 'R'
                 }
             };
-            if (typeof(execute) == 'function') execute();
+
+            document.querySelector(`[${R.indexbar}]`).innerHTML = this.content.pages.Indexbar[0].html;
+
+            // this.content.pages.Indexbar.forEach((i) => {
+            //     let indexHTML = document.querySelector(`[${R.indexbar}]`).innerHTML;
+            //     document.querySelector(`[${R.indexbar}]`).innerHTML = indexHTML + i.html;
+            // });
+
+            if (typeof(execute) === 'function') execute();
+            else if (typeof(execute) === 'string') {
+                rPage.script = execute;
+                eval(rPage.script);
+            }
        } else if (Column!.some(page => page.id === id)) {
             let cPage = Column!.filter((val) => {return val.id === id})[0];
             document.querySelector(`[${C.container}]`)!.innerHTML = cPage.html;
@@ -122,16 +134,20 @@ class PageLoader {
                     type: 'C'
                 }
             };
-            if (typeof(execute) == 'function') execute();
+            if (typeof(execute) === 'function') execute();
+            else if (typeof(execute) === 'string') {
+                cPage.script = execute;
+                eval(cPage.script);
+            }
        } else throw new Error(`There is no page with this ID: ${id}`);
     }
 
-    update(execute?: Function) {
+    update(execute?: Function | string) {
         let Column = this.content.pages!.Column;
         let id = this.content.status.actual.page;
         let page = Column!.filter((val) => {return val.id === id})[0];
        
-        if (page.updateable) {
+        if (typeof(page) !== 'undefined' && page.updateable) {
             this.load(page.id, execute);
         }
     }
