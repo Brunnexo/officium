@@ -3,7 +3,7 @@ const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
 // Extensões internas
-const { PageLoader, ColorMode, RenderResume } = require('../../officium-modules/officium');
+const { PageLoader, ColorMode, RenderResume, RenderSR } = require('../../officium-modules/officium');
 
 // Dependências
 window.jQuery = window.$ = require('jquery');
@@ -28,6 +28,21 @@ const Resume = new RenderResume({
     },
     workTime: workTime
 });
+
+const SR = new RenderSR({
+    registry: worker.Registro.value,
+    journey: worker.Jornada.value,
+    charts: {
+        total: 'graphRemain',
+        extra: 'graphTotalExtra'
+    },
+    infos: {
+        common: 'registered-common-time',
+        extra: 'registered-extra-time'
+    },
+    workTime: workTime
+});
+
 // Funções ao carregar a página
 
 window.onload = () => {
@@ -140,23 +155,21 @@ function PageScripts(pageId) {
             let inputwo = document.getElementById('input-wo'),
                 inputsr = document.getElementById('input-sr'),
                 inputservice = document.getElementById('input-service'),
-                nextbutton = document.getElementById('btn-next'),
-                backbutton = document.getElementById('btn-back');
-
+                nextbutton = document.querySelector('[btn-next]').parentElement,
+                backbutton = document.querySelector('[btn-back]').parentElement;
 
             backbutton.onclick = () => {
                 HTML.load('reg-type', PageScripts);
             }
 
             nextbutton.onclick = () => {
-
+                HTML.load('reg-sr-time', PageScripts);
             }
 
             inputwo.onkeyup = () => {
                 clearTimeout(this.inputDelay);
                 this.inputDelay = setTimeout(() => {
                     let wo = Number(inputwo.value);
-
                     if (!isNaN(wo) && wo !== 0) {
                         let wosearch = srs.filter((val) => { return val.WO.value == wo; })[0];
                         if (typeof(wosearch) !== 'undefined') {
@@ -194,6 +207,9 @@ function PageScripts(pageId) {
                     }
                 }, 500);
             };
+            break;
+        case 'reg-sr-time':
+            SR.getData(document.getElementById("date").value);
             break;
     }
 }

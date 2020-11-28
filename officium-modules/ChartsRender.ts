@@ -5,28 +5,34 @@ import { MSSQL } from './MSSQL';
 const Menu = remote.Menu;
 const MenuItem = remote.MenuItem;
 
-
 interface Information {
-    title: string,
-    registry: number | string,
-    journey: 'H' | 'M',
-    charts: {
-        history: string,
-        remain: string,
-        total: string
+    title?: string,
+    registry?: number | string,
+    journey?: 'H' | 'M',
+    charts?: {
+        history?: string,
+        remain?: string,
+        total?: string,
+        extra?: string
     },
-    workTime: {
-        hourly: number,
-        monthly: number
+    infos?: {
+        common?: string,
+        extra?: string
+    },
+    workTime?: {
+        hourly?: number,
+        monthly?: number,
+        dailyExtra?: number,
+        weekendExtra?: number
     }
 }
 
 interface Data {
-    resume: Array < object >,
-    remain: Array < object >,
-    total: Array < object >
+    resume?: Array <object>,
+    remain?: Array <object>,
+    total?: Array <object>,
+    extra?: Array <object>
 }
-
 
 class RenderResume {
     protected info : Information;
@@ -92,7 +98,8 @@ class RenderResume {
 
                 table.appendChild(thead);
 
-                resumeData.forEach((arr : any) => { // Dados da tabela
+                resumeData.forEach((arr : any) => {
+                    // Dados da tabela
                     let tr = document.createElement('tr');
                     // Conteúdo HTML da tabela
                     tr.innerHTML = `
@@ -265,13 +272,90 @@ class RenderResume {
     }
 }
 
-
 class RenderSR {
+    protected info: Information;
+    protected MSSQL : MSSQL;
+    private data?: Data;
+
+    private renderGraphRemain: Chart;
+
+    constructor(value: Information) {
+        this.info = value;
+        this.MSSQL = new MSSQL(remote.getGlobal('sql').config);
+        this.data = {
+            total: new Array
+        }
+    }
+
+    async getData(date: string | Date) {
+        let common = document.getElementById(this.info.infos.common),
+            extra = document.getElementById(this.info.infos.extra),
+            remainChart = document.getElementById(this.info.charts.remain),
+            workTime = this.info.workTime,
+            registry = this.info.registry,
+            journey = this.info.journey,
+            remainData = this.data.remain;
+            remainData = [];
+
+            await this.MSSQL.select(MSSQL.QueryBuilder('Remain', registry, date), (row: any) => {
+                remainData.push(row);
+            }).then(() => {
+                remainChart.style.display = 'none';
+
+                let times = new Array;
+                let projects = new Array;
+                let remain = 0;
     
+                // Adiciona os valores a um array
+                remainData.forEach(function (d: any) {
+                    times.push(d.Tempo.value);
+                    projects.push(d.Projeto.value);
+                    remain += Number(d.Tempo.value);
+                });
+    
+                if (journey == 'H') 
+                    remain = ((workTime.hourly - remain) < 0) ? 0 : (workTime.hourly - remain);
+                 else 
+                    remain = ((workTime.monthly - remain) < 0) ? 0 : (workTime.monthly - remain);
+                
+                if (remain != 0) {
+                    projects.push("Restante");
+                    times.push(remain);
+                }
+
+                let colors = randomColors(projects.length);
+
+                this.renderGraphRemain = new Chart((remainChart as  HTMLCanvasElement), {
+                    type: 'pie',
+                    data: {
+                        labels: projects,
+                        datasets: [
+                            {
+                                data: times,
+                                backgroundColor: colors,
+                                borderColor: colors,
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: false,
+                        aspectRatio: 1,
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Tempo do dia'
+                        },
+                        tooltips: {
+                            mode: "point"
+                        }
+                    }
+                });
+            });
+    }
 }
-
-
-
 
 function dateFormat(date, separator = '/') {
     let get: string;
@@ -330,5 +414,5 @@ function randomColors(num) {
     return colors;
 }
 
-export { RenderResume };
+export { RenderResume, RenderSR };
 

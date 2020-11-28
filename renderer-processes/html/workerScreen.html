@@ -114,57 +114,33 @@
                         </div>
                         <div class="buttons-container">
                             <div class="action-button">
-                                <button type="button" id='btn-back'>Voltar</button>
+                                <button type="button" btn-back>Voltar</button>
                             </div>
                             <div class="action-button" style="display: none;">
-                                <button type="button" id="btn-next">Próximo</button>
+                                <button type="button" btn-next >Próximo</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div id="reg-time" r-loader>
+            <div id="reg-sr-time" r-loader>
                 <h1 class="display-4 font-italic">Service Request</h1>
+                <hr />
+                <h6 id="registered-common-time"></h6>
+                <h6 id="registered-extra-time"></h6>
                 <hr />
                 <div class="row justify-content-center">
                     <div class="col-auto">
-                        <canvas id="graphRemain" width="300" height="300"></canvas>
+                        <canvas id="graphRemain" height="300"></canvas>
                     </div>
                     <div class="col-auto">
-                        <canvas id="graphTotal" height="300"></canvas>
+                        <canvas id="graphTotalExtra" height="300"></canvas>
                     </div>
                 </div>
-                <div class="center-forms">
-                    <form>
-                        <div class="form-row">
-                            <div class="form-group col-auto">
-                                <label for="input-wo" style="font-style: italic;">Work Order</label>
-                                <input type="text" class="form-control" id="input-wo">
-                            </div>
-                            <div class="form-group col-auto">
-                                <label for="input-sr" style="font-style: italic;">Service Request</label>
-                                <input type="text" class="form-control" id="input-sr">
-                            </div>
-                        </div>
-                        <hr />
-                        <div class="form-row">
-                            <div class="form-group col-12">
-                                <label for="input-service">Serviço</label>
-                                <textarea readonly class="form-control" id="input-service" rows="8" style="resize: none;"></textarea>
-                            </div>
-                        </div>
-                        <div class="buttons-container">
-                            <div class="action-button">
-                                <button type="button" id='btn-back'>Voltar</button>
-                            </div>
-                            <div class="action-button" style="display: none;">
-                                <button type="button" id="btn-next">Próximo</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
             </div>
+
+
         </div>
     </div>
     <!-- Scripts -->

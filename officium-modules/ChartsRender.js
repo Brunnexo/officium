@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.RenderResume = void 0;
+exports.RenderSR = exports.RenderResume = void 0;
 const chart_js_1 = require("chart.js");
 const electron_1 = require("electron");
 const MSSQL_1 = require("./MSSQL");
@@ -197,7 +197,71 @@ class RenderResume {
 }
 exports.RenderResume = RenderResume;
 class RenderSR {
+    constructor(value) {
+        this.info = value;
+        this.MSSQL = new MSSQL_1.MSSQL(electron_1.remote.getGlobal('sql').config);
+        this.data = {
+            total: new Array
+        };
+    }
+    getData(date) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let common = document.getElementById(this.info.infos.common), extra = document.getElementById(this.info.infos.extra), remainChart = document.getElementById(this.info.charts.remain), workTime = this.info.workTime, registry = this.info.registry, journey = this.info.journey, remainData = this.data.remain;
+            remainData = [];
+            yield this.MSSQL.select(MSSQL_1.MSSQL.QueryBuilder('Remain', registry, date), (row) => {
+                remainData.push(row);
+            }).then(() => {
+                remainChart.style.display = 'none';
+                let times = new Array;
+                let projects = new Array;
+                let remain = 0;
+                remainData.forEach(function (d) {
+                    times.push(d.Tempo.value);
+                    projects.push(d.Projeto.value);
+                    remain += Number(d.Tempo.value);
+                });
+                if (journey == 'H')
+                    remain = ((workTime.hourly - remain) < 0) ? 0 : (workTime.hourly - remain);
+                else
+                    remain = ((workTime.monthly - remain) < 0) ? 0 : (workTime.monthly - remain);
+                if (remain != 0) {
+                    projects.push("Restante");
+                    times.push(remain);
+                }
+                let colors = randomColors(projects.length);
+                this.renderGraphRemain = new chart_js_1.Chart(remainChart, {
+                    type: 'pie',
+                    data: {
+                        labels: projects,
+                        datasets: [
+                            {
+                                data: times,
+                                backgroundColor: colors,
+                                borderColor: colors,
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: false,
+                        aspectRatio: 1,
+                        legend: {
+                            position: 'bottom'
+                        },
+                        title: {
+                            display: true,
+                            text: 'Tempo do dia'
+                        },
+                        tooltips: {
+                            mode: "point"
+                        }
+                    }
+                });
+            });
+        });
+    }
 }
+exports.RenderSR = RenderSR;
 function dateFormat(date, separator = '/') {
     let get;
     switch (separator) {

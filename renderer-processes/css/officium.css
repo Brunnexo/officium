@@ -51,7 +51,9 @@
     -webkit-app-region: no-drag;
 }
 
-
+.content-margin {
+    margin-top: 56px;
+}
 /* Barra de rolagem*/
 
 ::-webkit-scrollbar {

@@ -95,9 +95,9 @@ function buildWorkerScreen(ready) {
         "show": false,
         "frame": false,
         "width": 1280,
-        "height": 780,
+        "height": 730,
         "minWidth": 1280,
-        "minHeight": 780,
+        "minHeight": 730,
         "resizable": true,
         "transparent": true,
         "webPreferences": {
@@ -118,7 +118,7 @@ global = {
         srs: {},
         general: {},
         config: {
-            server: '127.0.0.1',
+            server: '10.144.201.115',
             authentication: {
                 type: 'default',
                 options: {
@@ -138,13 +138,13 @@ global = {
     parameters: {
         workTime: {
             hourly: 528,
-            monthly: 522
+            monthly: 522,
+            dailyExtra: 60,
+            weekendExtra: 660
         }
     },
     data: {
-        worker: {
-
-        },
+        worker: {},
         clients: [
             "GM", "VW", "FORD", "FCA", "RENAULT",
             "HONDA", "NISSAN", "TOYOTA", "HYUNDAI",
