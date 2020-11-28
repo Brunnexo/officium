@@ -4,8 +4,6 @@ const R = {
     loader: 'r-loader',
     container: 'r-loader-container',
     scriptLoader: 'r-loader-script',
-    indexbar: 'r-indexbar',
-    index: 'r-index',
     previous: 'r-previous',
     next: 'r-next'
 }
@@ -33,9 +31,6 @@ interface PageContents {
         Row: Array<{
             id: string;
             html: string;
-            index?: string | number | null;
-            next?: string | null;
-            previous: string | null;
             parent: HTMLElement | null;
             script?: string;
         }>;
@@ -56,15 +51,6 @@ class PageLoader {
                 Indexbar: []
             }
         };
-        // Row indexbar
-        document.querySelectorAll(`[${R.index}]`)
-            .forEach((elmnt, key) => {
-                this.content.pages.Indexbar!.push({
-                    index: Number(elmnt.getAttribute(R.index)),
-                    html: elmnt.outerHTML,
-                });
-                elmnt.remove();
-            });
         // Row pages
         document.querySelectorAll(`[${R.loader}]`)
             .forEach((elmnt, key) => {
@@ -72,9 +58,6 @@ class PageLoader {
                 this.content.pages!.Row!.push({
                     id: elmnt.id,
                     html: elmnt.innerHTML,
-                    index: elmnt.getAttribute(R.loader),
-                    next: elmnt.getAttribute(R.next),
-                    previous: elmnt.getAttribute(R.previous),
                     parent: elmnt.parentElement,
                     script: fs.existsSync(path) ? fs.readFileSync(path, 'utf-8') : ''
                 });
@@ -94,7 +77,7 @@ class PageLoader {
             });
     }
 
-    load(id: string, execute?: Function | string) {
+    load(id: string, execute?: Function) {
         let Row = this.content.pages!.Row;
         let Column = this.content.pages!.Column;
        if (Row!.some(page => page.id === id)) {
@@ -110,19 +93,8 @@ class PageLoader {
                     type: 'R'
                 }
             };
-
-            document.querySelector(`[${R.indexbar}]`).innerHTML = this.content.pages.Indexbar[0].html;
-
-            // this.content.pages.Indexbar.forEach((i) => {
-            //     let indexHTML = document.querySelector(`[${R.indexbar}]`).innerHTML;
-            //     document.querySelector(`[${R.indexbar}]`).innerHTML = indexHTML + i.html;
-            // });
-
-            if (typeof(execute) === 'function') execute();
-            else if (typeof(execute) === 'string') {
-                rPage.script = execute;
-                eval(rPage.script);
-            }
+            
+            if (typeof(execute) === 'function') execute(rPage.id);
        } else if (Column!.some(page => page.id === id)) {
             let cPage = Column!.filter((val) => {return val.id === id})[0];
             document.querySelector(`[${C.container}]`)!.innerHTML = cPage.html;
@@ -134,15 +106,11 @@ class PageLoader {
                     type: 'C'
                 }
             };
-            if (typeof(execute) === 'function') execute();
-            else if (typeof(execute) === 'string') {
-                cPage.script = execute;
-                eval(cPage.script);
-            }
+            if (typeof(execute) === 'function') execute(cPage.id);
        } else throw new Error(`There is no page with this ID: ${id}`);
     }
 
-    update(execute?: Function | string) {
+    update(execute?: Function) {
         let Column = this.content.pages!.Column;
         let id = this.content.status.actual.page;
         let page = Column!.filter((val) => {return val.id === id})[0];
@@ -154,4 +122,3 @@ class PageLoader {
 }
 
 export { PageLoader };
-

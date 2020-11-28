@@ -179,7 +179,7 @@ class RenderResume {
             if (!(typeof(this.renderGraphRemain) == 'undefined')) 
                 this.renderGraphRemain.destroy();
 
-            this.renderGraphRemain = new Chart(remainChart, {
+            this.renderGraphRemain = new Chart((remainChart as HTMLCanvasElement), {
                 type: 'pie',
                 data: {
                     labels: projects,
@@ -234,7 +234,7 @@ class RenderResume {
                 this.renderGraphTotal.destroy();
             }
 
-            this.renderGraphTotal = new Chart(totalChart, {
+            this.renderGraphTotal = new Chart((totalChart as HTMLCanvasElement), {
                 type: 'bar',
                 data: {
                     labels: dates,
@@ -264,6 +264,14 @@ class RenderResume {
         });
     }
 }
+
+
+class RenderSR {
+    
+}
+
+
+
 
 function dateFormat(date, separator = '/') {
     let get: string;

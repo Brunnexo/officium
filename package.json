@@ -2,7 +2,7 @@
     "name": "officium",
     "version": "0.0.1",
     "description": "Sistema de Relatório de Mão-de-obra",
-    "main": "./dist/app.js",
+    "main": "app.js",
     "scripts": {},
     "author": "Bruno Costa",
     "license": "ISC",
