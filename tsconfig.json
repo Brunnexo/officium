@@ -67,5 +67,5 @@
   },
   // "include": ["officium-modules/**/*", "renderer-processes/**/*"],
   "exclude": ["node_modules/**/*"],
-  "include": ["officium-modules/**/*"]
+  "include": ["officium-modules/**/*", "./"]
 }

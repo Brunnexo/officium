@@ -6,7 +6,7 @@
 .dark .table,
 .dark .table>th,
 .dark .table>td {
-    background-color: var(--light);
+    background: none;
 }
 
 .dark .table th,
@@ -18,13 +18,13 @@
 
 .dark .table {
     color: var(--dark-font-color);
-    background-color: var(--dark);
+    background: none;
 }
 
 .dark .table th,
 .dark .table td,
 .dark .table thead th {
-    background-color: var(--dark);
+    background: none;
 }
 
 .dark .table.table-bordered {
@@ -33,11 +33,12 @@
 
 .dark .table.table-striped tbody tr:nth-of-type(odd) {
     background-color: rgba(255, 255, 255, 0.05);
+    background: none;
 }
 
 .dark .table.table-hover tbody tr:hover {
     color: var(--dark-font-color);
-    background-color: var(--dark)
+    background: none;
 }
 
 
@@ -46,7 +47,7 @@
 .light .table,
 .light .table>th,
 .light .table>td {
-    background-color: var(--light);
+    background: none;
     color: var(--light-font-color);
 }
 
@@ -58,10 +59,10 @@
 }
 
 .light .table-hover .table:hover {
-    background-color: var(--light);
+    background: none;
 }
 
 .light .table-hover .table:hover>td,
 .light .table-hover .table:hover>th {
-    background-color: var(--light);
+    background: none;
 }

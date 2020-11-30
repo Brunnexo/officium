@@ -10,9 +10,9 @@ const SQL_DRIVER = new MSSQL(remote.getGlobal('sql').config);
 window.jQuery = window.$ = require('jquery');
 
 // Página pronta
-$(document).ready(() => {
+window.onload = () => {
     ColorMode(localStorage.getItem('colorMode'));
-    $('#welcome').text(welcome());
+    document.getElementById('welcome').textContent = welcome();
 
     remote.getCurrentWindow()
         .on('focus', () => {
@@ -21,39 +21,57 @@ $(document).ready(() => {
         .on('blur', () => {
             document.querySelector('.view').classList.add('no-focus');
         });
-});
+}
 
 // Processo inter-comunicação
 ipc.on('adm-password-require', () => {
-    $(':password').removeAttr('readonly').fadeIn('slow').focus();
+    let passwordInput = document.getElementById('input-password');
+
+    passwordInput.style.display = 'unset';
+    passwordInput.focus();
+
     warning('Insira a senha');
 });
 
 // Botões
 // Fechar
-$('.close-btn').click(() => {
+document.querySelector('.close-btn').parentElement.onclick = () => {
     remote.getCurrentWindow().close();
-});
+}
 
 // Limpar campos
-$('#btnClear').click(() => {
-    $(':text').val('').focus();
-    $(':password').val('').hide();
-});
+document.getElementById('btnClear').onclick = () => {
+    let registryInput = document.getElementById('input-registry'),
+        passwordInput = document.getElementById('input-password');
+
+    registryInput.value = '';
+    registryInput.focus();
+
+    passwordInput.value = '';
+    passwordInput.style.display = 'none';
+}
 
 // Autenticar
-$('#btnAuth').click(() => {
-    authenticate($(':text').val(), $(':password').val());
-});
+document.getElementById('btnAuth').onclick = () => {
+    let registry = document.getElementById('input-registry').value,
+        password = document.getElementById('input-password').value;
 
-$(':text, :password').keypress((key) => {
-    if (key.charCode == 13) $('#btnAuth').click();
-});
+    authenticate(registry, password);
+}
+
+function keyPress(ev) {
+    if (ev.key == 'Enter') document.getElementById('btnAuth').onclick();
+}
+
+document.getElementById('input-registry').addEventListener('keypress', keyPress);
+document.getElementById('input-password').addEventListener('keypress', keyPress);
+
 
 // Autenticar
 
 function authenticate(registry, password) {
     let worker = [];
+
     if (password == '') {
         if (registry == '') warning('Registro inválido!');
         else {
@@ -69,31 +87,42 @@ function authenticate(registry, password) {
                 });
         }
     } else {
-        SQL_DRIVER.select(MSSQL.QueryBuilder('Authenticate', $(':password').val(), $(':text').val()), (data) => {
+        SQL_DRIVER.select(MSSQL.QueryBuilder('Authenticate', password, registry), (data) => {
             ipc.send('open-workerScreen', data.Autenticado.value);
         });
     }
 }
 
 function warning(sel) {
-    let t = $('#instruction').text();
-    $('#instruction')
-        .hide()
-        .addClass('text-danger')
-        .text(sel)
-        .fadeIn();
+    let text = document.getElementById('instruction').textContent,
+        instruction = document.getElementById('instruction');
+    instruction.style = {
+        display: 'none',
+        transitionDuration: '500ms'
+    };
+    instruction.classList.add('text-danger');
+    instruction.textContent = sel;
+    instruction.style = {
+        display: 'unset',
+        opacity: '0'
+    };
+    instruction.style.opacity = '1';
+
     clearTimeout(this.delay);
     this.delay = setTimeout(() => {
-        $('#instruction').removeClass('text-danger')
-            .hide()
-            .text(t)
-            .fadeIn();
+        instruction.style.display = 'none';
+        instruction.classList.remove('text-danger');
+        instruction.textContent = text;
+        instruction.style = {
+            display: 'unset',
+            opacity: '0'
+        };
+        instruction.style.opacity = '1';
     }, 3000);
+    instruction.style.transitionDuration = '0s';
 }
 
 function welcome() {
     let d = new Date().getHours();
     return (d >= 18 ? 'Boa noite!' : d >= 12 ? 'Boa tarde!' : 'Bom dia!');
 }
-
-const validateIP = (ipaddr) => (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ipaddr));

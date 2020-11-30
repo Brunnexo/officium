@@ -31,6 +31,7 @@ interface PageContents {
         Row: Array<{
             id: string;
             html: string;
+            updateable: boolean;
             parent: HTMLElement | null;
             script?: string;
         }>;
@@ -58,6 +59,7 @@ class PageLoader {
                 this.content.pages!.Row!.push({
                     id: elmnt.id,
                     html: elmnt.innerHTML,
+                    updateable: elmnt.hasAttribute('updateable'),
                     parent: elmnt.parentElement,
                     script: fs.existsSync(path) ? fs.readFileSync(path, 'utf-8') : ''
                 });
@@ -111,10 +113,19 @@ class PageLoader {
     }
 
     update(execute?: Function) {
-        let Column = this.content.pages!.Column;
-        let id = this.content.status.actual.page;
-        let page = Column!.filter((val) => {return val.id === id})[0];
-       
+        let Column = this.content.pages!.Column,
+            Row = this.content.pages!.Row,
+            type = this.content.status.actual.type,
+            id = this.content.status.actual.page;
+
+        let page;
+
+        if (type == 'C') {
+            page = Column!.filter((val) => {return val.id === id})[0];
+        } else {
+            page = Row!.filter((val) => {return val.id === id})[0];
+        }
+        
         if (typeof(page) !== 'undefined' && page.updateable) {
             this.load(page.id, execute);
         }

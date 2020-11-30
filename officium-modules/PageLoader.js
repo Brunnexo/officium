@@ -29,6 +29,7 @@ class PageLoader {
             this.content.pages.Row.push({
                 id: elmnt.id,
                 html: elmnt.innerHTML,
+                updateable: elmnt.hasAttribute('updateable'),
                 parent: elmnt.parentElement,
                 script: fs.existsSync(path) ? fs.readFileSync(path, 'utf-8') : ''
             });
@@ -83,9 +84,14 @@ class PageLoader {
             throw new Error(`There is no page with this ID: ${id}`);
     }
     update(execute) {
-        let Column = this.content.pages.Column;
-        let id = this.content.status.actual.page;
-        let page = Column.filter((val) => { return val.id === id; })[0];
+        let Column = this.content.pages.Column, Row = this.content.pages.Row, type = this.content.status.actual.type, id = this.content.status.actual.page;
+        let page;
+        if (type == 'C') {
+            page = Column.filter((val) => { return val.id === id; })[0];
+        }
+        else {
+            page = Row.filter((val) => { return val.id === id; })[0];
+        }
         if (typeof (page) !== 'undefined' && page.updateable) {
             this.load(page.id, execute);
         }

@@ -117,18 +117,15 @@
                                 <button type="button" btn-back>Voltar</button>
                             </div>
                             <div class="action-button" style="display: none;">
-                                <button type="button" btn-next >Próximo</button>
+                                <button type="button" btn-next>Próximo</button>
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div id="reg-sr-time" r-loader>
+            <div id="reg-sr-time" r-loader updateable>
                 <h1 class="display-4 font-italic">Service Request</h1>
-                <hr />
-                <h6 id="registered-common-time"></h6>
-                <h6 id="registered-extra-time"></h6>
                 <hr />
                 <div class="row justify-content-center">
                     <div class="col-auto">
@@ -138,9 +135,15 @@
                         <canvas id="graphTotalExtra" height="300"></canvas>
                     </div>
                 </div>
+                <hr />
+                <div class="row justify-content-center">
+                    <form>
+                        <input id="input-time" type="number" class="form-control text-center" placeholder="Tempo em minutos">
+                    </form>
+                    <button type="button" id="reg-btn" class="btn btn-dark ml-1">Registrar</button>
+                </div>
+                <h5>Como ficará seu resumo</h5>
             </div>
-
-
         </div>
     </div>
     <!-- Scripts -->

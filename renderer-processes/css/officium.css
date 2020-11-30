@@ -54,6 +54,17 @@
 .content-margin {
     margin-top: 56px;
 }
+
+
+/* Entrada de Números */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+}
+
+
 /* Barra de rolagem*/
 
 ::-webkit-scrollbar {

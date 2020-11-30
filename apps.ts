@@ -1,18 +1,19 @@
-const { app, BrowserWindow } = require('electron');
-const ipc = require('electron').ipcMain;
+import { app, BrowserWindow, ipcMain as ipc } from 'electron';
 
-var splash, main, workerScreen;
+var splash: BrowserWindow,
+    main: BrowserWindow,
+    workerScreen: BrowserWindow;
 
 // Execução inicial
 app.on('ready', () => {
-    buildSplash(() => {
+    build.splash(() => {
         splash.show();
     });
 });
 
 // Inter-processos
 ipc.on('show-main', () => {
-    buildMain(() => {
+    build.main(() => {
         main.show();
         splash.destroy();
     });
@@ -20,18 +21,17 @@ ipc.on('show-main', () => {
 
 // Janela do colaborador
 ipc.on('open-workerScreen', (evt, arg) => {
+    let admScreen: boolean;
     if (arg != 'TRUE' && global.data.worker['Funções'].value.split('').includes('A')) {
         evt.reply('adm-password-require');
     } else if (arg == 'TRUE') {
         admScreen = true;
-        buildWorkerScreen(() => {
-            workerScreen.show();
+        build.workerScreen(() => {
             main.destroy();
         });
     } else {
         admScreen = false;
-        buildWorkerScreen(() => {
-            workerScreen.show();
+        build.workerScreen(() => {
             main.destroy();
         });
     }
@@ -39,83 +39,74 @@ ipc.on('open-workerScreen', (evt, arg) => {
 
 // Voltar ao início
 ipc.on('back-main', (evt, arg) => {
-    buildMain(() => {
-        main.show();
+    build.main(() => {
         workerScreen.destroy();
     });
 });
 
-// Registrar
-ipc.on('reg-work', (evt, arg) => {
-
-
-});
-
-
-// Construtores de janela
-// Main
-function buildMain(ready) {
-    main = new BrowserWindow({
-        "show": false,
-        "frame": false,
-        "minWidth": 500,
-        "minHeight": 250,
-        "width": 500,
-        "height": 350,
-        "resizable": false,
-        "transparent": true,
-        "webPreferences": {
-            "nodeIntegration": true,
-            "enableRemoteModule": true
-        }
-    });
-    main.loadURL(`${__dirname}/renderer-processes/html/main.html`);
-    main.once('ready-to-show', () => {
-        ready();
-    });
-}
-
-// Splash
-function buildSplash(ready) {
-    splash = new BrowserWindow({
-        "show": false,
-        "frame": false,
-        "width": 300,
-        "height": 300,
-        "resizable": false,
-        "transparent": true,
-        "skipTaskbar": true,
-        "webPreferences": {
-            "nodeIntegration": true,
-            "enableRemoteModule": true
-        }
-    });
-    splash.loadURL(`${__dirname}/renderer-processes/html/splash.html`);
-    splash.once('ready-to-show', () => {
-        ready()
-    });
-};
-
-// WorkerScreen
-function buildWorkerScreen(ready) {
-    workerScreen = new BrowserWindow({
-        "show": false,
-        "frame": false,
-        "width": 1280,
-        "height": 730,
-        "minWidth": 1280,
-        "minHeight": 730,
-        "resizable": true,
-        "transparent": true,
-        "webPreferences": {
-            "nodeIntegration": true,
-            "enableRemoteModule": true
-        }
-    });
-    workerScreen.loadURL(`${__dirname}/renderer-processes/html/workerScreen.html`);
-    workerScreen.once('ready-to-show', () => {
-        ready();
-    });
+const build = {
+    main(execute: Function) {
+        main = new BrowserWindow({
+            "show": false,
+            "frame": false,
+            "minWidth": 500,
+            "minHeight": 250,
+            "width": 500,
+            "height": 350,
+            "resizable": false,
+            "transparent": true,
+            "webPreferences": {
+                "nodeIntegration": true,
+                "enableRemoteModule": true
+            }
+        });
+        main.loadURL(`${__dirname}/renderer-processes/html/main.html`);
+        main.once('ready-to-show', () => {
+            main.show();
+            execute();
+        });
+    },
+    splash(execute: Function) {
+        splash = new BrowserWindow({
+            "show": false,
+            "frame": false,
+            "width": 300,
+            "height": 300,
+            "resizable": false,
+            "transparent": true,
+            "skipTaskbar": true,
+            "webPreferences": {
+                "nodeIntegration": true,
+                "enableRemoteModule": true
+            }
+        });
+        splash.loadURL(`${__dirname}/renderer-processes/html/splash.html`);
+        splash.once('ready-to-show', () => {
+            splash.show();
+            execute();
+        });
+    },
+    workerScreen(execute: Function) {
+        workerScreen = new BrowserWindow({
+            "show": false,
+            "frame": false,
+            "width": 1280,
+            "height": 730,
+            "minWidth": 1280,
+            "minHeight": 730,
+            "resizable": true,
+            "transparent": true,
+            "webPreferences": {
+                "nodeIntegration": true,
+                "enableRemoteModule": true
+            }
+        });
+        workerScreen.loadURL(`${__dirname}/renderer-processes/html/workerScreen.html`);
+        workerScreen.once('ready-to-show', () => {
+            workerScreen.show();
+            execute();
+        });
+    }
 }
 
 // Variáveis globais

@@ -3,7 +3,7 @@ const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
 // Extensões internas
-const { PageLoader, ColorMode, RenderResume, RenderSR } = require('../../officium-modules/officium');
+const { PageLoader, ColorMode, RenderResume, RenderSR } = require('../../officium-modules/Officium');
 
 // Dependências
 window.jQuery = window.$ = require('jquery');
@@ -33,7 +33,7 @@ const SR = new RenderSR({
     registry: worker.Registro.value,
     journey: worker.Jornada.value,
     charts: {
-        total: 'graphRemain',
+        remain: 'graphRemain',
         extra: 'graphTotalExtra'
     },
     infos: {
@@ -209,7 +209,15 @@ function PageScripts(pageId) {
             };
             break;
         case 'reg-sr-time':
-            SR.getData(document.getElementById("date").value);
+            SR.getData(document.getElementById('date').value, Number(document.getElementById('input-time').value));
+
+            document.getElementById('input-time').onkeyup = () => {
+                clearTimeout(this.inputDelay);
+                this.inputDelay = setTimeout(() => {
+                    SR.getData(document.getElementById('date').value, Number(document.getElementById('input-time').value));
+                }, 500);
+            }
+            ipc.send('reg-work', { banana: 'potássio' });
             break;
     }
 }
