@@ -11,10 +11,6 @@ function ColorMode(mode) {
         case 'light':
             document.querySelector('.view').classList.add('light');
             document.querySelector('.view').classList.remove('dark');
-            document.querySelectorAll('.btn').forEach((elmnt) => {
-                elmnt.classList.add('btn-dark');
-                elmnt.classList.remove('btn-light');
-            });
             document.querySelectorAll('.navbar').forEach((elmnt) => {
                 elmnt.classList.add('navbar-light');
                 elmnt.classList.remove('navbar-dark');
@@ -23,10 +19,6 @@ function ColorMode(mode) {
         case 'dark':
             document.querySelector('.view').classList.add('dark');
             document.querySelector('.view').classList.remove('light');
-            document.querySelectorAll('.btn').forEach((elmnt) => {
-                elmnt.classList.add('btn-light');
-                elmnt.classList.remove('btn-dark');
-            });
             document.querySelectorAll('.navbar').forEach((elmnt) => {
                 elmnt.classList.add('navbar-dark');
                 elmnt.classList.remove('navbar-light');

@@ -24,7 +24,8 @@ const Resume = new RenderResume({
     charts: {
         history: 'history',
         remain: 'graphRemain',
-        total: 'graphTotal'
+        total: 'graphTotal',
+        extra: 'graphTotalExtra'
     },
     workTime: workTime
 });
@@ -40,7 +41,8 @@ const SR = new RenderSR({
         common: 'registered-common-time',
         extra: 'registered-extra-time'
     },
-    workTime: workTime
+    workTime: workTime,
+    notification: 'notification-banner'
 });
 
 // Funções ao carregar a página
@@ -155,8 +157,8 @@ function PageScripts(pageId) {
             let inputwo = document.getElementById('input-wo'),
                 inputsr = document.getElementById('input-sr'),
                 inputservice = document.getElementById('input-service'),
-                nextbutton = document.querySelector('[btn-next]').parentElement,
-                backbutton = document.querySelector('[btn-back]').parentElement;
+                nextbutton = document.querySelectorAll('[btn-next]')[0],
+                backbutton = document.querySelectorAll('[btn-back]')[0];
 
             backbutton.onclick = () => {
                 HTML.load('reg-type', PageScripts);
@@ -183,6 +185,11 @@ function PageScripts(pageId) {
 
                             nextbutton.style.display = 'none';
                         }
+                    } else {
+                        inputsr.value = '';
+                        inputservice.value = '';
+
+                        nextbutton.style.display = 'none';
                     }
                 }, 500);
             };
@@ -204,6 +211,11 @@ function PageScripts(pageId) {
 
                             nextbutton.style.display = 'none';
                         }
+                    } else {
+                        inputwo.value = '';
+                        inputservice.value = '';
+
+                        nextbutton.style.display = 'none';
                     }
                 }, 500);
             };
@@ -211,13 +223,17 @@ function PageScripts(pageId) {
         case 'reg-sr-time':
             SR.getData(document.getElementById('date').value, Number(document.getElementById('input-time').value));
 
+            document.querySelectorAll('[btn-back]')[0]
+                .onclick = () => {
+                    HTML.load('reg-sr', PageScripts);
+                }
+
             document.getElementById('input-time').onkeyup = () => {
                 clearTimeout(this.inputDelay);
                 this.inputDelay = setTimeout(() => {
                     SR.getData(document.getElementById('date').value, Number(document.getElementById('input-time').value));
                 }, 500);
             }
-            ipc.send('reg-work', { banana: 'potássio' });
             break;
     }
 }

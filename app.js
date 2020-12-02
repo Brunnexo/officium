@@ -46,10 +46,13 @@ ipc.on('back-main', (evt, arg) => {
 });
 
 // Registrar
-ipc.on('reg-work', (evt, arg) => {
+ipc.on('labor-reg', (evt, arg) => {
+
+
 
 
 });
+
 
 
 // Construtores de janela

@@ -5,6 +5,8 @@ import { MSSQL } from './MSSQL';
 const Menu = remote.Menu;
 const MenuItem = remote.MenuItem;
 
+const borderColor = 'rgba(255, 255, 255, 0.5)';
+
 interface Information {
     title?: string,
     registry?: number | string,
@@ -20,7 +22,8 @@ interface Information {
         monthly?: number,
         dailyExtra?: number,
         weekendExtra?: number
-    }
+    },
+    notification?: string;
 }
 
 interface Data {
@@ -36,6 +39,7 @@ class RenderResume {
     
     private data?: Data;
     private renderGraphTotal: Chart;
+    private renderGraphExtra: Chart;
     private renderGraphRemain: Chart;
 
     constructor(value : Information) {
@@ -59,22 +63,26 @@ class RenderResume {
             remainChart = document.getElementById(this.info.charts.remain),
             totalData = this.data.total,
             totalChart = document.getElementById(this.info.charts.total),
+            extraData = this.data.extra,
+            extraChart = document.getElementById(this.info.charts.extra),
             history = document.getElementById(this.info.charts.history),
             title = document.getElementById(this.info.title);
+
+        let chartDate = new Date(date);
+        let isWeekend = (chartDate.getDay() >= 6);
 
         resumeData = [];
         remainData = [];
         totalData = [];
+        extraData = [];
 
         await this.MSSQL.select(MSSQL.QueryBuilder('History', registry, date), (data : any) => {
             resumeData.push(data)
         }).then(() => {
             history.style.display = 'none';
             title.style.display = 'none';
-            title.innerHTML = `Resumo de ${
-                dateFormat(date)
-            }
-                                <hr>`;
+            title.innerHTML = `Resumo de ${dateFormat(date)}<hr>`;
+            
             let tbody = document.createElement('tbody');
             if (!(Object.keys(resumeData).length === 0)) {
                 let thead = document.createElement('thead');
@@ -190,7 +198,7 @@ class RenderResume {
                         {
                             data: times,
                             backgroundColor: colors,
-                            borderColor: colors,
+                            borderColor: borderColor,
                             borderWidth: 1
                         }
                     ]
@@ -212,6 +220,7 @@ class RenderResume {
             });
             remainChart.style.display = 'unset';
         });
+
         await this.MSSQL.select(MSSQL.QueryBuilder('Total', registry), (data: any) => {
             totalData.push(data);
         }).then(() => {
@@ -245,7 +254,7 @@ class RenderResume {
                         {
                             data: times,
                             backgroundColor: colors,
-                            borderColor: colors,
+                            borderColor: borderColor,
                             borderWidth: 1
                         }
                     ]
@@ -264,6 +273,66 @@ class RenderResume {
             });
 
             totalChart.style.display = 'unset';
+        });
+
+        await this.MSSQL.select(MSSQL.QueryBuilder('RemainExtra', registry, date), (row: any) => {
+            extraData.push(row);
+        }).then(() =>{
+            let extraTimes = new Array,
+                extraProjects = new Array;
+                
+            let extraSumTime = 0,
+                extraRemain: number;
+
+            let extraWorkTime = (isWeekend ? this.info.workTime.weekendExtra : this.info.workTime.dailyExtra);
+
+            extraData.forEach((d: any) => {
+                extraTimes.push(d.Tempo.value);
+                extraProjects.push(d.Projeto.value);
+                extraSumTime += Number(d.Tempo.value);
+            });
+
+            extraRemain = Math.max(0, (extraWorkTime - extraSumTime));
+
+            if (extraRemain > 0) {
+                extraProjects.push('RESTANTE');
+                extraTimes.push(extraRemain);
+            }
+
+            let extraColors = randomColors(extraProjects.length);
+            
+            this.renderGraphExtra;
+            if (!(typeof(this.renderGraphExtra) == 'undefined')) 
+                this.renderGraphExtra.destroy();
+                
+            this.renderGraphExtra = new Chart((extraChart as  HTMLCanvasElement), {
+                type: 'pie',
+                data: {
+                    labels: extraProjects,
+                    datasets: [
+                        {
+                            data: extraTimes,
+                            backgroundColor: extraColors,
+                            borderColor: borderColor,
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: false,
+                    aspectRatio: 1,
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: true,
+                        text: `Seu tempo extra no dia`
+                    },
+                    tooltips: {
+                        mode: "point"
+                    }
+                }
+            });
         });
     }
 }
@@ -345,7 +414,7 @@ class RenderSR {
                             {
                                 data: times,
                                 backgroundColor: colors,
-                                borderColor: colors,
+                                borderColor: borderColor,
                                 borderWidth: 1
                             }
                         ]
@@ -373,8 +442,15 @@ class RenderSR {
                 this.data.extra.push(row);
             }).then(() =>{
                 let remainExtraData = this.data.extra;
-                let remainExtraChart = document.getElementById(this.info.charts.extra);
+                let remainExtraChart = document.getElementById(this.info.charts.extra),
+                    notification = document.getElementById(this.info.notification);
                 
+                function notify(elmnt: HTMLElement, text: string) {
+                    elmnt.textContent = text;
+                    elmnt.classList.add('show');
+                    setTimeout(() => {elmnt.classList.remove('show')}, 3000);
+                }
+
                 let extraTimes = new Array,
                     extraProjects = new Array;
                     
@@ -391,15 +467,25 @@ class RenderSR {
 
                 extraRemain = Math.max(0, (extraWorkTime - extraSumTime));
 
-                if (extra > 0) {
+                if (extra > 10) {
                     if (extra > extraRemain && (extraRemain >= extraWorkTime)) {
                         extraProjects.push('SEU REGISTRO');
                         extraTimes.push(extraRemain);
+                        notify(notification, 'Seu registro ultrapassa o tempo de H.E.');
                     } else if ((extraRemain - extra) >= 0) {
                         extraProjects.push('SEU REGISTRO');
                         extraTimes.push(extra);
+                        notify(notification, 'Seu registro contém tempo de H.E.');
                     }
+                } else if (extra > 0 && extra <= 10 && extraRemain >= 10) {
+                    notify(notification, 'H.E. menor que 10 minutos é desconsiderada!');
                 }
+                
+                if (extra > 0 && extraRemain <= 0) {
+                    notify(notification, 'Não há tempo restante para H.E.!');
+                }
+
+                extra = (extra > 10 ? extra : 0);
 
                 if (extraRemain > 0 && (extraRemain - extra) > 0) {
                     extraProjects.push("RESTANTE");
@@ -421,7 +507,7 @@ class RenderSR {
                             {
                                 data: extraTimes,
                                 backgroundColor: extraColors,
-                                borderColor: extraColors,
+                                borderColor: borderColor,
                                 borderWidth: 1
                             }
                         ]
@@ -457,32 +543,24 @@ function dateFormat(date, separator = '/') {
     }
 }
 
-/* function randomColors(num) {
+function randomColors(num) {
     let colors = new Array;
-    this.randDarkColor = function () {
-        var lum = -0.25;
-        var hex = String('#' + Math.random().toString(16).slice(2, 8).toUpperCase()).replace(/[^0-9a-f]/gi, '');
-        if (hex.length < 6) {
-            hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    let getRandomColor = function() {
+        var letters = 'ABD'.split('');
+        var color = '#';
+        for (var i = 0; i < 6; i++ ) {
+            color += letters[Math.floor(Math.random() * letters.length)];
         }
-        var rgb = "#",
-            c,
-            i;
-        for (i = 0; i < 3; i++) {
-            c = parseInt(hex.substr(i * 2, 2), 16);
-            c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
-            rgb += ("00" + c).substr(c.length);
-        }
-        return rgb;
+        return color;
     }
 
     for (let i = 0; i < num; i ++) {
-        colors.push(this.randDarkColor());
+        colors.push(getRandomColor());
     }
     return colors;
-}*/
+}
 
-function randomColors(num) {
+/*function randomColors(num) {
     let colors = [];
 
     // Math.random() * (max - min) + min;
@@ -500,7 +578,7 @@ function randomColors(num) {
         }
     }
     return colors;
-}
+}*/
 
 export { RenderResume, RenderSR };
 

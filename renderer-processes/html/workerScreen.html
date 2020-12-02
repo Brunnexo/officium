@@ -59,6 +59,9 @@
                     <canvas id="graphRemain" width="300" height="300"></canvas>
                 </div>
                 <div class="col-auto">
+                    <canvas id="graphTotalExtra" height="300"></canvas>
+                </div>
+                <div class="col-auto">
                     <canvas id="graphTotal" width="500" height="300"></canvas>
                 </div>
             </div>
@@ -77,14 +80,14 @@
                 <div class="center-buttons">
                     <div class="choose-button">
                         <button type="button" id="btn-sr">
-                                <h6>Service Request</h6>
                                 <img src="../assets/icons/tools.png">
+                                <h6>Service Request</h6>
                         </button>
                     </div>
                     <div class="choose-button">
                         <button type="button" id="btn-activities">
-                                <h6>Projetos/Atividades do Setor</h6>
                                 <img src="../assets/icons/project.svg">
+                                <h6>Projetos/Atividades do Setor</h6>
                         </button>
                     </div>
                 </div>
@@ -94,7 +97,7 @@
                 <h1 class="display-4 font-italic">Service Request</h1>
                 <hr />
                 <div class="center-forms">
-                    <form>
+                    <form onsubmit="return false;">
                         <div class="form-row">
                             <div class="form-group col-auto">
                                 <label for="input-wo" style="font-style: italic;">Work Order</label>
@@ -113,12 +116,8 @@
                             </div>
                         </div>
                         <div class="buttons-container">
-                            <div class="action-button">
-                                <button type="button" btn-back>Voltar</button>
-                            </div>
-                            <div class="action-button" style="display: none;">
-                                <button type="button" btn-next>Próximo</button>
-                            </div>
+                            <button type="button" class="btn" btn-back>Voltar</button>
+                            <button type="button" class="btn" btn-next style="display: none;">Próximo</button>
                         </div>
                     </form>
                 </div>
@@ -137,12 +136,15 @@
                 </div>
                 <hr />
                 <div class="row justify-content-center">
-                    <form>
+                    <button type="button" class="btn mr-1" btn-back>Voltar</button>
+                    <form onsubmit="return false;">
                         <input id="input-time" type="number" class="form-control text-center" placeholder="Tempo em minutos">
                     </form>
-                    <button type="button" id="reg-btn" class="btn btn-dark ml-1">Registrar</button>
+                    <button type="button" id="reg-btn" class="btn ml-1">Registrar</button>
                 </div>
-                <h5>Como ficará seu resumo</h5>
+                <div class="row justify-content-center">
+                    <p class="text-danger" id="notification-banner"></p>
+                </div>
             </div>
         </div>
     </div>
