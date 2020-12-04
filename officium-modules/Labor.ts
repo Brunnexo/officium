@@ -13,8 +13,11 @@ interface Labor {
 class WorkerLabor {
     static labor: Labor;
 
-    update(info: Labor) {
+    static update(info: Labor) {
         WorkerLabor.labor = info;
+    }
 
+    static toQuery(execute: Function) {
+        
     }
 }

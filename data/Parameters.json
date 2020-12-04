@@ -1,0 +1,27 @@
+{
+    "sql": {
+        "config": {
+            "server": "10.144.201.115",
+            "authentication": {
+                "type": "default",
+                "options": {
+                    "userName": "SAT_LOGON",
+                    "password": "pAcMaN2@"
+                }
+            },
+            "options": {
+                "encrypt": false,
+                "database": "SAT",
+                "enableArithAbort": true,
+                "appName": "SAT",
+                "useColumnNames": true
+            }
+        }
+    },
+    "workTime": {
+        "hourly": 528,
+        "monthly": 522,
+        "dailyExtra": 60,
+        "weekendExtra": 660
+    }
+}

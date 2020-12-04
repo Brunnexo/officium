@@ -7,8 +7,6 @@ const { MSSQL, ColorMode } = require('../../officium-modules/officium');
 
 const SQL_DRIVER = new MSSQL(remote.getGlobal('sql').config);
 
-window.jQuery = window.$ = require('jquery');
-
 // Página pronta
 window.onload = () => {
     ColorMode(localStorage.getItem('colorMode'));
@@ -26,10 +24,8 @@ window.onload = () => {
 // Processo inter-comunicação
 ipc.on('adm-password-require', () => {
     let passwordInput = document.getElementById('input-password');
-
     passwordInput.style.display = 'unset';
     passwordInput.focus();
-
     warning('Insira a senha');
 });
 
@@ -43,10 +39,8 @@ document.querySelector('.close-btn').parentElement.onclick = () => {
 document.getElementById('btnClear').onclick = () => {
     let registryInput = document.getElementById('input-registry'),
         passwordInput = document.getElementById('input-password');
-
     registryInput.value = '';
     registryInput.focus();
-
     passwordInput.value = '';
     passwordInput.style.display = 'none';
 }
@@ -66,12 +60,9 @@ function keyPress(ev) {
 document.getElementById('input-registry').addEventListener('keypress', keyPress);
 document.getElementById('input-password').addEventListener('keypress', keyPress);
 
-
 // Autenticar
-
 function authenticate(registry, password) {
     let worker = [];
-
     if (password == '') {
         if (registry == '') warning('Registro inválido!');
         else {

@@ -128,7 +128,7 @@ global = {
         srs: {},
         general: {},
         config: {
-            server: '127.0.0.1',
+            server: '10.144.201.115',
             authentication: {
                 type: 'default',
                 options: {

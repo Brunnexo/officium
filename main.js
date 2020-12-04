@@ -1,0 +1,76 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Process = void 0;
+const electron_1 = require("electron");
+class Process {
+    static build(window, execute) {
+        switch (window) {
+            case 'splash':
+                Process.splash = new electron_1.BrowserWindow({
+                    "show": false,
+                    "frame": false,
+                    "width": 300,
+                    "height": 300,
+                    "resizable": false,
+                    "transparent": true,
+                    "skipTaskbar": true,
+                    "webPreferences": {
+                        "nodeIntegration": true,
+                        "enableRemoteModule": true
+                    }
+                });
+                Process.splash.loadURL(`${__dirname}/renderer-processes/html/splash.html`);
+                Process.splash.once('ready-to-show', () => {
+                    Process.splash.show();
+                    if (typeof (execute) === 'function')
+                        execute();
+                });
+                break;
+            case 'main':
+                Process.main = new electron_1.BrowserWindow({
+                    "show": false,
+                    "frame": false,
+                    "minWidth": 500,
+                    "minHeight": 250,
+                    "width": 500,
+                    "height": 350,
+                    "resizable": false,
+                    "transparent": true,
+                    "webPreferences": {
+                        "nodeIntegration": true,
+                        "enableRemoteModule": true
+                    }
+                });
+                Process.main.loadURL(`${__dirname}/renderer-processes/html/main.html`);
+                Process.main.once('ready-to-show', () => {
+                    Process.main.show();
+                    if (typeof (execute) === 'function')
+                        execute();
+                });
+                break;
+            case 'workerScreen':
+                Process.workerScreen = new electron_1.BrowserWindow({
+                    "show": false,
+                    "frame": false,
+                    "width": 1280,
+                    "height": 730,
+                    "minWidth": 1280,
+                    "minHeight": 730,
+                    "resizable": true,
+                    "transparent": true,
+                    "webPreferences": {
+                        "nodeIntegration": true,
+                        "enableRemoteModule": true
+                    }
+                });
+                Process.workerScreen.loadURL(`${__dirname}/renderer-processes/html/workerScreen.html`);
+                Process.workerScreen.once('ready-to-show', () => {
+                    Process.workerScreen.show();
+                    if (typeof (execute) === 'function')
+                        execute();
+                });
+                break;
+        }
+    }
+}
+exports.Process = Process;
