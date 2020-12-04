@@ -18,8 +18,8 @@
                 <h6 id="instruction">Insira seu registro</h6>
             </div>
             <div class="input-group mb-3">
-                <input type="number" id="input-registry" class="form-control" placeholder="Registro">
-                <input type="password" id="input-password" class="form-control password" style="display: none;" placeholder="Senha">
+                <input onkeydown="if(event.key === '.' || event.key === ','){event.preventDefault();}" type="number" id="input-registry" class="form-control" placeholder="Registro">
+                <input onkeydown="if(event.key === '.' || event.key === ','){event.preventDefault();}" type="password" id="input-password" class="form-control password" style="display: none;" placeholder="Senha">
                 <div class="input-group-append">
                     <button class="btn btn-dark" type="button" id="btnClear">Limpar</button>
                 </div>
