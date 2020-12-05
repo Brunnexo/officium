@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const main_1 = require("./main");
 const electron_1 = require("electron");
 const fs = require("fs");
+const main_1 = require("./main");
 const PARAMETERS = JSON.parse(fs.readFileSync('./data/Parameters.json', 'utf-8'));
 global['sql'] = PARAMETERS.sql;
 global['sql'].projects = {};

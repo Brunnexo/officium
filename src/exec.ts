@@ -1,6 +1,6 @@
-import { Process } from './main';
-import {app, ipcMain as ipc, remote } from 'electron';
+import { app, ipcMain as ipc } from 'electron';
 import * as fs from 'fs';
+import { Process } from './main';
 
 const PARAMETERS = JSON.parse(fs.readFileSync('./data/Parameters.json', 'utf-8'));
 
