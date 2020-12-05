@@ -23,38 +23,40 @@ interface Information {
         dailyExtra?: number,
         weekendExtra?: number
     },
+    infos?: {
+        common?: 'registered-common-time',
+        extra?: 'registered-extra-time'
+    },
     notification?: string;
 }
 
 interface Data {
-    resume?: Array <object>,
-    remain?: Array <object>,
-    total?: Array <object>,
-    extra?: Array <object>
+    resume?: Array<object>,
+    remain?: Array<object>,
+    total?: Array<object>,
+    extra?: Array<object>
 }
 
 class RenderResume {
-    protected info : Information;
-    protected MSSQL : MSSQL;
-    
+    protected info: Information;
+    protected MSSQL: MSSQL;
+
     private data?: Data;
     private renderGraphTotal: Chart;
     private renderGraphExtra: Chart;
     private renderGraphRemain: Chart;
 
-    constructor(value : Information) {
+    constructor(value: Information) {
         this.info = value;
-
         this.data = {
             resume: new Array,
             remain: new Array,
             total: new Array
         }
-
-        this.MSSQL = new MSSQL(remote.getGlobal('sql').config);
+        this.MSSQL = new MSSQL(remote.getGlobal('parameters')['sql'].config);
     }
 
-    async getData(date : string | Date) {
+    async getData(date: string | Date) {
         let registry = this.info.registry,
             journey = this.info.journey,
             workTime = this.info.workTime,
@@ -76,13 +78,13 @@ class RenderResume {
         totalData = [];
         extraData = [];
 
-        await this.MSSQL.select(MSSQL.QueryBuilder('History', registry, date), (data : any) => {
+        await this.MSSQL.select(MSSQL.QueryBuilder('History', registry, date), (data: any) => {
             resumeData.push(data)
         }).then(() => {
             history.style.display = 'none';
             title.style.display = 'none';
             title.innerHTML = `Resumo de ${dateFormat(date)}<hr>`;
-            
+
             let tbody = document.createElement('tbody');
             if (!(Object.keys(resumeData).length === 0)) {
                 let thead = document.createElement('thead');
@@ -102,7 +104,7 @@ class RenderResume {
 
                 table.appendChild(thead);
 
-                resumeData.forEach((arr : any) => {
+                resumeData.forEach((arr: any) => {
                     // Dados da tabela
                     let tr = document.createElement('tr');
                     // Conteúdo HTML da tabela
@@ -129,7 +131,7 @@ class RenderResume {
                 Adicionar menu de contexto para apagar linhas
                 aqui
             */
-           var id: number,
+            var id: number,
                 elmnt: HTMLElement;
             // Menu
             const menu = new Menu();
@@ -139,7 +141,7 @@ class RenderResume {
                     this.MSSQL.execute(`DELETE FROM [Relatórios] WHERE [ID] = ${id}`).then(() => {
                         elmnt.style.transitionDuration = '1s';
                         elmnt.style.opacity = '0';
-                        setTimeout(() => {elmnt.style.display = 'none'}, 1000);
+                        setTimeout(() => { elmnt.style.display = 'none' }, 1000);
                     });
                 }
             });
@@ -155,7 +157,7 @@ class RenderResume {
 
         await this.MSSQL.select(MSSQL.QueryBuilder('Remain', registry, date), (data: any) => {
             remainData.push(data);
-        }).then(() => { 
+        }).then(() => {
             /*
                Gerar gráfico em pizza para tempo restante
            */
@@ -172,11 +174,11 @@ class RenderResume {
                 remain += Number(d.Tempo.value);
             });
 
-            if (journey == 'H') 
+            if (journey == 'H')
                 remain = ((workTime.hourly - remain) < 0) ? 0 : (workTime.hourly - remain);
-             else 
+            else
                 remain = ((workTime.monthly - remain) < 0) ? 0 : (workTime.monthly - remain);
-            
+
 
             if (remain != 0) {
                 projects.push("RESTANTE");
@@ -187,7 +189,7 @@ class RenderResume {
             let colors = randomColors(projects.length);
 
             this.renderGraphRemain;
-            if (!(typeof(this.renderGraphRemain) == 'undefined')) 
+            if (!(typeof (this.renderGraphRemain) == 'undefined'))
                 this.renderGraphRemain.destroy();
 
             this.renderGraphRemain = new Chart((remainChart as HTMLCanvasElement), {
@@ -241,8 +243,8 @@ class RenderResume {
             })
 
             this.renderGraphTotal;
-            
-            if (!(typeof(this.renderGraphTotal) === 'undefined')) {
+
+            if (!(typeof (this.renderGraphTotal) === 'undefined')) {
                 this.renderGraphTotal.destroy();
             }
 
@@ -277,10 +279,10 @@ class RenderResume {
 
         await this.MSSQL.select(MSSQL.QueryBuilder('RemainExtra', registry, date), (row: any) => {
             extraData.push(row);
-        }).then(() =>{
+        }).then(() => {
             let extraTimes = new Array,
                 extraProjects = new Array;
-                
+
             let extraSumTime = 0,
                 extraRemain: number;
 
@@ -300,12 +302,12 @@ class RenderResume {
             }
 
             let extraColors = randomColors(extraProjects.length);
-            
+
             this.renderGraphExtra;
-            if (!(typeof(this.renderGraphExtra) == 'undefined')) 
+            if (!(typeof (this.renderGraphExtra) == 'undefined'))
                 this.renderGraphExtra.destroy();
-                
-            this.renderGraphExtra = new Chart((extraChart as  HTMLCanvasElement), {
+
+            this.renderGraphExtra = new Chart((extraChart as HTMLCanvasElement), {
                 type: 'pie',
                 data: {
                     labels: extraProjects,
@@ -339,7 +341,7 @@ class RenderResume {
 
 class RenderSR {
     protected info: Information;
-    protected MSSQL : MSSQL;
+    protected MSSQL: MSSQL;
     private data?: Data;
 
     private renderGraphRemain: Chart;
@@ -347,189 +349,177 @@ class RenderSR {
 
     constructor(value: Information) {
         this.info = value;
-        this.MSSQL = new MSSQL(remote.getGlobal('sql').config);
+        this.MSSQL = new MSSQL(remote.getGlobal('parameters')['sql'].config);
         this.data = {
             total: new Array
         }
     }
-    async getData(date: string | Date, time: number = 0) {
+    async getData(date: string | Date, time: number = 0, returnTime: Function) {
         let chartDate = new Date(date);
         let isWeekend = (chartDate.getDay() >= 6);
-        
         let registry = this.info.registry,
             journey = this.info.journey,
             workTime = (journey == 'H' ? this.info.workTime.hourly : this.info.workTime.monthly);
+        let extra = 0,
+            sumTime = 0,
+            remain = 0;
 
-        let extra = 0;
-
-            this.data.remain = [];
-            await this.MSSQL.select(MSSQL.QueryBuilder('Remain', registry, date), (row: any) => {
-                this.data.remain.push(row);
-            }).then(() => {
-                let remainData = this.data.remain;
-                let remainChart = document.getElementById(this.info.charts.remain);
-
-                let times = new Array,
-                    projects = new Array;
-
-                let sumTime = 0,
-                    remain: number;
-    
-                // Adiciona os valores a um array
-                remainData.forEach((d: any) => {
-                    times.push(d.Tempo.value);
-                    projects.push(d.Projeto.value);
-                    sumTime += Number(d.Tempo.value);
-                });
-                
-                remain = Math.max(0, (workTime - sumTime));
-
-                if (time > 0) {
-                    if (((remain - time) < 0) && (remain > 0)) {
-                        projects.push('SEU REGISTRO');
-                        times.push(remain);
-                        extra = !isWeekend ? Math.abs((remain - time)) : time;
-                    } else if ((remain - time) >= 0) {
-                        projects.push('SEU REGISTRO');
-                        times.push(time);
-                    }
-                }
-
-                if (remain > 0 && (remain - time) > 0) {
-                    projects.push("RESTANTE");
-                    times.push(remain - time);
-                }
-
-                let colors = randomColors(projects.length);
-
-                this.renderGraphRemain;
-                if (!(typeof(this.renderGraphRemain) == 'undefined')) 
-                    this.renderGraphRemain.destroy();
-                   remainChart 
-                this.renderGraphRemain = new Chart((remainChart as  HTMLCanvasElement), {
-                    type: 'pie',
-                    data: {
-                        labels: projects,
-                        datasets: [
-                            {
-                                data: times,
-                                backgroundColor: colors,
-                                borderColor: borderColor,
-                                borderWidth: 1
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: false,
-                        aspectRatio: 1,
-                        legend: {
-                            position: 'bottom'
-                        },
-                        title: {
-                            display: true,
-                            text: `Tempo do dia (máx. de ${workTime} minutos)`
-                        },
-                        tooltips: {
-                            mode: "point"
-                        }
-                    }
-                });
-                if (isWeekend) remainChart.style.display = 'none';
+        this.data.remain = [];
+        await this.MSSQL.select(MSSQL.QueryBuilder('Remain', registry, date), (row: any) => {
+            this.data.remain.push(row);
+        }).then(() => {
+            let remainData = this.data.remain;
+            let remainChart = document.getElementById(this.info.charts.remain);
+            let times = new Array,
+                projects = new Array;
+            // Adiciona os valores a um array
+            remainData.forEach((d: any) => {
+                times.push(d.Tempo.value);
+                projects.push(d.Projeto.value);
+                sumTime += Number(d.Tempo.value);
             });
-            
-            this.data.extra = [];
-            await this.MSSQL.select(MSSQL.QueryBuilder('RemainExtra', registry, date), (row: any) => {
-                this.data.extra.push(row);
-            }).then(() =>{
-                let remainExtraData = this.data.extra;
-                let remainExtraChart = document.getElementById(this.info.charts.extra),
-                    notification = document.getElementById(this.info.notification);
-                
-                function notify(elmnt: HTMLElement, text: string) {
-                    elmnt.textContent = text;
-                    elmnt.classList.add('show');
-                    setTimeout(() => {elmnt.classList.remove('show')}, 3000);
+            remain = Math.max(0, (workTime - sumTime));
+            if (time > 0) {
+                if (((remain - time) < 0) && (remain > 0)) {
+                    projects.push('SEU REGISTRO');
+                    times.push(remain);
+                    if (typeof(returnTime) === 'function') returnTime({common: remain});
+                    extra = !isWeekend ? Math.abs((remain - time)) : time;
+                } else if ((remain - time) >= 0) {
+                    projects.push('SEU REGISTRO');
+                    times.push(time);
+                    if (typeof(returnTime) === 'function') returnTime({common: time});
                 }
-
-                let extraTimes = new Array,
-                    extraProjects = new Array;
-                    
-                let extraSumTime = 0,
-                    extraRemain: number;
-
-                let extraWorkTime = (isWeekend ? this.info.workTime.weekendExtra : this.info.workTime.dailyExtra);
-
-                remainExtraData.forEach((d: any) => {
-                    extraTimes.push(d.Tempo.value);
-                    extraProjects.push(d.Projeto.value);
-                    extraSumTime += Number(d.Tempo.value);
-                });
-
-                extraRemain = Math.max(0, (extraWorkTime - extraSumTime));
-
-                if (extra > 10) {
-                    if (extra > extraRemain && (extraRemain >= extraWorkTime)) {
-                        extraProjects.push('SEU REGISTRO');
-                        extraTimes.push(extraRemain);
-                        notify(notification, 'Seu registro ultrapassa o tempo de H.E.');
-                    } else if ((extraRemain - extra) >= 0) {
-                        extraProjects.push('SEU REGISTRO');
-                        extraTimes.push(extra);
-                        notify(notification, 'Seu registro contém tempo de H.E.');
-                    }
-                } else if (extra > 0 && extra <= 10 && extraRemain >= 10) {
-                    notify(notification, 'H.E. menor que 10 minutos é desconsiderada!');
-                }
-                
-                if (extra > 0 && extraRemain <= 0) {
-                    notify(notification, 'Não há tempo restante para H.E.!');
-                }
-
-                extra = (extra > 10 ? extra : 0);
-
-                if (extraRemain > 0 && (extraRemain - extra) > 0) {
-                    extraProjects.push("RESTANTE");
-                    extraTimes.push(extraRemain - extra);
-                }
-
-                let extraColors = randomColors(extraProjects.length);
-
-                this.renderGraphRemainExtra;
-                
-                if (!(typeof(this.renderGraphRemainExtra) == 'undefined')) 
-                    this.renderGraphRemainExtra.destroy();
-                    
-                this.renderGraphRemainExtra = new Chart((remainExtraChart as  HTMLCanvasElement), {
-                    type: 'pie',
-                    data: {
-                        labels: extraProjects,
-                        datasets: [
-                            {
-                                data: extraTimes,
-                                backgroundColor: extraColors,
-                                borderColor: borderColor,
-                                borderWidth: 1
-                            }
-                        ]
-                    },
-                    options: {
-                        responsive: false,
-                        aspectRatio: 1,
-                        legend: {
-                            position: 'bottom'
-                        },
-                        title: {
-                            display: true,
-                            text: `Tempo extra do dia (máx. de ${extraWorkTime} minutos)`
-                        },
-                        tooltips: {
-                            mode: "point"
+            } else {
+                if (typeof(returnTime) === 'function') returnTime({common: 0});
+            }
+            if (remain > 0 && (remain - time) > 0) {
+                projects.push("RESTANTE");
+                times.push(remain - time);
+            }
+            let colors = randomColors(projects.length);
+            this.renderGraphRemain;
+            if (!(typeof (this.renderGraphRemain) == 'undefined'))
+                this.renderGraphRemain.destroy();
+            this.renderGraphRemain = new Chart((remainChart as HTMLCanvasElement), {
+                type: 'pie',
+                data: {
+                    labels: projects,
+                    datasets: [
+                        {
+                            data: times,
+                            backgroundColor: colors,
+                            borderColor: borderColor,
+                            borderWidth: 1
                         }
+                    ]
+                },
+                options: {
+                    responsive: false,
+                    aspectRatio: 1,
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: true,
+                        text: `Tempo do dia (máx. de ${workTime} minutos)`
+                    },
+                    tooltips: {
+                        mode: "point"
                     }
-                });
+                }
             });
-        }
+            if (isWeekend) remainChart.style.display = 'none';
+        });
+
+        this.data.extra = [];
+        await this.MSSQL.select(MSSQL.QueryBuilder('RemainExtra', registry, date), (row: any) => {
+            this.data.extra.push(row);
+        }).then(() => {
+            let remainExtraData = this.data.extra;
+            let remainExtraChart = document.getElementById(this.info.charts.extra),
+                notification = document.getElementById(this.info.notification);
+            function notify(elmnt: HTMLElement, text: string) {
+                elmnt.textContent = text;
+                elmnt.classList.add('show');
+                setTimeout(() => { elmnt.classList.remove('show') }, 3000);
+            }
+            let extraTimes = new Array,
+                extraProjects = new Array;
+            let extraSumTime = 0,
+                extraRemain: number;
+            let extraWorkTime = (isWeekend ? this.info.workTime.weekendExtra : this.info.workTime.dailyExtra);
+            remainExtraData.forEach((d: any) => {
+                extraTimes.push(d.Tempo.value);
+                extraProjects.push(d.Projeto.value);
+                extraSumTime += Number(d.Tempo.value);
+            });
+            extraRemain = Math.max(0, (extraWorkTime - extraSumTime));
+            if (extra > 10) {
+                if (extra > extraRemain && (extraRemain >= extraWorkTime)) {
+                    extraProjects.push('SEU REGISTRO');
+                    extraTimes.push(extraRemain);
+                    if (typeof(returnTime) === 'function') returnTime({extra: extraRemain});
+                    notify(notification, 'Seu registro ultrapassa o tempo de H.E.');
+                } else if ((extraRemain - extra) >= 0) {
+                    extraProjects.push('SEU REGISTRO');
+                    extraTimes.push(extra);
+                    if (typeof(returnTime) === 'function') returnTime({extra: extra});
+                    notify(notification, 'Seu registro contém tempo de H.E.');
+                }
+            } else if (extra > 0 && extra <= 10 && extraRemain >= 10) {
+                if (typeof(returnTime) === 'function') returnTime({extra: 0});
+                notify(notification, 'H.E. menor que 10 minutos é desconsiderada!');
+            } else {
+                if (typeof(returnTime) === 'function') returnTime({extra: 0});
+            }
+            if (extra > 0 && extraRemain <= 0) {
+                notify(notification, 'Não há tempo restante para H.E.!');
+                if (typeof(returnTime) === 'function') returnTime({extra: 0});
+            }
+
+            extra = (extra > 10 ? extra : 0);
+
+            if (extraRemain > 0 && (extraRemain - extra) > 0) {
+                extraProjects.push("RESTANTE");
+                extraTimes.push(extraRemain - extra);
+            }
+
+            let extraColors = randomColors(extraProjects.length);
+            this.renderGraphRemainExtra;
+            if (!(typeof (this.renderGraphRemainExtra) == 'undefined'))
+                this.renderGraphRemainExtra.destroy();
+            this.renderGraphRemainExtra = new Chart((remainExtraChart as HTMLCanvasElement), {
+                type: 'pie',
+                data: {
+                    labels: extraProjects,
+                    datasets: [
+                        {
+                            data: extraTimes,
+                            backgroundColor: extraColors,
+                            borderColor: borderColor,
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: false,
+                    aspectRatio: 1,
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: true,
+                        text: `Tempo extra do dia (máx. de ${extraWorkTime} minutos)`
+                    },
+                    tooltips: {
+                        mode: "point"
+                    }
+                }
+            });
+        });
     }
+}
 
 function dateFormat(date, separator = '/') {
     let get: string;
@@ -545,40 +535,20 @@ function dateFormat(date, separator = '/') {
 
 function randomColors(num) {
     let colors = new Array;
-    let getRandomColor = function() {
-        var letters = 'ABD'.split('');
+    let getRandomColor = function () {
+        var letters = 'ABCDE'.split('');
         var color = '#';
-        for (var i = 0; i < 6; i++ ) {
+        for (var i = 0; i < 6; i++) {
             color += letters[Math.floor(Math.random() * letters.length)];
         }
         return color;
     }
 
-    for (let i = 0; i < num; i ++) {
+    for (let i = 0; i < num; i++) {
         colors.push(getRandomColor());
     }
     return colors;
 }
-
-/*function randomColors(num) {
-    let colors = [];
-
-    // Math.random() * (max - min) + min;
-
-    let diff = 0;
-    for (let i = 0; i < num; i++) {
-        if (i <= 51) {
-            let r = Math.round(Math.random() * ((255 - diff) - (0 + diff) + 1) + (0 + diff));
-            let g = Math.round(Math.random() * ((255 - diff) - (0 + diff) + 1) + (0 + diff));
-            let b = Math.round(Math.random() * ((255 - diff) - (0 + diff) + 1) + (0 + diff));
-
-            colors.push(`rgba(${r}, ${g}, ${b}, 0.5)`);
-
-            diff += 5;
-        }
-    }
-    return colors;
-}*/
 
 export { RenderResume, RenderSR };
 

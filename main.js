@@ -70,6 +70,26 @@ class Process {
                         execute();
                 });
                 break;
+            case 'confirmDialog':
+                Process.confirmDialog = new electron_1.BrowserWindow({
+                    "parent": Process.workerScreen,
+                    "modal": true,
+                    "show": false,
+                    "frame": false,
+                    "width": 720,
+                    "height": 400,
+                    "resizable": true,
+                    "transparent": true,
+                    "webPreferences": {
+                        "nodeIntegration": true,
+                        "enableRemoteModule": true
+                    }
+                });
+                Process.confirmDialog.loadURL(`${__dirname}/renderer-processes/html/confirmDialog.html`);
+                Process.confirmDialog.once('ready-to-show', () => {
+                    Process.confirmDialog.show();
+                });
+                break;
         }
     }
 }

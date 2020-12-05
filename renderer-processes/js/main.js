@@ -5,13 +5,12 @@ const ipc = require('electron').ipcRenderer;
 // Extensões internas
 const { MSSQL, ColorMode } = require('../../officium-modules/officium');
 
-const SQL_DRIVER = new MSSQL(remote.getGlobal('sql').config);
+const SQL_DRIVER = new MSSQL(remote.getGlobal('parameters')['sql'].config);
 
 // Página pronta
 window.onload = () => {
     ColorMode(localStorage.getItem('colorMode'));
     document.getElementById('welcome').textContent = welcome();
-
     remote.getCurrentWindow()
         .on('focus', () => {
             document.querySelector('.view').classList.remove('no-focus');
@@ -62,26 +61,46 @@ document.getElementById('input-password').addEventListener('keypress', keyPress)
 
 // Autenticar
 function authenticate(registry, password) {
+    let registryInput = document.getElementById('input-registry'),
+        passwordInput = document.getElementById('input-password');
     let worker = [];
-    if (password == '') {
-        if (registry == '') warning('Registro inválido!');
-        else {
-            SQL_DRIVER.select(MSSQL.QueryBuilder('Registry', registry), (data) => {
-                    worker.push(data);
-                })
-                .then(() => {
-                    if (worker == '') warning('Não há funcionário registrado!');
-                    else {
-                        remote.getGlobal('data').worker = worker[0];
-                        ipc.send('open-workerScreen');
-                    }
-                });
+    SQL_DRIVER.select(MSSQL.QueryBuilder('Registry', registry), (data) => {
+        worker.push(data);
+    })
+    .then(() => {
+        if (Object.keys(worker).length > 0) {
+            worker = worker[0];
+            let functions = worker['Funções'].value;
+            if (functions.includes('A')) {
+                if (password == '') {
+                    passwordInput.style.display = 'unset';
+                    passwordInput.focus();
+                    warning('Digite sua senha!');
+                } else {
+                    let authenticated = [];
+                    SQL_DRIVER.select(MSSQL.QueryBuilder('Authenticate', password, registry), (data) => {
+                        authenticated.push(data);
+                    })
+                    .then(() => {
+                        authenticated = authenticated[0]['Autenticado'].value;
+                        if (authenticated === 'TRUE') {
+                            remote.getGlobal('data').worker = worker;
+                            ipc.send('open-workerScreen');
+                        } else {
+                            warning('Senha incorreta!');
+                        }
+                    })
+                }
+            } else {
+                remote.getGlobal('data').worker = worker;
+                ipc.send('open-workerScreen');
+            }
+        } else {
+            passwordInput.style.display = 'none';
+            registryInput.focus();
+            warning('Digite seu registro!');
         }
-    } else {
-        SQL_DRIVER.select(MSSQL.QueryBuilder('Authenticate', password, registry), (data) => {
-            ipc.send('open-workerScreen', data.Autenticado.value);
-        });
-    }
+    });
 }
 
 function warning(sel) {

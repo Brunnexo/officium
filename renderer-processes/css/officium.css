@@ -55,6 +55,10 @@
     margin-top: 56px;
 }
 
+.to-bottom {
+    display: fixed;
+    bottom: 0;
+}
 
 /* Entrada de Números */
 
@@ -213,6 +217,10 @@ input::-webkit-inner-spin-button {
     width: 100vw;
     border-top-left-radius: var(--window-radius);
     border-bottom-right-radius: var(--window-radius);
+}
+
+.workerscreen.dialog {
+    padding: var(--view-margin);
 }
 
 .workerscreen.maximized {

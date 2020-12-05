@@ -3,14 +3,15 @@ const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
 // Extensões internas
-const { PageLoader, ColorMode, RenderResume, RenderSR } = require('../../officium-modules/Officium');
+const { PageLoader, ColorMode, RenderResume, RenderSR, WorkerLabor, MSSQL } = require('../../officium-modules/Officium');
 
 // Dependências
-window.jQuery = window.$ = require('jquery');
 require('bootstrap');
 
 // Instâncias
 const HTML = new PageLoader();
+const SQL_DRIVER = new MSSQL(remote.getGlobal('parameters')['sql'].config);
+
 // Variáveis remotas globais
 
 const worker = remote.getGlobal('data').worker;
@@ -81,9 +82,17 @@ window.onload = () => {
         });
 }
 
+ipc.on('confirm-labor', () => {
+    SQL_DRIVER.execute(WorkerLabor.toQuery());
+    setTimeout(() => {
+        HTML.update(PageScripts);
+    }, 2000);
+});
+
 document.getElementById('date').onchange = () => {
     clearTimeout(this.inputDelay);
     this.inputDelay = setTimeout(() => {
+        WorkerLabor.update({date: document.getElementById("date").value });
         HTML.update(PageScripts);
     }, 500);
 }
@@ -139,7 +148,6 @@ document.querySelectorAll('.close-btn')[0].onclick = () => {
     remote.getCurrentWindow().close()
 };
 
-
 function PageScripts(pageId) {
     switch (pageId) {
         case 'personal-resume':
@@ -165,6 +173,14 @@ function PageScripts(pageId) {
             }
 
             nextbutton.onclick = () => {
+                WorkerLabor.update({
+                    registry: worker.Registro.value,
+                    journey: worker.Jornada.value,
+                    function: `SR: ${inputsr.value}`,
+                    wo: inputwo.value,
+                    description: inputservice.value,
+                    date: document.getElementById("date").value
+                });
                 HTML.load('reg-sr-time', PageScripts);
             }
 
@@ -177,18 +193,15 @@ function PageScripts(pageId) {
                         if (typeof(wosearch) !== 'undefined') {
                             inputsr.value = wosearch.SR.value;
                             inputservice.value = wosearch.Descrição.value;
-
                             nextbutton.style.display = 'unset';
                         } else {
                             inputsr.value = '';
                             inputservice.value = '';
-
                             nextbutton.style.display = 'none';
                         }
                     } else {
                         inputsr.value = '';
                         inputservice.value = '';
-
                         nextbutton.style.display = 'none';
                     }
                 }, 500);
@@ -203,37 +216,43 @@ function PageScripts(pageId) {
                         if (typeof(srsearch) !== 'undefined') {
                             inputwo.value = srsearch.WO.value;
                             inputservice.value = srsearch.Descrição.value;
-
                             nextbutton.style.display = 'unset';
                         } else {
                             inputwo.value = '';
                             inputservice.value = '';
-
                             nextbutton.style.display = 'none';
                         }
                     } else {
                         inputwo.value = '';
                         inputservice.value = '';
-
                         nextbutton.style.display = 'none';
                     }
                 }, 500);
             };
             break;
         case 'reg-sr-time':
-            SR.getData(document.getElementById('date').value, Number(document.getElementById('input-time').value));
-
+            SR.getData(
+                document.getElementById('date').value, 
+                Number(document.getElementById('input-time').value));
             document.querySelectorAll('[btn-back]')[0]
                 .onclick = () => {
                     HTML.load('reg-sr', PageScripts);
-                }
+                };
 
             document.getElementById('input-time').onkeyup = () => {
                 clearTimeout(this.inputDelay);
                 this.inputDelay = setTimeout(() => {
-                    SR.getData(document.getElementById('date').value, Number(document.getElementById('input-time').value));
+                    SR.getData(
+                        document.getElementById('date').value,
+                        Number(document.getElementById('input-time').value),
+                        (labor) => {WorkerLabor.update(labor)}
+                        );
                 }, 500);
-            }
+            };
+
+            document.getElementById('reg-btn').onclick = () => {
+                ipc.send('show-confirm-dialog', WorkerLabor.toTable());
+            };
             break;
     }
 }

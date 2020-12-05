@@ -4,8 +4,9 @@ class Process {
     static splash: BrowserWindow;
     static main: BrowserWindow;
     static workerScreen: BrowserWindow;
+    static confirmDialog: BrowserWindow;
 
-    static build(window: 'splash' | 'main' | 'workerScreen', execute?: Function) {
+    static build(window: 'splash' | 'main' | 'workerScreen' | 'confirmDialog', execute?: Function) {
         switch(window) {
             case 'splash':
                 Process.splash = new BrowserWindow({
@@ -67,6 +68,26 @@ class Process {
                 Process.workerScreen.once('ready-to-show', () => {
                     Process.workerScreen.show();
                     if (typeof(execute) === 'function') execute();
+                });
+                break;
+            case 'confirmDialog':
+                Process.confirmDialog = new BrowserWindow({
+                    "parent": Process.workerScreen,
+                    "modal": true,
+                    "show": false,
+                    "frame": false,
+                    "width": 720,
+                    "height": 400,
+                    "resizable": true,
+                    "transparent": true,
+                    "webPreferences": {
+                        "nodeIntegration": true,
+                        "enableRemoteModule": true
+                    }
+                })
+                Process.confirmDialog.loadURL(`${__dirname}/renderer-processes/html/confirmDialog.html`);
+                Process.confirmDialog.once('ready-to-show', () => {
+                    Process.confirmDialog.show();
                 });
                 break;
         }
