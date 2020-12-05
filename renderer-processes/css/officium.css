@@ -223,6 +223,18 @@ input::-webkit-inner-spin-button {
     padding: var(--view-margin);
 }
 
+.workerscreen.dark.dialog {
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--light);
+}
+
+.workerscreen.light.dialog {
+    border-style: solid;
+    border-width: 1px;
+    border-color: var(--dark);
+}
+
 .workerscreen.maximized {
     border-top-left-radius: 0;
     border-bottom-right-radius: 0;
