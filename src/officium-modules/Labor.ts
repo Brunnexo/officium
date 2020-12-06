@@ -12,7 +12,8 @@ class WorkerLabor {
     static labor: Labor = {};
     static update(info: Labor, execute: Function) {
         Object.keys(info).forEach((val) => {
-            WorkerLabor.labor[val] = info[val];
+            if (val == 'description' && info[val].length > 30) WorkerLabor.labor[val] = `${info[val].substring(0, 30)}...`;
+            else WorkerLabor.labor[val] = info[val];
         });
 
         if (typeof(execute) === 'function') execute();
@@ -63,3 +64,4 @@ class WorkerLabor {
 }
 
 export { WorkerLabor };
+

@@ -78,7 +78,7 @@ class Process {
                     "frame": false,
                     "width": 720,
                     "height": 400,
-                    "resizable": true,
+                    "resizable": false,
                     "transparent": true,
                     "webPreferences": {
                         "nodeIntegration": true,

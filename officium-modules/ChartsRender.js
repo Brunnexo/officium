@@ -57,7 +57,7 @@ class RenderResume {
                             <th scope="col">Extra</th>
                         </tr>
                     </thead>`;
-                    //table.appendChild(thead);
+                    table.appendChild(thead);
                     resumeData.forEach((arr) => {
                         let tr = document.createElement('tr');
                         tr.innerHTML = `
@@ -330,8 +330,11 @@ class RenderSR {
                         }
                     }
                 });
-                if (isWeekend)
+                if (isWeekend) {
                     remainChart.style.display = 'none';
+                    if (typeof (returnTime) === 'function')
+                        returnTime({ common: 0 });
+                }
             });
             this.data.extra = [];
             yield this.MSSQL.select(MSSQL_1.MSSQL.QueryBuilder('RemainExtra', registry, date), (row) => {

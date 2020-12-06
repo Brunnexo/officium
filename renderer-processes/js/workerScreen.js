@@ -92,7 +92,7 @@ ipc.on('confirm-labor', () => {
 document.getElementById('date').onchange = () => {
     clearTimeout(this.inputDelay);
     this.inputDelay = setTimeout(() => {
-        WorkerLabor.update({date: document.getElementById("date").value });
+        WorkerLabor.update({ date: document.getElementById("date").value });
         HTML.update(PageScripts);
     }, 500);
 }
@@ -232,27 +232,31 @@ function PageScripts(pageId) {
             break;
         case 'reg-sr-time':
             SR.getData(
-                document.getElementById('date').value, 
+                document.getElementById('date').value,
                 Number(document.getElementById('input-time').value));
+
             document.querySelectorAll('[btn-back]')[0]
                 .onclick = () => {
                     HTML.load('reg-sr', PageScripts);
                 };
 
             document.getElementById('input-time').onkeyup = () => {
+                let date = document.getElementById('date').value,
+                    time = Number(document.getElementById('input-time').value);
+
+                let regBtn = document.getElementById('reg-btn');
+
                 clearTimeout(this.inputDelay);
                 this.inputDelay = setTimeout(() => {
-                    SR.getData(
-                        document.getElementById('date').value,
-                        Number(document.getElementById('input-time').value),
-                        (labor) => {WorkerLabor.update(labor)}
-                        );
+                    SR.getData(date, time, (labor) => { WorkerLabor.update(labor) });
+                    if (time > 0) regBtn.removeAttribute('disabled');
+                    else regBtn.setAttribute('disabled', '');
                 }, 500);
             };
 
             document.getElementById('reg-btn').onclick = () => {
                 ipc.send('show-confirm-dialog', WorkerLabor.toTable());
-            };
+            }
             break;
     }
 }

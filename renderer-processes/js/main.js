@@ -65,42 +65,42 @@ function authenticate(registry, password) {
         passwordInput = document.getElementById('input-password');
     let worker = [];
     SQL_DRIVER.select(MSSQL.QueryBuilder('Registry', registry), (data) => {
-        worker.push(data);
-    })
-    .then(() => {
-        if (Object.keys(worker).length > 0) {
-            worker = worker[0];
-            let functions = worker['Funções'].value;
-            if (functions.includes('A')) {
-                if (password == '') {
-                    passwordInput.style.display = 'unset';
-                    passwordInput.focus();
-                    warning('Digite sua senha!');
+            worker.push(data);
+        })
+        .then(() => {
+            if (Object.keys(worker).length > 0) {
+                worker = worker[0];
+                let functions = worker['Funções'].value;
+                if (functions.includes('A')) {
+                    if (password == '') {
+                        passwordInput.style.display = 'unset';
+                        passwordInput.focus();
+                        warning('Digite sua senha!');
+                    } else {
+                        let authenticated = [];
+                        SQL_DRIVER.select(MSSQL.QueryBuilder('Authenticate', password, registry), (data) => {
+                                authenticated.push(data);
+                            })
+                            .then(() => {
+                                authenticated = authenticated[0]['Autenticado'].value;
+                                if (authenticated === 'TRUE') {
+                                    remote.getGlobal('data').worker = worker;
+                                    ipc.send('open-workerScreen');
+                                } else {
+                                    warning('Senha incorreta!');
+                                }
+                            })
+                    }
                 } else {
-                    let authenticated = [];
-                    SQL_DRIVER.select(MSSQL.QueryBuilder('Authenticate', password, registry), (data) => {
-                        authenticated.push(data);
-                    })
-                    .then(() => {
-                        authenticated = authenticated[0]['Autenticado'].value;
-                        if (authenticated === 'TRUE') {
-                            remote.getGlobal('data').worker = worker;
-                            ipc.send('open-workerScreen');
-                        } else {
-                            warning('Senha incorreta!');
-                        }
-                    })
+                    remote.getGlobal('data').worker = worker;
+                    ipc.send('open-workerScreen');
                 }
             } else {
-                remote.getGlobal('data').worker = worker;
-                ipc.send('open-workerScreen');
+                passwordInput.style.display = 'none';
+                registryInput.focus();
+                warning('Registro não encontrado!');
             }
-        } else {
-            passwordInput.style.display = 'none';
-            registryInput.focus();
-            warning('Digite seu registro!');
-        }
-    });
+        });
 }
 
 function warning(sel) {

@@ -42,6 +42,7 @@ class RenderResume {
     protected MSSQL: MSSQL;
 
     private data?: Data;
+    
     private renderGraphTotal: Chart;
     private renderGraphExtra: Chart;
     private renderGraphRemain: Chart;
@@ -56,7 +57,7 @@ class RenderResume {
         this.MSSQL = new MSSQL(remote.getGlobal('parameters')['sql'].config);
     }
 
-    async getData(date: string | Date) {
+    async getData(date: string) {
         let registry = this.info.registry,
             journey = this.info.journey,
             workTime = this.info.workTime,
@@ -429,7 +430,10 @@ class RenderSR {
                     }
                 }
             });
-            if (isWeekend) remainChart.style.display = 'none';
+            if (isWeekend) {
+                remainChart.style.display = 'none';
+                if (typeof(returnTime) === 'function') returnTime({common: 0});
+            }
         });
 
         this.data.extra = [];

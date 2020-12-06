@@ -4,7 +4,10 @@ exports.WorkerLabor = void 0;
 class WorkerLabor {
     static update(info, execute) {
         Object.keys(info).forEach((val) => {
-            WorkerLabor.labor[val] = info[val];
+            if (val == 'description' && info[val].length > 30)
+                WorkerLabor.labor[val] = `${info[val].substring(0, 30)}...`;
+            else
+                WorkerLabor.labor[val] = info[val];
         });
         if (typeof (execute) === 'function')
             execute();

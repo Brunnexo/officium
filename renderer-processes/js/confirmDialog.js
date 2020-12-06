@@ -6,6 +6,14 @@ const { ColorMode } = require('../../officium-modules/Officium');
 window.onload = () => {
     ColorMode(localStorage.getItem('colorMode'));
     renderTable();
+
+    remote.getCurrentWindow()
+        .on('focus', () => {
+            document.querySelector('.view').classList.remove('no-focus');
+        })
+        .on('blur', () => {
+            document.querySelector('.view').classList.add('no-focus');
+        });
 }
 
 // Botões de janela
@@ -41,14 +49,16 @@ function renderTable() {
     let tbody = document.createElement('tbody');
 
     data.forEach((d) => {
-        let tr = document.createElement('tr');
-        tr.innerHTML = `
-          <th>${d.Função}</th>
-          <th>${d.WO}</th>
-          <th>${d.Descrição}</th>
-          <th>${d.Tempo}</th>
-          <th>${d.Extra}</th>`;
-          tbody.appendChild(tr);
+        if (d.Tempo > 0) {
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+              <th>${d.Função}</th>
+              <th>${d.WO}</th>
+              <th>${d.Descrição}</th>
+              <th>${d.Tempo}</th>
+              <th>${d.Extra}</th>`;
+            tbody.appendChild(tr);
+        }
     });
     table.appendChild(tbody);
     container.innerHTML = '';
