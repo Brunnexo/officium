@@ -5,7 +5,7 @@ const ipc = require('electron').ipcRenderer;
 // Extensões internas
 const { MSSQL, ColorMode } = require('../../officium-modules/officium');
 
-const SQL_DRIVER = new MSSQL(remote.getGlobal('parameters')['sql'].config);
+const SQL_DRIVER = new MSSQL();
 
 // Página pronta
 window.onload = () => {

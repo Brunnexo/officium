@@ -10,7 +10,7 @@ require('bootstrap');
 
 // Instâncias
 const HTML = new PageLoader();
-const SQL_DRIVER = new MSSQL(remote.getGlobal('parameters')['sql'].config);
+const SQL_DRIVER = new MSSQL();
 
 // Variáveis remotas globais
 
@@ -173,13 +173,14 @@ function PageScripts(pageId) {
             }
 
             nextbutton.onclick = () => {
-                WorkerLabor.update({
+                WorkerLabor.updateInfo({
                     registry: worker.Registro.value,
                     journey: worker.Jornada.value,
                     function: `SR: ${inputsr.value}`,
                     wo: inputwo.value,
                     description: inputservice.value,
-                    date: document.getElementById("date").value
+                    date: document.getElementById("date").value,
+                    workTime: workTime
                 });
                 HTML.load('reg-sr-time', PageScripts);
             }
@@ -231,9 +232,9 @@ function PageScripts(pageId) {
             };
             break;
         case 'reg-sr-time':
-            SR.getData(
-                document.getElementById('date').value,
-                Number(document.getElementById('input-time').value));
+            // SR.getData(
+            //     document.getElementById('date').value,
+            //     Number(document.getElementById('input-time').value));
 
             document.querySelectorAll('[btn-back]')[0]
                 .onclick = () => {
@@ -241,16 +242,10 @@ function PageScripts(pageId) {
                 };
 
             document.getElementById('input-time').onkeyup = () => {
-                let date = document.getElementById('date').value,
-                    time = Number(document.getElementById('input-time').value);
-
-                let regBtn = document.getElementById('reg-btn');
-
+                let time = Number(document.getElementById('input-time').value);
                 clearTimeout(this.inputDelay);
                 this.inputDelay = setTimeout(() => {
-                    SR.getData(date, time, (labor) => { WorkerLabor.update(labor) });
-                    if (time > 0) regBtn.removeAttribute('disabled');
-                    else regBtn.setAttribute('disabled', '');
+                    WorkerLabor.updateTime(time);
                 }, 500);
             };
 

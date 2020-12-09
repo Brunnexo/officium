@@ -1,27 +1,52 @@
 interface Labor {
+    extra: number,
+    common: number
+}
+
+interface Information {
     date?: string,
     registry?: number,
-    extra?: number,
-    common?: number,
+    journey?: 'H' | 'M',
     function?: string,
     wo?: string | number,
     description?: string,
+    dayLabor?: Labor,
+    workTime?: {
+        hourly?: number,
+        monthly?: number,
+        dailyExtra?: number,
+        weekendExtra?: number
+    }
 }
 
-class WorkerLabor {
-    static labor: Labor = {};
-    static update(info: Labor, execute: Function) {
-        Object.keys(info).forEach((val) => {
-            if (val == 'description' && info[val].length > 30) WorkerLabor.labor[val] = `${info[val].substring(0, 30)}...`;
-            else WorkerLabor.labor[val] = info[val];
-        });
 
-        if (typeof(execute) === 'function') execute();
+class WorkerLabor {
+    static info: Information = {};
+
+    static updateInfo(info: Information) {
+        Object.keys(info).forEach((val) => {
+            if (val == 'description' && info[val].length > 30) WorkerLabor.info[val] = `${info[val].substring(0, 30)}...`;
+            else WorkerLabor.info[val] = info[val];
+        });
+        console.log(JSON.stringify(WorkerLabor.info, null, '\t'));
     }
+
+    static updateTime(time: number) {
+        let dateObject = new Date(WorkerLabor.info.date);
+        let isWeekend = (dateObject.getDay() == 6 || dateObject.getDay() == 0);
+
+        
+
+
+    }
+
     static clear() {
-        WorkerLabor.labor = {};
+        WorkerLabor.info = {};
     }
-    static toQuery(execute: Function) {
+
+
+
+    /*static toQuery(execute: Function) {
         let query: string = '';
         let labor = WorkerLabor.labor;
         
@@ -34,22 +59,25 @@ class WorkerLabor {
                             VALUES('${labor.registry}', '${labor.date}', '${labor.function}', '${labor.wo}', '${labor.description}', '${labor.extra}', 'TRUE')`;
         }
         return query;
-    }
-    static toTable() {
+    }*/
+
+    /*static toObject() {
         let labor = WorkerLabor.labor;
-        let table = [];
+        let object = [];
         let dateSplit = labor.date.split('-');
 
-        table.push({
-            Função: labor.function,
-            Data: `${dateSplit[2]}/${dateSplit[1]}/${dateSplit[0]}`,
-            WO: labor.wo,
-            Descrição: labor.description,
-            Tempo: Number(labor.common),
-            Extra: 'Não'
-        });
+        if (labor.common > 0) {
+            object.push({
+                Função: labor.function,
+                Data: `${dateSplit[2]}/${dateSplit[1]}/${dateSplit[0]}`,
+                WO: labor.wo,
+                Descrição: labor.description,
+                Tempo: Number(labor.common),
+                Extra: 'Não'
+            });
+        }
         if (labor.extra > 10) {
-            table.push({
+            object.push({
                 Função: labor.function,
                 Data: `${dateSplit[2]}/${dateSplit[1]}/${dateSplit[0]}`,
                 WO: labor.wo,
@@ -58,9 +86,8 @@ class WorkerLabor {
                 Extra: 'Sim'
             });
         }
-
-        return table;
-    }
+        return object;
+    }*/
 }
 
 export { WorkerLabor };

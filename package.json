@@ -3,7 +3,9 @@
     "version": "0.0.1",
     "description": "Sistema de Relatório de Mão-de-obra",
     "main": "exec.js",
-    "scripts": {},
+    "scripts": {
+        "watch": "tsc -w"
+    },
     "author": "Bruno Costa",
     "license": "ISC",
     "dependencies": {

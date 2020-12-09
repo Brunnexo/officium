@@ -24,7 +24,7 @@ class RenderResume {
             remain: new Array,
             total: new Array
         };
-        this.MSSQL = new MSSQL_1.MSSQL(electron_1.remote.getGlobal('parameters')['sql'].config);
+        this.MSSQL = new MSSQL_1.MSSQL();
     }
     getData(date) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -251,7 +251,7 @@ exports.RenderResume = RenderResume;
 class RenderSR {
     constructor(value) {
         this.info = value;
-        this.MSSQL = new MSSQL_1.MSSQL(electron_1.remote.getGlobal('parameters')['sql'].config);
+        this.MSSQL = new MSSQL_1.MSSQL();
         this.data = {
             total: new Array
         };

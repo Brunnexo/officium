@@ -54,7 +54,7 @@ class RenderResume {
             remain: new Array,
             total: new Array
         }
-        this.MSSQL = new MSSQL(remote.getGlobal('parameters')['sql'].config);
+        this.MSSQL = new MSSQL();
     }
 
     async getData(date: string) {
@@ -350,7 +350,7 @@ class RenderSR {
 
     constructor(value: Information) {
         this.info = value;
-        this.MSSQL = new MSSQL(remote.getGlobal('parameters')['sql'].config);
+        this.MSSQL = new MSSQL();
         this.data = {
             total: new Array
         }

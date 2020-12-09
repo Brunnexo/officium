@@ -1,4 +1,5 @@
 import { Connection, Request } from 'tedious';
+import { SQLConfig } from './Officium';
 const fs = require('fs');
 
 interface SQLConfig {
@@ -30,7 +31,7 @@ class MSSQL {
     
     private static SQL_VARIABLE: string;
 
-    constructor(config: SQLConfig) {
+    constructor(config: SQLConfig = SQLConfig) {
         MSSQL.SQL_VARIABLE = '@VAR';
         this.Attr = {
             Connected: false

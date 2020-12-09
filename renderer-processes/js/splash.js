@@ -4,7 +4,7 @@ const ipc = require('electron').ipcRenderer;
 // Extensões internas
 const { MSSQL, ColorMode } = require('../../officium-modules/officium');
 
-const SQL_DRIVER = new MSSQL(remote.getGlobal('parameters')['sql'].config);
+const SQL_DRIVER = new MSSQL();
 
 const DATA = {
     projects: new Array,
@@ -23,28 +23,28 @@ const DATA = {
 
         description.innerHTML = 'Carregando projetos...';
         await SQL_DRIVER.select(MSSQL.QueryBuilder('Project'), (data) => {
-            DATA.projects.push(data);
-        })
+                DATA.projects.push(data);
+            })
             .then(() => {
                 remote.getGlobal('sql').projects = DATA.projects;
-        });
+            });
         description.innerHTML = 'Carregando SRs...';
 
         await SQL_DRIVER.select(MSSQL.QueryBuilder('SRs'), (data) => {
-            DATA.srs.push(data);
-        })
+                DATA.srs.push(data);
+            })
             .then(() => {
                 remote.getGlobal('sql').srs = DATA.srs;
-        });
+            });
         description.innerHTML = 'Carregando geral...';
         await SQL_DRIVER.select(MSSQL.QueryBuilder('General'), (data) => {
-            DATA.general.push(data);
-        })
+                DATA.general.push(data);
+            })
             .then(() => {
-            remote.getGlobal('sql').general = DATA.general;
-            description.innerHTML = 'Pronto!';
-            ipc.send('show-main');
-        });
+                remote.getGlobal('sql').general = DATA.general;
+                description.innerHTML = 'Pronto!';
+                ipc.send('show-main');
+            });
     },
     error(err) {
         let description = document.getElementById('description');
@@ -60,12 +60,12 @@ window.onload = () => {
     localStorage.setItem('colorMode', colorMode == 'null' ? 'auto' : colorMode);
     ColorMode(localStorage.getItem('colorMode'));
     remote.getCurrentWindow()
-    .on('focus', () => {
-        document.querySelector('.view').classList.remove('no-focus');
-    })
-    .on('blur', () => {
-        document.querySelector('.view').classList.add('no-focus');
-    });
+        .on('focus', () => {
+            document.querySelector('.view').classList.remove('no-focus');
+        })
+        .on('blur', () => {
+            document.querySelector('.view').classList.add('no-focus');
+        });
     DATA.SQL();
 }
 

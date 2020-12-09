@@ -11,9 +11,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MSSQL = void 0;
 const tedious_1 = require("tedious");
+const Officium_1 = require("./Officium");
 const fs = require('fs');
 class MSSQL {
-    constructor(config) {
+    constructor(config = Officium_1.SQLConfig) {
         MSSQL.SQL_VARIABLE = '@VAR';
         this.Attr = {
             Connected: false
