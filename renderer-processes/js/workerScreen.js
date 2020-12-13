@@ -3,7 +3,7 @@ const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
 // Extensões internas
-const { PageLoader, ColorMode, RenderResume, RenderSR, WorkerLabor, MSSQL } = require('../../officium-modules/Officium');
+const { PageLoader, ColorMode, Charts, /*RenderResume, RenderSR, */ WorkerLabor, MSSQL } = require('../../officium-modules/Officium');
 
 // Dependências
 require('bootstrap');
@@ -18,31 +18,12 @@ const worker = remote.getGlobal('data').worker;
 const srs = remote.getGlobal('sql').srs;
 const workTime = remote.getGlobal('parameters').workTime;
 
-const Resume = new RenderResume({
+const charts = new Charts({
     title: 'title',
-    registry: worker.Registro.value,
-    journey: worker.Jornada.value,
-    charts: {
-        history: 'history',
-        remain: 'graphRemain',
-        total: 'graphTotal',
-        extra: 'graphTotalExtra'
-    },
-    workTime: workTime
-});
-
-const SR = new RenderSR({
-    registry: worker.Registro.value,
-    journey: worker.Jornada.value,
-    charts: {
-        remain: 'graphRemain',
-        extra: 'graphTotalExtra'
-    },
-    infos: {
-        common: 'registered-common-time',
-        extra: 'registered-extra-time'
-    },
-    workTime: workTime,
+    historyTable: 'history-table',
+    laborChart: 'labor-chart',
+    totalChart: 'total-chart',
+    extraChart: 'extra-chart',
     notification: 'notification-banner'
 });
 
@@ -56,7 +37,7 @@ window.onload = () => {
     // Carrega data atual
     document.getElementById("date").valueAsDate = new Date();
     // Carrega inicialmente o resumo pessoal
-    HTML.load('personal-resume', PageScripts);
+    HTML.load('personal-resume' /*, PageScripts*/ );
     // Carrega o botão de cor
     let color = localStorage.getItem('colorMode');
     let text = document.getElementById('colorMode').getElementsByClassName('name')[0];
@@ -80,6 +61,26 @@ window.onload = () => {
         .on('blur', () => {
             document.querySelector('.view').classList.add('no-focus');
         });
+
+    WorkerLabor.updateInfo({
+        date: '2020-12-06',
+        registry: 7839,
+        journey: 'H',
+        function: 'E',
+        workTime: {
+            hourly: 528,
+            monthly: 522,
+            dailyExtra: 60,
+            weekendExtra: 660
+        },
+    });
+
+    WorkerLabor.getData(() => {
+        charts.render(WorkerLabor.info);
+    });
+
+
+
 }
 
 ipc.on('confirm-labor', () => {
@@ -151,7 +152,7 @@ document.querySelectorAll('.close-btn')[0].onclick = () => {
 function PageScripts(pageId) {
     switch (pageId) {
         case 'personal-resume':
-            Resume.getData(document.getElementById("date").value);
+            //Resume.getData(document.getElementById("date").value);
             break;
         case 'reg-type':
             document.getElementById('btn-sr').onclick = () => {

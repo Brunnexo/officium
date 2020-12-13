@@ -24,7 +24,7 @@ class PageLoader {
             }
         };
         document.querySelectorAll(`[${R.loader}]`)
-            .forEach((elmnt, key) => {
+            .forEach((elmnt) => {
             let path = `${__dirname}\\PageScripts\\${elmnt.id}.js`;
             this.content.pages.Row.push({
                 id: elmnt.id,
@@ -46,6 +46,17 @@ class PageLoader {
             });
             elmnt.remove();
         });
+    }
+    loadScript(id, script) {
+        let Row = this.content.pages.Row;
+        let Column = this.content.pages.Column;
+        if (Row.some(page => page.id === id)) {
+        }
+        else if (Column.some(page => page.id === id)) {
+        }
+        else {
+            throw new Error(`Couldn't find page with ID: ${id}`);
+        }
     }
     load(id, execute) {
         let Row = this.content.pages.Row;

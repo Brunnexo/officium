@@ -1,6 +1,6 @@
+import * as fs from 'fs';
 import { Connection, Request } from 'tedious';
 import { SQLConfig } from './Officium';
-const fs = require('fs');
 
 interface SQLConfig {
     server: string,

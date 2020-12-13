@@ -33,7 +33,7 @@ interface PageContents {
             html: string;
             updateable: boolean;
             parent: HTMLElement | null;
-            script?: string;
+            script?: string | Function;
         }>;
         Indexbar?: Array<{
             index?: number;
@@ -54,7 +54,7 @@ class PageLoader {
         };
         // Row pages
         document.querySelectorAll(`[${R.loader}]`)
-            .forEach((elmnt, key) => {
+            .forEach((elmnt) => {
                 let path = `${__dirname}\\PageScripts\\${elmnt.id}.js`;
                 this.content.pages!.Row!.push({
                     id: elmnt.id,
@@ -77,6 +77,19 @@ class PageLoader {
                 });
                 elmnt.remove();
             });
+    }
+
+    loadScript(id: string, script: Function) {
+        let Row = this.content.pages!.Row;
+        let Column = this.content.pages!.Column;
+
+        if (Row!.some(page => page.id === id)) {
+            
+        } else if (Column!.some(page => page.id === id)) {
+
+        } else {
+            throw new Error(`Couldn't find page with ID: ${id}`);
+        }
     }
 
     load(id: string, execute?: Function) {

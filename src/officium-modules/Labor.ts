@@ -1,94 +1,77 @@
-interface Labor {
-    extra: number,
-    common: number
-}
+import { MSSQL } from './MSSQL';
 
-interface Information {
+const LIMIT = 50;
+
+interface Labor {
     date?: string,
     registry?: number,
     journey?: 'H' | 'M',
+
     function?: string,
-    wo?: string | number,
+    wo?: string,
     description?: string,
-    dayLabor?: Labor,
+    time?: string,
+
+    remainTime?: {
+        extra: number,
+        common: number
+    },
     workTime?: {
         hourly?: number,
         monthly?: number,
         dailyExtra?: number,
         weekendExtra?: number
+    },
+    data?: {
+        history?: any[],
+        total?: any[],
+        labor?: any[]
     }
 }
 
-
 class WorkerLabor {
-    static info: Information = {};
+    static info: Labor = {};
 
-    static updateInfo(info: Information) {
-        Object.keys(info).forEach((val) => {
-            if (val == 'description' && info[val].length > 30) WorkerLabor.info[val] = `${info[val].substring(0, 30)}...`;
-            else WorkerLabor.info[val] = info[val];
+    static updateInfo(labor: Labor) {
+        Object.keys(labor).forEach((val) => {
+            if (val == 'description' && labor[val].length > LIMIT) WorkerLabor.info[val] = `${labor[val].substring(0, LIMIT)}...`;
+            else WorkerLabor.info[val] = labor[val];
         });
-        console.log(JSON.stringify(WorkerLabor.info, null, '\t'));
-    }
-
-    static updateTime(time: number) {
-        let dateObject = new Date(WorkerLabor.info.date);
-        let isWeekend = (dateObject.getDay() == 6 || dateObject.getDay() == 0);
-
-        
-
-
+        return WorkerLabor;
     }
 
     static clear() {
         WorkerLabor.info = {};
+        return WorkerLabor;
     }
 
+    static async getData(data: Function) {
+        var SQL_DRIVER = new MSSQL();
 
+        let _info = WorkerLabor.info;
 
-    /*static toQuery(execute: Function) {
-        let query: string = '';
-        let labor = WorkerLabor.labor;
-        
-        if (labor.common > 0) {
-            query += `INSERT INTO [Relatórios] ([Registro], [Data], [Função], [WO], [Descrição], [Tempo], [Extra])
-                            VALUES('${labor.registry}', '${labor.date}', '${labor.function}', '${labor.wo}', '${labor.description}', '${labor.common}', 'FALSE')`;
+        _info.data = {
+            history: [],
+            labor: [],
+            total: []
         }
-        if (labor.extra > 10) {
-            query += ` INSERT INTO [Relatórios] ([Registro], [Data], [Função], [WO], [Descrição], [Tempo], [Extra])
-                            VALUES('${labor.registry}', '${labor.date}', '${labor.function}', '${labor.wo}', '${labor.description}', '${labor.extra}', 'TRUE')`;
-        }
-        return query;
-    }*/
 
-    /*static toObject() {
-        let labor = WorkerLabor.labor;
-        let object = [];
-        let dateSplit = labor.date.split('-');
+        await SQL_DRIVER.select(MSSQL.QueryBuilder('History', _info.registry, _info.date), (data: any) => {
+            _info.data.history.push(data);
+        });
 
-        if (labor.common > 0) {
-            object.push({
-                Função: labor.function,
-                Data: `${dateSplit[2]}/${dateSplit[1]}/${dateSplit[0]}`,
-                WO: labor.wo,
-                Descrição: labor.description,
-                Tempo: Number(labor.common),
-                Extra: 'Não'
-            });
-        }
-        if (labor.extra > 10) {
-            object.push({
-                Função: labor.function,
-                Data: `${dateSplit[2]}/${dateSplit[1]}/${dateSplit[0]}`,
-                WO: labor.wo,
-                Descrição: labor.description,
-                Tempo: Number(labor.extra),
-                Extra: 'Sim'
-            });
-        }
-        return object;
-    }*/
+        await SQL_DRIVER.select(MSSQL.QueryBuilder('Labor', _info.registry, _info.date), (data: any) => {
+            _info.data.labor.push(data);
+        });
+
+        await SQL_DRIVER.select(MSSQL.QueryBuilder('Total', _info.registry), (data: any) => {
+            _info.data.total.push(data);
+        });
+
+        if (typeof(data) === 'function') data(_info.data);
+        return WorkerLabor;
+    }
 }
 
-export { WorkerLabor };
+export { WorkerLabor, Labor };
 

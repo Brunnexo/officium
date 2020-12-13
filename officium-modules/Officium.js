@@ -1,10 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SQLConfig = exports.WorkerLabor = exports.RenderSR = exports.RenderResume = exports.PageLoader = exports.MSSQL = exports.ColorMode = void 0;
+exports.SQLConfig = exports.WorkerLabor = exports.Charts = exports.PageLoader = exports.MSSQL = exports.ColorMode = void 0;
 const electron_1 = require("electron");
-const ChartsRender_1 = require("./ChartsRender");
-Object.defineProperty(exports, "RenderResume", { enumerable: true, get: function () { return ChartsRender_1.RenderResume; } });
-Object.defineProperty(exports, "RenderSR", { enumerable: true, get: function () { return ChartsRender_1.RenderSR; } });
+const Charts_1 = require("./Charts");
+Object.defineProperty(exports, "Charts", { enumerable: true, get: function () { return Charts_1.Charts; } });
 const ColorMode_1 = require("./ColorMode");
 Object.defineProperty(exports, "ColorMode", { enumerable: true, get: function () { return ColorMode_1.ColorMode; } });
 const Labor_1 = require("./Labor");
