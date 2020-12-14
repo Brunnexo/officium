@@ -94,3 +94,21 @@ class Process {
     }
 }
 exports.Process = Process;
+// Janela do colaborador
+/*ipc.on('open-workerScreen', (evt, arg) => {
+    if (arg != 'TRUE' && global.data.worker['Funções'].value.split('').includes('A')) {
+        evt.reply('adm-password-require');
+    } else if (arg == 'TRUE') {
+        admScreen = true;
+        buildWorkerScreen(() => {
+            workerScreen.show();
+            main.destroy();
+        });
+    } else {
+        admScreen = false;
+        buildWorkerScreen(() => {
+            workerScreen.show();
+            main.destroy();
+        });
+    }
+});*/ 

@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PageLoader = void 0;
-const fs = require('fs');
 const R = {
     loader: 'r-loader',
     container: 'r-loader-container',
@@ -23,25 +22,24 @@ class PageLoader {
                 Indexbar: []
             }
         };
+        // Row pages
         document.querySelectorAll(`[${R.loader}]`)
             .forEach((elmnt) => {
-            let path = `${__dirname}\\PageScripts\\${elmnt.id}.js`;
             this.content.pages.Row.push({
                 id: elmnt.id,
                 html: elmnt.innerHTML,
                 updateable: elmnt.hasAttribute('updateable'),
                 parent: elmnt.parentElement,
-                script: fs.existsSync(path) ? fs.readFileSync(path, 'utf-8') : ''
             });
             elmnt.remove();
         });
+        // Column pages
         document.querySelectorAll(`[${C.loader}]`)
             .forEach((elmnt, key) => {
             let path = `${__dirname}\\PageScripts\\${elmnt.id}.js`;
             this.content.pages.Column.push({
                 id: elmnt.id,
                 html: elmnt.innerHTML,
-                script: fs.existsSync(path) ? fs.readFileSync(path, 'utf-8') : '',
                 updateable: elmnt.hasAttribute('updateable')
             });
             elmnt.remove();
@@ -51,12 +49,15 @@ class PageLoader {
         let Row = this.content.pages.Row;
         let Column = this.content.pages.Column;
         if (Row.some(page => page.id === id)) {
+            let page = Row.filter((val) => { return val.id === id; })[0];
+            page.script = script;
         }
         else if (Column.some(page => page.id === id)) {
+            let page = Column.filter((val) => { return val.id === id; })[0];
+            page.script = script;
         }
-        else {
+        else
             throw new Error(`Couldn't find page with ID: ${id}`);
-        }
     }
     load(id, execute) {
         let Row = this.content.pages.Row;
@@ -74,6 +75,8 @@ class PageLoader {
                     type: 'R'
                 }
             };
+            if (typeof (rPage.script) === 'function')
+                rPage.script();
             if (typeof (execute) === 'function')
                 execute(rPage.id);
         }
@@ -88,6 +91,8 @@ class PageLoader {
                     type: 'C'
                 }
             };
+            if (typeof (cPage.script) === 'function')
+                cPage.script();
             if (typeof (execute) === 'function')
                 execute(cPage.id);
         }

@@ -3,17 +3,15 @@ const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
 // Extensões internas
-const { PageLoader, ColorMode, Charts, /*RenderResume, RenderSR, */ WorkerLabor, MSSQL } = require('../../officium-modules/Officium');
+const { PageLoader, ColorMode, Charts, WorkerLabor, MSSQL } = require('../../officium-modules/Officium');
 
 // Dependências
 require('bootstrap');
 
 // Instâncias
 const HTML = new PageLoader();
-const SQL_DRIVER = new MSSQL();
 
-// Variáveis remotas globais
-
+// Variáveis globais
 const worker = remote.getGlobal('data').worker;
 const srs = remote.getGlobal('sql').srs;
 const workTime = remote.getGlobal('parameters').workTime;
@@ -30,29 +28,18 @@ const charts = new Charts({
 // Funções ao carregar a página
 
 window.onload = () => {
-    // Esquema de cores
     ColorMode(localStorage.getItem('colorMode'));
-    // Nome do colaborador
-    document.getElementById('nav-name').textContent = worker.Nome.value;
-    // Carrega data atual
-    document.getElementById("date").valueAsDate = new Date();
-    // Carrega inicialmente o resumo pessoal
-    HTML.load('personal-resume' /*, PageScripts*/ );
-    // Carrega o botão de cor
-    let color = localStorage.getItem('colorMode');
-    let text = document.getElementById('colorMode').getElementsByClassName('name')[0];
+    LoadScripts();
 
-    switch (color) {
-        case 'light':
-            text.textContent = 'Tema: claro';
-            break;
-        case 'dark':
-            text.textContent = 'Tema: escuro';
-            break;
-        case 'auto':
-            text.textContent = 'Tema: auto.';
-            break;
-    }
+    document.getElementById('nav-name').textContent = worker.Nome.value;
+    document.getElementById("date").valueAsDate = new Date();
+
+    HTML.load('personal-resume');
+
+    let color = localStorage.getItem('colorMode');
+    document.getElementById('colorMode')
+        .getElementsByClassName('name')[0]
+        .textContent = (color == 'light' ? 'Tema: claro' : color == 'dark' ? 'Tema: escuro' : 'Tema: auto.');
 
     remote.getCurrentWindow()
         .on('focus', () => {
@@ -63,38 +50,27 @@ window.onload = () => {
         });
 
     WorkerLabor.updateInfo({
-        date: '2020-12-06',
-        registry: 7839,
-        journey: 'H',
-        function: 'E',
-        workTime: {
-            hourly: 528,
-            monthly: 522,
-            dailyExtra: 60,
-            weekendExtra: 660
-        },
-    });
+        date: document.getElementById("date").value,
+        registry: Number(worker.Registro.value),
+        journey: worker.Jornada.value,
+        workTime: workTime,
+    }).onLoad = () => { charts.render(WorkerLabor.info) };
 
-    WorkerLabor.getData(() => {
-        charts.render(WorkerLabor.info);
-    });
-
-
-
+    WorkerLabor.getData();
 }
 
 ipc.on('confirm-labor', () => {
-    SQL_DRIVER.execute(WorkerLabor.toQuery());
-    setTimeout(() => {
-        HTML.update(PageScripts);
-    }, 2000);
+    // SQL_DRIVER.execute(WorkerLabor.toQuery());
+    // setTimeout(() => {
+    //     HTML.update(PageScripts);
+    // }, 2000);
 });
 
 document.getElementById('date').onchange = () => {
     clearTimeout(this.inputDelay);
     this.inputDelay = setTimeout(() => {
-        WorkerLabor.update({ date: document.getElementById("date").value });
-        HTML.update(PageScripts);
+        WorkerLabor.updateInfo({ date: document.getElementById("date").value });
+        HTML.update();
     }, 500);
 }
 
@@ -104,7 +80,7 @@ document.getElementById('nav-resume').onclick = () => {
         elmnt.classList.remove('active');
     });
     document.getElementById('nav-resume').classList.add('active');
-    HTML.load('personal-resume', PageScripts);
+    HTML.load('personal-resume');
 };
 
 // Navegar para o registro
@@ -113,7 +89,7 @@ document.getElementById('nav-reg').onclick = () => {
         elmnt.classList.remove('active');
     });
     document.getElementById('nav-reg').classList.add('active');
-    HTML.load('reg-type', PageScripts);
+    HTML.load('reg-type');
 }
 
 // Abrir preferências
@@ -149,110 +125,107 @@ document.querySelectorAll('.close-btn')[0].onclick = () => {
     remote.getCurrentWindow().close()
 };
 
-function PageScripts(pageId) {
-    switch (pageId) {
-        case 'personal-resume':
-            //Resume.getData(document.getElementById("date").value);
-            break;
-        case 'reg-type':
-            document.getElementById('btn-sr').onclick = () => {
-                HTML.load('reg-sr', PageScripts);
-            }
-            document.getElementById('btn-activities').onclick = () => {
-                HTML.load('reg-activities', PageScripts);
-            }
-            break;
-        case 'reg-sr':
-            let inputwo = document.getElementById('input-wo'),
-                inputsr = document.getElementById('input-sr'),
-                inputservice = document.getElementById('input-service'),
-                nextbutton = document.querySelectorAll('[btn-next]')[0],
-                backbutton = document.querySelectorAll('[btn-back]')[0];
+function LoadScripts() {
+    HTML.loadScript('personal-resume', () => {
+        WorkerLabor.getData();
+    });
 
-            backbutton.onclick = () => {
-                HTML.load('reg-type', PageScripts);
-            }
+    HTML.loadScript('reg-type', () => {
+        document.getElementById('btn-sr').onclick = () => {
+            HTML.load('reg-sr');
+        }
+        document.getElementById('btn-activities').onclick = () => {
+            HTML.load('reg-activities');
+        }
+    });
 
-            nextbutton.onclick = () => {
-                WorkerLabor.updateInfo({
-                    registry: worker.Registro.value,
-                    journey: worker.Jornada.value,
-                    function: `SR: ${inputsr.value}`,
-                    wo: inputwo.value,
-                    description: inputservice.value,
-                    date: document.getElementById("date").value,
-                    workTime: workTime
-                });
-                HTML.load('reg-sr-time', PageScripts);
-            }
+    HTML.loadScript('reg-sr', () => {
+        let inputwo = document.getElementById('input-wo'),
+            inputsr = document.getElementById('input-sr'),
+            inputservice = document.getElementById('input-service'),
+            nextbutton = document.querySelectorAll('[btn-next]')[0],
+            backbutton = document.querySelectorAll('[btn-back]')[0];
 
-            inputwo.onkeyup = () => {
-                clearTimeout(this.inputDelay);
-                this.inputDelay = setTimeout(() => {
-                    let wo = Number(inputwo.value);
-                    if (!isNaN(wo) && wo !== 0) {
-                        let wosearch = srs.filter((val) => { return val.WO.value == wo; })[0];
-                        if (typeof(wosearch) !== 'undefined') {
-                            inputsr.value = wosearch.SR.value;
-                            inputservice.value = wosearch.Descrição.value;
-                            nextbutton.style.display = 'unset';
-                        } else {
-                            inputsr.value = '';
-                            inputservice.value = '';
-                            nextbutton.style.display = 'none';
-                        }
+        backbutton.onclick = () => {
+            HTML.load('reg-type');
+        }
+
+        nextbutton.onclick = () => {
+            WorkerLabor.updateInfo({
+                registry: worker.Registro.value,
+                journey: worker.Jornada.value,
+                function: `SR: ${inputsr.value}`,
+                wo: inputwo.value,
+                description: inputservice.value,
+                date: document.getElementById("date").value,
+                workTime: workTime
+            });
+            HTML.load('reg-sr-time');
+        }
+
+        inputwo.onkeyup = () => {
+            clearTimeout(this.inputDelay);
+            this.inputDelay = setTimeout(() => {
+                let wo = Number(inputwo.value);
+                if (!isNaN(wo) && wo !== 0) {
+                    let wosearch = srs.filter((val) => { return val.WO.value == wo; })[0];
+                    if (typeof(wosearch) !== 'undefined') {
+                        inputsr.value = wosearch.SR.value;
+                        inputservice.value = wosearch.Descrição.value;
+                        nextbutton.style.display = 'unset';
                     } else {
                         inputsr.value = '';
                         inputservice.value = '';
                         nextbutton.style.display = 'none';
                     }
-                }, 500);
-            };
+                } else {
+                    inputsr.value = '';
+                    inputservice.value = '';
+                    nextbutton.style.display = 'none';
+                }
+            }, 500);
+        };
 
-            inputsr.onkeyup = () => {
-                clearTimeout(this.inputDelay);
-                this.inputDelay = setTimeout(() => {
-                    let sr = Number(inputsr.value);
-                    if (!isNaN(sr) && sr !== 0) {
-                        let srsearch = srs.filter((val) => { return val.SR.value == sr; })[0];
-                        if (typeof(srsearch) !== 'undefined') {
-                            inputwo.value = srsearch.WO.value;
-                            inputservice.value = srsearch.Descrição.value;
-                            nextbutton.style.display = 'unset';
-                        } else {
-                            inputwo.value = '';
-                            inputservice.value = '';
-                            nextbutton.style.display = 'none';
-                        }
+        inputsr.onkeyup = () => {
+            clearTimeout(this.inputDelay);
+            this.inputDelay = setTimeout(() => {
+                let sr = Number(inputsr.value);
+                if (!isNaN(sr) && sr !== 0) {
+                    let srsearch = srs.filter((val) => { return val.SR.value == sr; })[0];
+                    if (typeof(srsearch) !== 'undefined') {
+                        inputwo.value = srsearch.WO.value;
+                        inputservice.value = srsearch.Descrição.value;
+                        nextbutton.style.display = 'unset';
                     } else {
                         inputwo.value = '';
                         inputservice.value = '';
                         nextbutton.style.display = 'none';
                     }
-                }, 500);
-            };
-            break;
-        case 'reg-sr-time':
-            // SR.getData(
-            //     document.getElementById('date').value,
-            //     Number(document.getElementById('input-time').value));
+                } else {
+                    inputwo.value = '';
+                    inputservice.value = '';
+                    nextbutton.style.display = 'none';
+                }
+            }, 500);
+        };
+    });
 
-            document.querySelectorAll('[btn-back]')[0]
-                .onclick = () => {
-                    HTML.load('reg-sr', PageScripts);
-                };
-
-            document.getElementById('input-time').onkeyup = () => {
-                let time = Number(document.getElementById('input-time').value);
-                clearTimeout(this.inputDelay);
-                this.inputDelay = setTimeout(() => {
-                    WorkerLabor.updateTime(time);
-                }, 500);
+    HTML.loadScript('reg-sr-time', () => {
+        document.querySelectorAll('[btn-back]')[0]
+            .onclick = () => {
+                HTML.load('reg-sr', PageScripts);
             };
 
-            document.getElementById('reg-btn').onclick = () => {
-                ipc.send('show-confirm-dialog', WorkerLabor.toTable());
-            }
-            break;
-    }
+        document.getElementById('input-time').onkeyup = () => {
+            let time = Number(document.getElementById('input-time').value);
+            clearTimeout(this.inputDelay);
+            this.inputDelay = setTimeout(() => {
+                WorkerLabor.updateTime(time);
+            }, 500);
+        };
+
+        document.getElementById('reg-btn').onclick = () => {
+            ipc.send('show-confirm-dialog', WorkerLabor.toTable());
+        }
+    });
 }

@@ -64,7 +64,7 @@ function authenticate(registry, password) {
     let registryInput = document.getElementById('input-registry'),
         passwordInput = document.getElementById('input-password');
     let worker = [];
-    SQL_DRIVER.select(MSSQL.QueryBuilder('Registry', registry), (data) => {
+    SQL_DRIVER.select(MSSQL.QueryBuilder('Worker', registry), (data) => {
             worker.push(data);
         })
         .then(() => {

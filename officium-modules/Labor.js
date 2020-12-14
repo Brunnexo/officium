@@ -20,6 +20,8 @@ class WorkerLabor {
             else
                 WorkerLabor.info[val] = labor[val];
         });
+        if (typeof (WorkerLabor.onUpdate) === 'function')
+            WorkerLabor.onUpdate();
         return WorkerLabor;
     }
     static clear() {
@@ -41,9 +43,26 @@ class WorkerLabor {
             yield SQL_DRIVER.select(MSSQL_1.MSSQL.QueryBuilder('Labor', _info.registry, _info.date), (data) => {
                 _info.data.labor.push(data);
             });
+            yield SQL_DRIVER.select(MSSQL_1.MSSQL.QueryBuilder('LaborSR', _info.registry, _info.date), (data) => {
+                _info.data.labor.push(data);
+            });
             yield SQL_DRIVER.select(MSSQL_1.MSSQL.QueryBuilder('Total', _info.registry), (data) => {
                 _info.data.total.push(data);
             });
+            let dateObj = new Date(_info.date);
+            _info.remainTime = {
+                extra: Number((dateObj.getDay() == 0 || dateObj.getDay() == 6) ? _info.workTime.weekendExtra : _info.workTime.dailyExtra),
+                common: Number(_info.journey == 'H' ? this.info.workTime.hourly : this.info.workTime.monthly)
+            };
+            let _remainTime = _info.remainTime;
+            _info.data.labor.forEach((data) => {
+                if (data.Extra.value == 'SIM')
+                    _remainTime.extra = Math.max(0, (_remainTime.extra - Number(data.Tempo.value)));
+                else
+                    _remainTime.common = Math.max(0, (_remainTime.common - Number(data.Tempo.value)));
+            });
+            if (typeof (WorkerLabor.onLoad) === 'function')
+                WorkerLabor.onLoad();
             if (typeof (data) === 'function')
                 data(_info.data);
             return WorkerLabor;

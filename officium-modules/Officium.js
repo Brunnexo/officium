@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SQLConfig = exports.WorkerLabor = exports.Charts = exports.PageLoader = exports.MSSQL = exports.ColorMode = void 0;
 const electron_1 = require("electron");
+//import { RenderResume, RenderSR } from './ChartsRender';
 const Charts_1 = require("./Charts");
 Object.defineProperty(exports, "Charts", { enumerable: true, get: function () { return Charts_1.Charts; } });
 const ColorMode_1 = require("./ColorMode");

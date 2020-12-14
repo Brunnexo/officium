@@ -12,7 +12,7 @@ function ColorMode(mode: 'light' | 'dark' | 'auto') {
                 elmnt.classList.add('navbar-light');
                 elmnt.classList.remove('navbar-dark');
             });
-            break;
+        break;
         case 'dark':
             document.querySelector('.view')!.classList.add('dark');
             document.querySelector('.view')!.classList.remove('light');
@@ -21,9 +21,7 @@ function ColorMode(mode: 'light' | 'dark' | 'auto') {
                 elmnt.classList.add('navbar-dark');
                 elmnt.classList.remove('navbar-light');
             });
-            break;
+        break;
     }
 }
-
 export { ColorMode };
-

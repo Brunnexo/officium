@@ -19,7 +19,7 @@ class Charts {
         });
     }
     render(data) {
-        let _components = this.components, _data = data.data;
+        let _components = this.components, _data = data.data, _remainTime = data.remainTime;
         let elements = {
             title: document.getElementById(_components.title),
             historyTable: document.getElementById(_components.historyTable),
@@ -28,6 +28,7 @@ class Charts {
             extraChart: document.getElementById(_components.extraChart),
             notification: document.getElementById(_components.notification)
         };
+        // Tabela de Resumo
         if (elements.historyTable != null && elements.title != null) {
             elements.title.innerHTML = `Resumo de ${dateFormat(data.date)}`;
             elements.historyTable.innerHTML = '';
@@ -61,6 +62,7 @@ class Charts {
                 table.appendChild(tbody);
                 elements.historyTable.appendChild(table);
                 var id, elmnt;
+                // Menu
                 const menu = new Menu();
                 const menuItem = new MenuItem({
                     label: 'Apagar',
@@ -73,6 +75,7 @@ class Charts {
                     }
                 });
                 menu.append(menuItem);
+                // Menu de contexto
                 tbody.oncontextmenu = (ev) => {
                     ev.preventDefault();
                     elmnt = ev.target.parentElement;
@@ -83,16 +86,23 @@ class Charts {
             else
                 elements.historyTable.innerHTML = '<h5 class="display-4 text-center">Não há registros para mostrar...</h5>';
         }
+        // Gráfico de tempo apontado
         if (elements.laborChart != null) {
             let splitData = {
                 times: [],
                 projects: []
             };
             _data.labor.forEach((data) => {
-                splitData.times.push(data.Tempo.value);
-                splitData.projects.push(data.Projeto.value);
+                if (data.Extra.value == 'NÃO') {
+                    splitData.times.push(data.Tempo.value);
+                    splitData.projects.push(data.Projeto.value);
+                }
             });
-            let colors = randomColors(_data.labor.length);
+            if (_remainTime.common > 0) {
+                splitData.times.push(_remainTime.common);
+                splitData.projects.push('RESTANTE');
+            }
+            let colors = randomColors(splitData.projects.length);
             this.renderChartLabor;
             if (!(typeof (this.renderChartLabor) == 'undefined'))
                 this.renderChartLabor.destroy();
@@ -125,6 +135,56 @@ class Charts {
                 }
             });
         }
+        // Gráfico de tempo extra
+        if (elements.extraChart != null) {
+            let splitData = {
+                times: [],
+                projects: []
+            };
+            _data.labor.forEach((data) => {
+                if (data.Extra.value == 'SIM') {
+                    splitData.times.push(data.Tempo.value);
+                    splitData.projects.push(data.Projeto.value);
+                }
+            });
+            if (_remainTime.extra > 0) {
+                splitData.times.push(_remainTime.extra);
+                splitData.projects.push('RESTANTE');
+            }
+            let colors = randomColors(splitData.projects.length);
+            this.renderChartExtra;
+            if (!(typeof (this.renderChartExtra) == 'undefined'))
+                this.renderChartExtra.destroy();
+            this.renderChartExtra = new chart_js_1.Chart(elements.extraChart, {
+                type: 'pie',
+                data: {
+                    labels: splitData.projects,
+                    datasets: [
+                        {
+                            data: splitData.times,
+                            backgroundColor: colors,
+                            borderColor: colors,
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: false,
+                    aspectRatio: 1,
+                    legend: {
+                        position: 'bottom'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Tempo extra'
+                    },
+                    tooltips: {
+                        mode: "point"
+                    }
+                }
+            });
+        }
+        // Gráfico de barras de total apontado
         if (elements.totalChart != null) {
             let splitData = {
                 dates: [],
@@ -173,7 +233,7 @@ exports.Charts = Charts;
 function randomColors(num) {
     let colors = new Array;
     let getRandomColor = function () {
-        var letters = 'ABCDE'.split('');
+        var letters = 'ABC'.split('');
         var color = '#';
         for (var i = 0; i < 6; i++) {
             color += letters[Math.floor(Math.random() * letters.length)];

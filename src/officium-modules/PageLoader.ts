@@ -1,5 +1,3 @@
-const fs = require('fs');
-
 const R = {
     loader: 'r-loader',
     container: 'r-loader-container',
@@ -26,14 +24,14 @@ interface PageContents {
             id: string;
             html: string;
             updateable: boolean;
-            script?: string;
+            script?: Function;
         }>;
         Row: Array<{
             id: string;
             html: string;
             updateable: boolean;
             parent: HTMLElement | null;
-            script?: string | Function;
+            script?: Function;
         }>;
         Indexbar?: Array<{
             index?: number;
@@ -55,13 +53,11 @@ class PageLoader {
         // Row pages
         document.querySelectorAll(`[${R.loader}]`)
             .forEach((elmnt) => {
-                let path = `${__dirname}\\PageScripts\\${elmnt.id}.js`;
                 this.content.pages!.Row!.push({
                     id: elmnt.id,
                     html: elmnt.innerHTML,
                     updateable: elmnt.hasAttribute('updateable'),
                     parent: elmnt.parentElement,
-                    script: fs.existsSync(path) ? fs.readFileSync(path, 'utf-8') : ''
                 });
                 elmnt.remove();
             });
@@ -72,7 +68,6 @@ class PageLoader {
                 this.content.pages!.Column!.push({
                     id: elmnt.id,
                     html: elmnt.innerHTML,
-                    script: fs.existsSync(path) ? fs.readFileSync(path, 'utf-8') : '',
                     updateable: elmnt.hasAttribute('updateable')
                 });
                 elmnt.remove();
@@ -82,14 +77,13 @@ class PageLoader {
     loadScript(id: string, script: Function) {
         let Row = this.content.pages!.Row;
         let Column = this.content.pages!.Column;
-
         if (Row!.some(page => page.id === id)) {
-            
+            let page = Row!.filter((val) => {return val.id === id})[0];
+            page.script = script;
         } else if (Column!.some(page => page.id === id)) {
-
-        } else {
-            throw new Error(`Couldn't find page with ID: ${id}`);
-        }
+            let page = Column!.filter((val) => {return val.id === id})[0];
+            page.script = script;
+        } else throw new Error(`Couldn't find page with ID: ${id}`);
     }
 
     load(id: string, execute?: Function) {
@@ -108,7 +102,7 @@ class PageLoader {
                     type: 'R'
                 }
             };
-            
+            if (typeof(rPage.script) === 'function') rPage.script();
             if (typeof(execute) === 'function') execute(rPage.id);
        } else if (Column!.some(page => page.id === id)) {
             let cPage = Column!.filter((val) => {return val.id === id})[0];
@@ -121,6 +115,7 @@ class PageLoader {
                     type: 'C'
                 }
             };
+            if (typeof(cPage.script) === 'function') cPage.script();
             if (typeof(execute) === 'function') execute(cPage.id);
        } else throw new Error(`There is no page with this ID: ${id}`);
     }
