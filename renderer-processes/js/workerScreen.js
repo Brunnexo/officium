@@ -29,12 +29,11 @@ const charts = new Charts({
 
 window.onload = () => {
     ColorMode(localStorage.getItem('colorMode'));
+
     LoadScripts();
 
     document.getElementById('nav-name').textContent = worker.Nome.value;
     document.getElementById("date").valueAsDate = new Date();
-
-    HTML.load('personal-resume');
 
     let color = localStorage.getItem('colorMode');
     document.getElementById('colorMode')
@@ -56,15 +55,8 @@ window.onload = () => {
         workTime: workTime,
     }).onLoad = () => { charts.render(WorkerLabor.info) };
 
-    WorkerLabor.getData();
+    HTML.load('personal-resume');
 }
-
-ipc.on('confirm-labor', () => {
-    // SQL_DRIVER.execute(WorkerLabor.toQuery());
-    // setTimeout(() => {
-    //     HTML.update(PageScripts);
-    // }, 2000);
-});
 
 document.getElementById('date').onchange = () => {
     clearTimeout(this.inputDelay);
@@ -127,6 +119,14 @@ document.querySelectorAll('.close-btn')[0].onclick = () => {
 
 function LoadScripts() {
     HTML.loadScript('personal-resume', () => {
+        charts.updateInfo({
+            title: 'title',
+            historyTable: 'history-table',
+            laborChart: 'labor-chart',
+            totalChart: 'total-chart',
+            extraChart: 'extra-chart',
+        });
+
         WorkerLabor.getData();
     });
 
@@ -152,8 +152,6 @@ function LoadScripts() {
 
         nextbutton.onclick = () => {
             WorkerLabor.updateInfo({
-                registry: worker.Registro.value,
-                journey: worker.Jornada.value,
                 function: `SR: ${inputsr.value}`,
                 wo: inputwo.value,
                 description: inputservice.value,
@@ -163,7 +161,9 @@ function LoadScripts() {
             HTML.load('reg-sr-time');
         }
 
-        inputwo.onkeyup = () => {
+        inputwo.onkeyup = woChange;
+
+        function woChange() {
             clearTimeout(this.inputDelay);
             this.inputDelay = setTimeout(() => {
                 let wo = Number(inputwo.value);
@@ -184,9 +184,11 @@ function LoadScripts() {
                     nextbutton.style.display = 'none';
                 }
             }, 500);
-        };
+        }
 
-        inputsr.onkeyup = () => {
+        inputsr.onkeyup = srChange;
+
+        function srChange() {
             clearTimeout(this.inputDelay);
             this.inputDelay = setTimeout(() => {
                 let sr = Number(inputsr.value);
@@ -195,7 +197,7 @@ function LoadScripts() {
                     if (typeof(srsearch) !== 'undefined') {
                         inputwo.value = srsearch.WO.value;
                         inputservice.value = srsearch.Descrição.value;
-                        nextbutton.style.display = 'unset';
+                        if (srsearch.WO.value !== '') nextbutton.style.display = 'unset';
                     } else {
                         inputwo.value = '';
                         inputservice.value = '';
@@ -207,20 +209,26 @@ function LoadScripts() {
                     nextbutton.style.display = 'none';
                 }
             }, 500);
-        };
+        }
+
+        inputwo.value = (typeof(WorkerLabor.info.wo) === 'undefined' ? '' : WorkerLabor.info.wo);
+        woChange();
     });
 
     HTML.loadScript('reg-sr-time', () => {
+        charts.render(WorkerLabor.info);
+
         document.querySelectorAll('[btn-back]')[0]
             .onclick = () => {
-                HTML.load('reg-sr', PageScripts);
+                HTML.load('reg-sr');
             };
 
         document.getElementById('input-time').onkeyup = () => {
             let time = Number(document.getElementById('input-time').value);
             clearTimeout(this.inputDelay);
             this.inputDelay = setTimeout(() => {
-                WorkerLabor.updateTime(time);
+                WorkerLabor.inputTime(time);
+                charts.render(WorkerLabor.info);
             }, 500);
         };
 

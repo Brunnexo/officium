@@ -40,7 +40,8 @@ class Charts {
     render(data: Labor) {
         let _components = this.components,
             _data = data.data,
-            _remainTime = data.remainTime;
+            _remainTime = data.remainTime,
+            _laborTime = data.laborTime;
 
         let elements = {
             title: document.getElementById(_components.title),
@@ -136,6 +137,13 @@ class Charts {
                 splitData.projects.push('RESTANTE');
             }
 
+            if (typeof(_laborTime) !== 'undefined') {
+                if (_laborTime.common > 0) {
+                    splitData.times.push(_laborTime.common);
+                    splitData.projects.push('SEU REGISTRO');
+                }
+            }
+
             let colors = randomColors(splitData.projects.length);
 
             this.renderChartLabor;
@@ -189,6 +197,13 @@ class Charts {
             if(_remainTime.extra > 0) {
                 splitData.times.push(_remainTime.extra);
                 splitData.projects.push('RESTANTE');
+            }
+
+            if (typeof(_laborTime) !== 'undefined') {
+                if (_laborTime.extra > 0) {
+                    splitData.times.push(_laborTime.extra);
+                    splitData.projects.push('SEU REGISTRO');
+                }
             }
 
             let colors = randomColors(splitData.projects.length);
