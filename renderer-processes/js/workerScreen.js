@@ -29,7 +29,6 @@ const charts = new Charts({
 
 window.onload = () => {
     ColorMode(localStorage.getItem('colorMode'));
-
     LoadScripts();
 
     document.getElementById('nav-name').textContent = worker.Nome.value;
@@ -131,6 +130,8 @@ function LoadScripts() {
     });
 
     HTML.loadScript('reg-type', () => {
+        WorkerLabor.clear();
+
         document.getElementById('btn-sr').onclick = () => {
             HTML.load('reg-sr');
         }
@@ -216,7 +217,7 @@ function LoadScripts() {
     });
 
     HTML.loadScript('reg-sr-time', () => {
-        charts.render(WorkerLabor.info);
+        WorkerLabor.getData();
 
         document.querySelectorAll('[btn-back]')[0]
             .onclick = () => {

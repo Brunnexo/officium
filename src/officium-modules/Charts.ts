@@ -8,6 +8,16 @@ const MenuItem = remote.MenuItem;
 
 const dateFormat = (d: string) => `${d.split('-')[2]}/${d.split('-')[1]}/${d.split('-')[0]}`;
 
+const week = {
+    0: 'Domingo',
+    1: 'Segunda-feira',
+    2: 'Terça-feira',
+    3: 'Quarta-feira',
+    4: 'Quinta-feira',
+    5: 'Sexta-feira',
+    6: 'Sábado'
+}
+
 interface Components {
     title?: string,
     historyTable?: string,
@@ -51,10 +61,9 @@ class Charts {
             extraChart: document.getElementById(_components.extraChart),
             notification: document.getElementById(_components.notification)
         }
-        
         // Tabela de Resumo
         if (elements.historyTable != null && elements.title != null) {
-            elements.title.innerHTML = `Resumo de ${dateFormat(data.date)}`;
+            elements.title.innerHTML = `Resumo de ${week[new Date(data.date).getUTCDay()].toLowerCase()}, ${dateFormat(data.date)}`;
             elements.historyTable.innerHTML = '';
 
             let tbody = document.createElement('tbody');
@@ -120,6 +129,12 @@ class Charts {
 
         // Gráfico de tempo apontado
         if (elements.laborChart != null) {
+            let day = new Date(data.date).getUTCDay();
+
+            if (day == 6 || day == 0) elements.laborChart.style.display = 'none';
+            else elements.laborChart.style.display = 'unset';
+
+
             let splitData = {
                 times: [],
                 projects: []
@@ -132,8 +147,8 @@ class Charts {
                 }
             });
 
-            if (_remainTime.common > 0) {
-                splitData.times.push(_remainTime.common);
+            if ((_remainTime.common - _laborTime.common) > 0) {
+                splitData.times.push(_laborTime.common > 0 ? (_remainTime.common - _laborTime.common) : _remainTime.common);
                 splitData.projects.push('RESTANTE');
             }
 
@@ -144,7 +159,7 @@ class Charts {
                 }
             }
 
-            let colors = randomColors(splitData.projects.length);
+            let colors = randomColors(splitData.times.length);
 
             this.renderChartLabor;
             if (!(typeof (this.renderChartLabor) == 'undefined'))
@@ -193,9 +208,9 @@ class Charts {
                     splitData.projects.push(data.Projeto.value);
                 }
             });
-
-            if(_remainTime.extra > 0) {
-                splitData.times.push(_remainTime.extra);
+                
+            if((_remainTime.extra - _laborTime.extra) > 0) {
+                splitData.times.push(_laborTime.extra > 0 ? (_remainTime.extra - _laborTime.extra) : _remainTime.extra);
                 splitData.projects.push('RESTANTE');
             }
 
@@ -206,7 +221,7 @@ class Charts {
                 }
             }
 
-            let colors = randomColors(splitData.projects.length);
+            let colors = randomColors(splitData.times.length);
 
             this.renderChartExtra;
             if (!(typeof (this.renderChartExtra) == 'undefined'))
@@ -292,20 +307,9 @@ class Charts {
     }
 }
 
-function randomColors(num) {
+function randomColors(num: number) {
     let colors = new Array;
-    let getRandomColor = function () {
-        var letters = 'ABC'.split('');
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * letters.length)];
-        }
-        return color;
-    }
-
-    for (let i = 0; i < num; i++) {
-        colors.push(getRandomColor());
-    }
+    for (let i = 0; i < num; i++) colors.push("#"+((1<<24)*Math.random()|0).toString(16));
     return colors;
 }
 

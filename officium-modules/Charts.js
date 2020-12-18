@@ -7,6 +7,15 @@ const MSSQL_1 = require("./MSSQL");
 const Menu = electron_1.remote.Menu;
 const MenuItem = electron_1.remote.MenuItem;
 const dateFormat = (d) => `${d.split('-')[2]}/${d.split('-')[1]}/${d.split('-')[0]}`;
+const week = {
+    0: 'Domingo',
+    1: 'Segunda-feira',
+    2: 'Terça-feira',
+    3: 'Quarta-feira',
+    4: 'Quinta-feira',
+    5: 'Sexta-feira',
+    6: 'Sábado'
+};
 class Charts {
     constructor(comp) {
         this.components = comp;
@@ -30,7 +39,7 @@ class Charts {
         };
         // Tabela de Resumo
         if (elements.historyTable != null && elements.title != null) {
-            elements.title.innerHTML = `Resumo de ${dateFormat(data.date)}`;
+            elements.title.innerHTML = `Resumo de ${week[new Date(data.date).getUTCDay()].toLowerCase()}, ${dateFormat(data.date)}`;
             elements.historyTable.innerHTML = '';
             let tbody = document.createElement('tbody');
             if (!(Object.keys(_data.history).length === 0)) {
@@ -88,6 +97,11 @@ class Charts {
         }
         // Gráfico de tempo apontado
         if (elements.laborChart != null) {
+            let day = new Date(data.date).getUTCDay();
+            if (day == 6 || day == 0)
+                elements.laborChart.style.display = 'none';
+            else
+                elements.laborChart.style.display = 'unset';
             let splitData = {
                 times: [],
                 projects: []
@@ -98,8 +112,8 @@ class Charts {
                     splitData.projects.push(data.Projeto.value);
                 }
             });
-            if (_remainTime.common > 0) {
-                splitData.times.push(_remainTime.common);
+            if ((_remainTime.common - _laborTime.common) > 0) {
+                splitData.times.push(_laborTime.common > 0 ? (_remainTime.common - _laborTime.common) : _remainTime.common);
                 splitData.projects.push('RESTANTE');
             }
             if (typeof (_laborTime) !== 'undefined') {
@@ -108,7 +122,7 @@ class Charts {
                     splitData.projects.push('SEU REGISTRO');
                 }
             }
-            let colors = randomColors(splitData.projects.length);
+            let colors = randomColors(splitData.times.length);
             this.renderChartLabor;
             if (!(typeof (this.renderChartLabor) == 'undefined'))
                 this.renderChartLabor.destroy();
@@ -153,8 +167,8 @@ class Charts {
                     splitData.projects.push(data.Projeto.value);
                 }
             });
-            if (_remainTime.extra > 0) {
-                splitData.times.push(_remainTime.extra);
+            if ((_remainTime.extra - _laborTime.extra) > 0) {
+                splitData.times.push(_laborTime.extra > 0 ? (_remainTime.extra - _laborTime.extra) : _remainTime.extra);
                 splitData.projects.push('RESTANTE');
             }
             if (typeof (_laborTime) !== 'undefined') {
@@ -163,7 +177,7 @@ class Charts {
                     splitData.projects.push('SEU REGISTRO');
                 }
             }
-            let colors = randomColors(splitData.projects.length);
+            let colors = randomColors(splitData.times.length);
             this.renderChartExtra;
             if (!(typeof (this.renderChartExtra) == 'undefined'))
                 this.renderChartExtra.destroy();
@@ -244,16 +258,7 @@ class Charts {
 exports.Charts = Charts;
 function randomColors(num) {
     let colors = new Array;
-    let getRandomColor = function () {
-        var letters = 'ABC'.split('');
-        var color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * letters.length)];
-        }
-        return color;
-    };
-    for (let i = 0; i < num; i++) {
-        colors.push(getRandomColor());
-    }
+    for (let i = 0; i < num; i++)
+        colors.push("#" + ((1 << 24) * Math.random() | 0).toString(16));
     return colors;
 }

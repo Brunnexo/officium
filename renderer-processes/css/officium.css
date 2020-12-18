@@ -167,9 +167,14 @@ input::-webkit-inner-spin-button {
     background: none;
 }
 
-.splash {
+.splash,
+.main,
+.workerscreen {
     border-top-left-radius: var(--window-radius);
     border-bottom-right-radius: var(--window-radius);
+}
+
+.splash {
     height: 100vh;
     width: 100vw;
 }
@@ -188,13 +193,15 @@ input::-webkit-inner-spin-button {
     color: var(--light-font-color);
 }
 
+.view.no-focus {
+    transition: 2s;
+}
+
 .view.dark.no-focus {
-    transition: 0.5s;
     background-color: var(--bg-dark);
 }
 
 .view.light.no-focus {
-    transition: 0.5s;
     background-color: var(--bg-light);
 }
 
@@ -203,8 +210,6 @@ input::-webkit-inner-spin-button {
 
 .main {
     padding: var(--view-margin);
-    border-top-left-radius: var(--window-radius);
-    border-bottom-right-radius: var(--window-radius);
     height: 100vh;
     width: 100vw;
 }
@@ -216,8 +221,6 @@ input::-webkit-inner-spin-button {
     padding: var(--view-margin-minimal);
     height: 100vh;
     width: 100vw;
-    border-top-left-radius: var(--window-radius);
-    border-bottom-right-radius: var(--window-radius);
 }
 
 .workerscreen.dialog {

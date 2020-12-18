@@ -44,33 +44,30 @@ class WorkerLabor {
     }
 
     static inputTime(time: number) {
-        let weekDay = new Date(WorkerLabor.info.date).getDay();
-        let isWeekend = (weekDay == 0 || weekDay == 6);
-
-        
+        let weekDay = new Date(WorkerLabor.info.date).getUTCDay(),
+            isWeekend = (weekDay == 0 || weekDay == 6),
+            _remainTime = WorkerLabor.info.remainTime;
 
         if (time > 0) {
-            WorkerLabor.info.remainTime = WorkerLabor.inputTime['backRemain'];
-            let _remainTime = WorkerLabor.info.remainTime;
-
+            let commonTime = Math.min(time, _remainTime.common),
+                extraTime = Math.min(((time - commonTime) > 10 ? (time - commonTime) : 0), _remainTime.extra);
             if (!isWeekend) {
-                let commonTime = Math.min(time, _remainTime.common),
-                    extraTime = Math.min((time - commonTime), _remainTime.extra);
-
                 WorkerLabor.info.laborTime = {
                     common: commonTime,
                     extra: extraTime
                 }
-
-                _remainTime.common -= commonTime;
-                _remainTime.extra -= (extraTime > 10 ? extraTime : 0);
             } else {
-
+                WorkerLabor.info.laborTime = {
+                    common: 0,
+                    extra: Math.min((time > 10 ? time : 0), _remainTime.extra)
+                }
+            } 
+        } else {
+            WorkerLabor.info.laborTime = {
+                common: 0,
+                extra: 0
             }
-
-        } else WorkerLabor.info.remainTime = WorkerLabor.inputTime['backRemain'];
-
-        // console.log(JSON.stringify(this.inputTime['backup']));
+        }
     }
 
     static clear() {
@@ -94,40 +91,49 @@ class WorkerLabor {
             labor: [],
             total: []
         }
+        _info.laborTime = {
+            extra: 0,
+            common: 0
+        },
+        _info.remainTime = {
+            extra: 0,
+            common: 0
+        },
 
-        SQL_DRIVER.connect().then(async () => {
-            await SQL_DRIVER.select(MSSQL.QueryBuilder('History', _info.registry, _info.date), (data: any) => {
-                _info.data.history.push(data);
+        SQL_DRIVER.connect()
+        .then(
+            async () => {
+                await SQL_DRIVER.select(MSSQL.QueryBuilder('History', _info.registry, _info.date), (data: any) => {
+                    _info.data.history.push(data);
+                });
+
+                await SQL_DRIVER.select(MSSQL.QueryBuilder('Labor', _info.registry, _info.date), (data: any) => {
+                    _info.data.labor.push(data);
+                });
+
+                await SQL_DRIVER.select(MSSQL.QueryBuilder('LaborSR', _info.registry, _info.date), (data: any) => {
+                    _info.data.labor.push(data);
+                });
+
+                await SQL_DRIVER.select(MSSQL.QueryBuilder('Total', _info.registry), (data: any) => {
+                    _info.data.total.push(data);
+                });
+
+                let dateObj = new Date(_info.date);
+
+                _info.remainTime = {
+                    extra: Number((dateObj.getUTCDay() == 0 || dateObj.getUTCDay() == 6) ? _info.workTime.weekendExtra : _info.workTime.dailyExtra),
+                    common: Number(_info.journey == 'H' ? WorkerLabor.info.workTime.hourly : WorkerLabor.info.workTime.monthly)
+                }
+        
+                let _remainTime = _info.remainTime;
+        
+                _info.data.labor.forEach((data: any) => {
+                    if (data.Extra.value == 'SIM') _remainTime.extra = Math.max(0, (_remainTime.extra - Number(data.Tempo.value)));
+                    else _remainTime.common = Math.max(0, (_remainTime.common - Number(data.Tempo.value)));
+                });
+                if (typeof(WorkerLabor.onLoad) === 'function') WorkerLabor.onLoad();
             });
-
-            await SQL_DRIVER.select(MSSQL.QueryBuilder('Labor', _info.registry, _info.date), (data: any) => {
-                _info.data.labor.push(data);
-            });
-
-            await SQL_DRIVER.select(MSSQL.QueryBuilder('LaborSR', _info.registry, _info.date), (data: any) => {
-                _info.data.labor.push(data);
-            });
-
-            await SQL_DRIVER.select(MSSQL.QueryBuilder('Total', _info.registry), (data: any) => {
-                _info.data.total.push(data);
-            });
-
-            let dateObj = new Date(_info.date);
-
-            _info.remainTime = {
-                extra: Number((dateObj.getDay() == 0 || dateObj.getDay() == 6) ? _info.workTime.weekendExtra : _info.workTime.dailyExtra),
-                common: Number(_info.journey == 'H' ? WorkerLabor.info.workTime.hourly : WorkerLabor.info.workTime.monthly)
-            }
-    
-            let _remainTime = _info.remainTime;
-    
-            _info.data.labor.forEach((data: any) => {
-                if (data.Extra.value == 'SIM') _remainTime.extra = Math.max(0, (_remainTime.extra - Number(data.Tempo.value)));
-                else _remainTime.common = Math.max(0, (_remainTime.common - Number(data.Tempo.value)));
-            });
-    
-            if (typeof(WorkerLabor.onLoad) === 'function') WorkerLabor.onLoad();
-        });
         return WorkerLabor;
     }
 }

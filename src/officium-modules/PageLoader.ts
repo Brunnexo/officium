@@ -64,7 +64,6 @@ class PageLoader {
         // Column pages
         document.querySelectorAll(`[${C.loader}]`)
             .forEach((elmnt, key) => {
-                let path = `${__dirname}\\PageScripts\\${elmnt.id}.js`;
                 this.content.pages!.Column!.push({
                     id: elmnt.id,
                     html: elmnt.innerHTML,
@@ -75,8 +74,8 @@ class PageLoader {
     }
 
     loadScript(id: string, script: Function) {
-        let Row = this.content.pages!.Row;
-        let Column = this.content.pages!.Column;
+        let Row = this.content.pages!.Row,
+            Column = this.content.pages!.Column;
         if (Row!.some(page => page.id === id)) {
             let page = Row!.filter((val) => {return val.id === id})[0];
             page.script = script;
@@ -86,7 +85,7 @@ class PageLoader {
         } else throw new Error(`Couldn't find page with ID: ${id}`);
     }
 
-    load(id: string, execute?: Function) {
+    load(id: string) {
         let Row = this.content.pages!.Row;
         let Column = this.content.pages!.Column;
        if (Row!.some(page => page.id === id)) {
@@ -103,7 +102,6 @@ class PageLoader {
                 }
             };
             if (typeof(rPage.script) === 'function') rPage.script();
-            if (typeof(execute) === 'function') execute(rPage.id);
        } else if (Column!.some(page => page.id === id)) {
             let cPage = Column!.filter((val) => {return val.id === id})[0];
             document.querySelector(`[${C.container}]`)!.innerHTML = cPage.html;
@@ -116,11 +114,10 @@ class PageLoader {
                 }
             };
             if (typeof(cPage.script) === 'function') cPage.script();
-            if (typeof(execute) === 'function') execute(cPage.id);
        } else throw new Error(`There is no page with this ID: ${id}`);
     }
 
-    update(execute?: Function) {
+    update() {
         let Column = this.content.pages!.Column,
             Row = this.content.pages!.Row,
             type = this.content.status.actual.type,
@@ -128,15 +125,10 @@ class PageLoader {
 
         let page;
 
-        if (type == 'C') {
-            page = Column!.filter((val) => {return val.id === id})[0];
-        } else {
-            page = Row!.filter((val) => {return val.id === id})[0];
-        }
+        if (type == 'C') page = Column!.filter((val) => {return val.id === id})[0];
+        else page = Row!.filter((val) => {return val.id === id})[0];
         
-        if (typeof(page) !== 'undefined' && page.updateable) {
-            this.load(page.id, execute);
-        }
+        if (typeof(page) !== 'undefined' && page.updateable) this.load(page.id);
     }
 }
 
