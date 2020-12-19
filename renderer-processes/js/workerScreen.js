@@ -22,13 +22,13 @@ const charts = new Charts({
     laborChart: 'labor-chart',
     totalChart: 'total-chart',
     extraChart: 'extra-chart',
-    notification: 'notification-banner'
 });
 
 // Funções ao carregar a página
 
 window.onload = () => {
     ColorMode(localStorage.getItem('colorMode'));
+
     LoadScripts();
 
     document.getElementById('nav-name').textContent = worker.Nome.value;
@@ -38,6 +38,23 @@ window.onload = () => {
     document.getElementById('colorMode')
         .getElementsByClassName('name')[0]
         .textContent = (color == 'light' ? 'Tema: claro' : color == 'dark' ? 'Tema: escuro' : 'Tema: auto.');
+
+    document.querySelector('.view').onmouseover = function(ev) {
+        let windowSize = remote.getCurrentWindow().getBounds();
+        let w = {
+            width: windowSize.width,
+            height: windowSize.height
+        };
+        let c = {
+            x: ev.clientX,
+            y: ev.clientY
+        };
+
+        if (((c.x >= 0 && c.x <= 50) && (c.y >= 0 && c.y <= 50)) ||
+            ((c.x >= (w.width - 50)) && (c.y >= (w.height - 50))))
+            document.body.classList.add('corner');
+        else document.body.classList.remove('corner');
+    }
 
     remote.getCurrentWindow()
         .on('focus', () => {
@@ -226,15 +243,20 @@ function LoadScripts() {
 
         document.getElementById('input-time').onkeyup = () => {
             let time = Number(document.getElementById('input-time').value);
+            let btn = document.getElementById('reg-btn');
+
+            btn.setAttribute('disabled', '');
+
             clearTimeout(this.inputDelay);
             this.inputDelay = setTimeout(() => {
-                WorkerLabor.inputTime(time);
+                if (!WorkerLabor.inputTime(time)) btn.setAttribute('disabled', '');
+                else btn.removeAttribute('disabled');
                 charts.render(WorkerLabor.info);
             }, 500);
         };
 
         document.getElementById('reg-btn').onclick = () => {
-            ipc.send('show-confirm-dialog', WorkerLabor.toTable());
+            ipc.send('show-confirm-dialog', WorkerLabor.getLabor());
         }
     });
 }

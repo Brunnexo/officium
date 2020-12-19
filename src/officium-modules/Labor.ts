@@ -43,7 +43,7 @@ class WorkerLabor {
         return WorkerLabor;
     }
 
-    static inputTime(time: number) {
+    static inputTime(time: number): boolean {
         let weekDay = new Date(WorkerLabor.info.date).getUTCDay(),
             isWeekend = (weekDay == 0 || weekDay == 6),
             _remainTime = WorkerLabor.info.remainTime;
@@ -67,6 +67,18 @@ class WorkerLabor {
                 common: 0,
                 extra: 0
             }
+        }
+
+        return (WorkerLabor.info.laborTime.common > 0 || WorkerLabor.info.laborTime.extra > 0);
+    }
+
+    static getLabor() {
+        let _info = WorkerLabor.info;
+        return {
+            function: _info.function,
+            wo: _info.wo,
+            description: _info.description,
+            laborTime: _info.laborTime
         }
     }
 

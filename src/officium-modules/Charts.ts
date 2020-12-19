@@ -24,7 +24,6 @@ interface Components {
     laborChart?: string,
     totalChart?: string,
     extraChart?: string,
-    notification?: string
 }
 
 class Charts {
@@ -59,7 +58,6 @@ class Charts {
             laborChart: document.getElementById(_components.laborChart),
             totalChart: document.getElementById(_components.totalChart),
             extraChart: document.getElementById(_components.extraChart),
-            notification: document.getElementById(_components.notification)
         }
         // Tabela de Resumo
         if (elements.historyTable != null && elements.title != null) {
@@ -179,7 +177,6 @@ class Charts {
                     ]
                 },
                 options: {
-                    responsive: false,
                     aspectRatio: 1,
                     legend: {
                         position: 'bottom'
@@ -241,7 +238,6 @@ class Charts {
                     ]
                 },
                 options: {
-                    responsive: false,
                     aspectRatio: 1,
                     legend: {
                         position: 'bottom'
@@ -293,7 +289,6 @@ class Charts {
                 },
                 options: {
                     maintainAspectRatio: false,
-                    responsive: false,
                     legend: {
                         display: false
                     },

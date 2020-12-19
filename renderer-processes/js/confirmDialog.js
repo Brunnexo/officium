@@ -28,8 +28,10 @@ document.getElementById('btn-confirm').onclick = () => {
 
 
 function renderTable() {
-    let data = ipc.sendSync('request-table-data');
-    let container = document.getElementById('container');
+    let data = ipc.sendSync('request-labor-info');
+
+    console.log(JSON.stringify(data));
+    /*let container = document.getElementById('container');
 
     let thead = document.createElement('thead');
     let table = document.createElement('table');
@@ -62,5 +64,5 @@ function renderTable() {
     });
     table.appendChild(tbody);
     container.innerHTML = '';
-    container.appendChild(table);
+    container.appendChild(table);*/
 }

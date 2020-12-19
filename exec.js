@@ -20,18 +20,18 @@ electron_1.ipcMain.on('show-main', () => {
 electron_1.ipcMain.on('back-main', (evt, arg) => {
     main_1.Process.build('main', () => { main_1.Process.workerScreen.destroy(); });
 });
-var tableData;
+var laborInfo;
 var workerScreenEvt;
 electron_1.ipcMain.on('show-confirm-dialog', (evt, arg) => {
     workerScreenEvt = evt;
-    tableData = arg;
+    laborInfo = arg;
     main_1.Process.build('confirmDialog');
 });
 electron_1.ipcMain.on('confirm', () => {
     workerScreenEvt.reply('confirm-labor');
 });
-electron_1.ipcMain.on('request-table-data', (evt) => {
-    evt.returnValue = tableData;
+electron_1.ipcMain.on('request-labor-info', (evt) => {
+    evt.returnValue = laborInfo;
 });
 electron_1.ipcMain.on('open-workerScreen', (evt) => {
     main_1.Process.build('workerScreen', () => { main_1.Process.main.destroy(); });

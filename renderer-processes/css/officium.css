@@ -164,7 +164,12 @@ input::-webkit-inner-spin-button {
 }
 
 .transparent {
+    transition: 1s;
     background: none;
+}
+
+.transparent.corner {
+    background-color: rgba(255, 90, 0, 0.5);
 }
 
 .splash,
@@ -237,11 +242,6 @@ input::-webkit-inner-spin-button {
     border-style: solid;
     border-width: 1px;
     border-color: var(--dark);
-}
-
-.workerscreen.maximized {
-    border-top-left-radius: 0;
-    border-bottom-right-radius: 0;
 }
 
 .sidebar {

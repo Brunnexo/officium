@@ -43,6 +43,16 @@ class WorkerLabor {
                 extra: 0
             };
         }
+        return (WorkerLabor.info.laborTime.common > 0 || WorkerLabor.info.laborTime.extra > 0);
+    }
+    static getLabor() {
+        let _info = WorkerLabor.info;
+        return {
+            function: _info.function,
+            wo: _info.wo,
+            description: _info.description,
+            laborTime: _info.laborTime
+        };
     }
     static clear() {
         let _info = WorkerLabor.info;

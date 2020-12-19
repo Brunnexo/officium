@@ -24,12 +24,12 @@ ipc.on('back-main', (evt, arg) => {
     Process.build('main', () => { Process.workerScreen.destroy() })
 });
 
-var tableData: any;
+var laborInfo: any;
 var workerScreenEvt: Electron.IpcMainEvent;
 
 ipc.on('show-confirm-dialog', (evt, arg) => {
     workerScreenEvt = evt;
-    tableData = arg;
+    laborInfo = arg;
     Process.build('confirmDialog');
 })
 
@@ -38,8 +38,8 @@ ipc.on('confirm', () => {
 })
 
 
-ipc.on('request-table-data', (evt) => {
-    evt.returnValue = tableData;
+ipc.on('request-labor-info', (evt) => {
+    evt.returnValue = laborInfo;
 })
 
 ipc.on('open-workerScreen', (evt) => {
