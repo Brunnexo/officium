@@ -27,8 +27,12 @@ electron_1.ipcMain.on('show-confirm-dialog', (evt, arg) => {
     laborInfo = arg;
     main_1.Process.build('confirmDialog');
 });
-electron_1.ipcMain.on('confirm', () => {
-    workerScreenEvt.reply('confirm-labor');
+electron_1.ipcMain.on('sr-search', (evt, arg) => {
+    workerScreenEvt = evt;
+    main_1.Process.build('srSearchDialog');
+});
+electron_1.ipcMain.on('sr-found', (evt, arg) => {
+    workerScreenEvt.reply('sr-fill', arg);
 });
 electron_1.ipcMain.on('request-labor-info', (evt) => {
     evt.returnValue = laborInfo;

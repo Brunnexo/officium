@@ -33,13 +33,10 @@ class MSSQL {
 
     constructor(config: SQLConfig = SQLConfig) {
         MSSQL.SQL_VARIABLE = '@VAR';
-        this.Attr = {
-            Connected: false
-        };
+        this.Attr = { Connected: false };
         if (typeof(config) != 'object')
             throw new Error(`SQL 'Tedious' configuration not defined! (${typeof(config)})`);
-        else
-            this.Config = config;
+        else this.Config = config;
     };
 
     static setVariable(variable: string) {

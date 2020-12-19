@@ -22,47 +22,63 @@ document.getElementById('btn-cancel').onclick = () => {
 };
 
 document.getElementById('btn-confirm').onclick = () => {
-    ipc.send('confirm');
-    remote.getCurrentWindow().close();
-};
 
+};
 
 function renderTable() {
     let data = ipc.sendSync('request-labor-info');
 
-    console.log(JSON.stringify(data));
-    /*let container = document.getElementById('container');
+    let hasTime = (data.laborTime.common > 0 || data.laborTime.extra > 0);
 
-    let thead = document.createElement('thead');
-    let table = document.createElement('table');
-    table.classList.add('table');
-    thead.innerHTML = `
-      <thead>
-          <tr>
-              <th scope="col">Função</th>
-              <th scope="col">WO</th>
-              <th scope="col">Descrição</th>
-              <th scope="col">Tempo</th>
-              <th scope="col">Extra</th>
-          </tr>
-      </thead>`;
-    table.appendChild(thead);
+    console.log(hasTime);
 
-    let tbody = document.createElement('tbody');
+    let container = document.getElementById('container');
 
-    data.forEach((d) => {
-        if (d.Tempo > 0) {
-            let tr = document.createElement('tr');
-            tr.innerHTML = `
-              <th>${d.Função}</th>
-              <th>${d.WO}</th>
-              <th>${d.Descrição}</th>
-              <th>${d.Tempo}</th>
-              <th>${d.Extra}</th>`;
-            tbody.appendChild(tr);
+    if (hasTime) {
+        let thead = document.createElement('thead');
+        let table = document.createElement('table');
+        table.classList.add('table');
+        thead.innerHTML = `
+          <thead>
+              <tr>
+                  <th scope="col">Função</th>
+                  <th scope="col">WO</th>
+                  <th scope="col">Descrição</th>
+                  <th scope="col">Tempo</th>
+                  <th scope="col">Extra</th>
+              </tr>
+          </thead>`;
+        table.appendChild(thead);
+
+        let tbody = document.createElement('tbody');
+
+        if (data.laborTime.common > 0) {
+            let trCommon = document.createElement('tr');
+            trCommon.innerHTML = `
+                <th scope="row">${data['function']}</th>
+                <th>${data['wo']}</th>
+                <th>${data['description']}</th>
+                <th>${data.laborTime.common}</th>
+                <th>Não</th>`;
+            tbody.appendChild(trCommon);
         }
-    });
-    table.appendChild(tbody);
-    container.innerHTML = '';
-    container.appendChild(table);*/
+
+        if (data.laborTime.extra > 10) {
+            let trExtra = document.createElement('tr');
+            trExtra.innerHTML = `
+                <th scope="row">${data['function']}</th>
+                <th>${data['wo']}</th>
+                <th>${data['description']}</th>
+                <th>${data.laborTime.extra}</th>
+                <th>Sim</th>`;
+            tbody.appendChild(trExtra);
+        }
+        table.appendChild(tbody);
+
+        container.innerHTML = '';
+        container.appendChild(table);
+    } else {
+        container.innerHTML = `<h5 class="display-4 text-center">Não há registros para mostrar...</h5>`;
+    }
+
 }

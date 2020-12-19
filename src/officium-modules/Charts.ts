@@ -9,13 +9,13 @@ const MenuItem = remote.MenuItem;
 const dateFormat = (d: string) => `${d.split('-')[2]}/${d.split('-')[1]}/${d.split('-')[0]}`;
 
 const week = {
-    0: 'Domingo',
-    1: 'Segunda-feira',
-    2: 'Terça-feira',
-    3: 'Quarta-feira',
-    4: 'Quinta-feira',
-    5: 'Sexta-feira',
-    6: 'Sábado'
+    0: 'domingo',
+    1: 'segunda-feira',
+    2: 'terça-feira',
+    3: 'quarta-feira',
+    4: 'quinta-feira',
+    5: 'sexta-feira',
+    6: 'sábado'
 }
 
 interface Components {
@@ -61,7 +61,7 @@ class Charts {
         }
         // Tabela de Resumo
         if (elements.historyTable != null && elements.title != null) {
-            elements.title.innerHTML = `Resumo de ${week[new Date(data.date).getUTCDay()].toLowerCase()}, ${dateFormat(data.date)}`;
+            elements.title.innerHTML = `Resumo de ${week[new Date(data.date).getUTCDay()]}, ${dateFormat(data.date)}`;
             elements.historyTable.innerHTML = '';
 
             let tbody = document.createElement('tbody');

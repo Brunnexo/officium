@@ -90,25 +90,27 @@ class Process {
                     Process.confirmDialog.show();
                 });
                 break;
+            case 'srSearchDialog':
+                Process.srSearchDialog = new electron_1.BrowserWindow({
+                    "parent": Process.workerScreen,
+                    "modal": true,
+                    "show": false,
+                    "frame": false,
+                    "width": 720,
+                    "height": 400,
+                    "resizable": false,
+                    "transparent": true,
+                    "webPreferences": {
+                        "nodeIntegration": true,
+                        "enableRemoteModule": true
+                    }
+                });
+                Process.srSearchDialog.loadURL(`${__dirname}/renderer-processes/html/srSearchDialog.html`);
+                Process.srSearchDialog.once('ready-to-show', () => {
+                    Process.srSearchDialog.show();
+                });
+                break;
         }
     }
 }
 exports.Process = Process;
-// Janela do colaborador
-/*ipc.on('open-workerScreen', (evt, arg) => {
-    if (arg != 'TRUE' && global.data.worker['Funções'].value.split('').includes('A')) {
-        evt.reply('adm-password-require');
-    } else if (arg == 'TRUE') {
-        admScreen = true;
-        buildWorkerScreen(() => {
-            workerScreen.show();
-            main.destroy();
-        });
-    } else {
-        admScreen = false;
-        buildWorkerScreen(() => {
-            workerScreen.show();
-            main.destroy();
-        });
-    }
-});*/ 

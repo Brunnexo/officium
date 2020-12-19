@@ -16,9 +16,7 @@ const Officium_1 = require("./Officium");
 class MSSQL {
     constructor(config = Officium_1.SQLConfig) {
         MSSQL.SQL_VARIABLE = '@VAR';
-        this.Attr = {
-            Connected: false
-        };
+        this.Attr = { Connected: false };
         if (typeof (config) != 'object')
             throw new Error(`SQL 'Tedious' configuration not defined! (${typeof (config)})`);
         else

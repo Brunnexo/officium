@@ -8,7 +8,6 @@ global['sql'] = {
     srs: {},
     general: {}
 }
-
 global['data'] = {};
 global['data'].worker = {};
 
@@ -32,11 +31,14 @@ ipc.on('show-confirm-dialog', (evt, arg) => {
     laborInfo = arg;
     Process.build('confirmDialog');
 })
-
-ipc.on('confirm', () => {
-    workerScreenEvt.reply('confirm-labor');
+ipc.on('sr-search', (evt, arg) => {
+    workerScreenEvt = evt;
+    Process.build('srSearchDialog');
 })
 
+ipc.on('sr-found', (evt, arg) => {
+    workerScreenEvt.reply('sr-fill', arg);
+})
 
 ipc.on('request-labor-info', (evt) => {
     evt.returnValue = laborInfo;

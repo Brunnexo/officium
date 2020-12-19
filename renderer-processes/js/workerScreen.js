@@ -5,9 +5,6 @@ const ipc = require('electron').ipcRenderer;
 // Extensões internas
 const { PageLoader, ColorMode, Charts, WorkerLabor, MSSQL } = require('../../officium-modules/Officium');
 
-// Dependências
-require('bootstrap');
-
 // Instâncias
 const HTML = new PageLoader();
 
@@ -25,12 +22,9 @@ const charts = new Charts({
 });
 
 // Funções ao carregar a página
-
 window.onload = () => {
     ColorMode(localStorage.getItem('colorMode'));
-
     LoadScripts();
-
     document.getElementById('nav-name').textContent = worker.Nome.value;
     document.getElementById("date").valueAsDate = new Date();
 
@@ -39,7 +33,8 @@ window.onload = () => {
         .getElementsByClassName('name')[0]
         .textContent = (color == 'light' ? 'Tema: claro' : color == 'dark' ? 'Tema: escuro' : 'Tema: auto.');
 
-    document.querySelector('.view').onmouseover = function(ev) {
+    document.body.onmouseover = function(ev) {
+        ev.preventDefault();
         let windowSize = remote.getCurrentWindow().getBounds();
         let w = {
             width: windowSize.width,
@@ -50,8 +45,10 @@ window.onload = () => {
             y: ev.clientY
         };
 
-        if (((c.x >= 0 && c.x <= 50) && (c.y >= 0 && c.y <= 50)) ||
-            ((c.x >= (w.width - 50)) && (c.y >= (w.height - 50))))
+        const border = 25;
+
+        if (((c.x >= 0 && c.x <= border) && (c.y >= 0 && c.y <= border)) ||
+            ((c.x >= (w.width - border)) && (c.y >= (w.height - border))))
             document.body.classList.add('corner');
         else document.body.classList.remove('corner');
     }
@@ -161,12 +158,24 @@ function LoadScripts() {
         let inputwo = document.getElementById('input-wo'),
             inputsr = document.getElementById('input-sr'),
             inputservice = document.getElementById('input-service'),
+            searchbutton = document.getElementById('btn-service-search'),
             nextbutton = document.querySelectorAll('[btn-next]')[0],
             backbutton = document.querySelectorAll('[btn-back]')[0];
 
         backbutton.onclick = () => {
             HTML.load('reg-type');
         }
+
+        searchbutton.onclick = () => {
+            ipc.send('sr-search');
+        }
+
+        ipc.on('sr-fill', (evt, arg) => {
+            inputwo.value = arg.wo;
+            inputsr.value = arg.sr;
+            inputservice.value = arg.description;
+            woChange();
+        });
 
         nextbutton.onclick = () => {
             WorkerLabor.updateInfo({

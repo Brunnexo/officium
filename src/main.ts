@@ -5,8 +5,9 @@ class Process {
     static main: BrowserWindow;
     static workerScreen: BrowserWindow;
     static confirmDialog: BrowserWindow;
+    static srSearchDialog: BrowserWindow;
 
-    static build(window: 'splash' | 'main' | 'workerScreen' | 'confirmDialog', execute?: Function) {
+    static build(window: string, execute?: Function) {
         switch(window) {
             case 'splash':
                 Process.splash = new BrowserWindow({
@@ -84,33 +85,34 @@ class Process {
                         "nodeIntegration": true,
                         "enableRemoteModule": true
                     }
-                })
+                });
                 Process.confirmDialog.loadURL(`${__dirname}/renderer-processes/html/confirmDialog.html`);
                 Process.confirmDialog.once('ready-to-show', () => {
                     Process.confirmDialog.show();
                 });
                 break;
+            case 'srSearchDialog':
+                Process.srSearchDialog = new BrowserWindow({
+                    "parent": Process.workerScreen,
+                    "modal": true,
+                    "show": false,
+                    "frame": false,
+                    "width": 720,
+                    "height": 400,
+                    "resizable": false,
+                    "transparent": true,
+                    "webPreferences": {
+                        "nodeIntegration": true,
+                        "enableRemoteModule": true
+                    }
+                });
+                Process.srSearchDialog.loadURL(`${__dirname}/renderer-processes/html/srSearchDialog.html`);
+                Process.srSearchDialog.once('ready-to-show', () => {
+                    Process.srSearchDialog.show();
+                });
+            break;
         }
     }
 }
 
 export { Process };
-
-// Janela do colaborador
-/*ipc.on('open-workerScreen', (evt, arg) => {
-    if (arg != 'TRUE' && global.data.worker['Funções'].value.split('').includes('A')) {
-        evt.reply('adm-password-require');
-    } else if (arg == 'TRUE') {
-        admScreen = true;
-        buildWorkerScreen(() => {
-            workerScreen.show();
-            main.destroy();
-        });
-    } else {
-        admScreen = false;
-        buildWorkerScreen(() => {
-            workerScreen.show();
-            main.destroy();
-        });
-    }
-});*/

@@ -71,9 +71,11 @@
             </div>
         </div>
 
+        <!-- Registrar serviço -->
         <div id="reg-service" class="container" c-loader>
+            <!-- Container -->
             <div r-loader-container></div>
-
+            <!-- Tipo de serviço -->
             <div id="reg-type" r-loader>
                 <div class="center-buttons">
                     <div class="choose-button">
@@ -90,9 +92,9 @@
                     </div>
                 </div>
             </div>
-
+            <!-- Registrar SR -->
             <div id="reg-sr" r-loader>
-                <h1 class="display-4 font-italic">Service Request <button class="btn btn-outline-secondary btn-sm" type="button">Procurar</button></h1>
+                <h1 class="display-4 font-italic">Service Request <button class="btn btn-outline-secondary btn-sm" id="btn-service-search" type="button">Procurar</button></h1>
                 <hr />
                 <div class="center-forms">
                     <form onsubmit="return false;">
@@ -120,7 +122,7 @@
                     </form>
                 </div>
             </div>
-
+            <!-- Apontar tempo  -->
             <div id="reg-sr-time" r-loader updateable>
                 <h1 class="display-4 font-italic">Service Request</h1>
                 <hr />
