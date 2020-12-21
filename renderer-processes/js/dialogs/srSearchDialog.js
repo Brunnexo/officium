@@ -1,8 +1,7 @@
 // Electron
 const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
-const e = __dirname;
-const { ColorMode } = require(e);
+const { ColorMode } = require('../../../officium-modules/Officium');
 
 const srs = remote.getGlobal('sql').srs;
 

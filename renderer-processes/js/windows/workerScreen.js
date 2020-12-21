@@ -198,6 +198,7 @@ function LoadScripts() {
         inputwo.onkeyup = woChange;
 
         function woChange() {
+            nextbutton.setAttribute('disabled', '');
             clearTimeout(this.inputDelay);
             this.inputDelay = setTimeout(() => {
                 let wo = Number(inputwo.value);
@@ -223,6 +224,7 @@ function LoadScripts() {
         inputsr.onkeyup = srChange;
 
         function srChange() {
+            nextbutton.setAttribute('disabled', '');
             clearTimeout(this.inputDelay);
             this.inputDelay = setTimeout(() => {
                 let sr = Number(inputsr.value);

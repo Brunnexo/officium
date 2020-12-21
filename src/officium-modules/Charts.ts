@@ -260,14 +260,12 @@ class Charts {
              let splitData = {
                  dates: [],
                  times: [],
-                 projects: [],
                  colors: randomColors(_data.total.length)
              }
 
              _data.total.forEach((data: any) => {
                 splitData.dates.push(data.Data.value);
                 splitData.times.push(data.Tempo.value);
-                splitData.projects.push(data.Projeto.value);
              });
 
              this.renderChartTotal;
