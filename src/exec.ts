@@ -19,7 +19,7 @@ ipc.on('show-main', () => {
     Process.build('main', () => { Process.splash.destroy() });
 });
 
-ipc.on('back-main', (evt, arg) => {
+ipc.on('back-main', () => {
     Process.build('main', () => { Process.workerScreen.destroy() })
 });
 
@@ -35,7 +35,9 @@ ipc.on('sr-search', (evt, arg) => {
     workerScreenEvt = evt;
     Process.build('srSearchDialog');
 })
-
+ipc.on('show-resume', () => {
+    workerScreenEvt.reply('show-resume');
+})
 ipc.on('sr-found', (evt, arg) => {
     workerScreenEvt.reply('sr-fill', arg);
 })
@@ -44,6 +46,6 @@ ipc.on('request-labor-info', (evt) => {
     evt.returnValue = laborInfo;
 })
 
-ipc.on('open-workerScreen', (evt) => {
+ipc.on('open-workerScreen', () => {
     Process.build('workerScreen', () => { Process.main.destroy() })
 });

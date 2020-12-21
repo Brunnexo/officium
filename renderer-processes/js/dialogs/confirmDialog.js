@@ -1,12 +1,17 @@
 // Electron
 const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
-const { ColorMode } = require('../../officium-modules/Officium');
+const { ColorMode, MSSQL } = require('../../../officium-modules/Officium');
+
+const data = ipc.sendSync('request-labor-info');
+const SQL_DRIVER = new MSSQL();
+const LIMIT = 40;
+
+var hasTime = (data.laborTime.common > 0 || data.laborTime.extra > 0);
 
 window.onload = () => {
     ColorMode(localStorage.getItem('colorMode'));
     renderTable();
-
     remote.getCurrentWindow()
         .on('focus', () => {
             document.querySelector('.view').classList.remove('no-focus');
@@ -22,18 +27,30 @@ document.getElementById('btn-cancel').onclick = () => {
 };
 
 document.getElementById('btn-confirm').onclick = () => {
+    if (hasTime) {
+        let query = '';
 
+        if (data.laborTime.common > 0) {
+            query += `INSERT INTO [Relatórios]
+                        ([Registro], [Data], [Função], [WO], [Descrição], [Tempo], [Extra])
+                            VALUES (${data.registry}, '${data.date}', '${data.function}', '${data.wo}', '${data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description']}', ${data.laborTime.common}, 0)`;
+        }
+        if (data.laborTime.extra > 10) {
+            query += ` INSERT INTO [Relatórios]
+            ([Registro], [Data], [Função], [WO], [Descrição], [Tempo], [Extra])
+                VALUES (${data.registry}, '${data.date}', '${data.function}', '${data.wo}', '${data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description']}', ${data.laborTime.extra}, 1)`;
+        }
+
+        SQL_DRIVER.execute(query)
+            .then(() => {
+                ipc.send('show-resume');
+                remote.getCurrentWindow().close();
+            });
+    }
 };
 
 function renderTable() {
-    let data = ipc.sendSync('request-labor-info');
-
-    let hasTime = (data.laborTime.common > 0 || data.laborTime.extra > 0);
-
-    console.log(hasTime);
-
     let container = document.getElementById('container');
-
     if (hasTime) {
         let thead = document.createElement('thead');
         let table = document.createElement('table');
@@ -57,7 +74,7 @@ function renderTable() {
             trCommon.innerHTML = `
                 <th scope="row">${data['function']}</th>
                 <th>${data['wo']}</th>
-                <th>${data['description']}</th>
+                <th>${data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description']}</th>
                 <th>${data.laborTime.common}</th>
                 <th>Não</th>`;
             tbody.appendChild(trCommon);
@@ -68,7 +85,7 @@ function renderTable() {
             trExtra.innerHTML = `
                 <th scope="row">${data['function']}</th>
                 <th>${data['wo']}</th>
-                <th>${data['description']}</th>
+                <th>${data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description']}</th>
                 <th>${data.laborTime.extra}</th>
                 <th>Sim</th>`;
             tbody.appendChild(trExtra);
@@ -77,8 +94,5 @@ function renderTable() {
 
         container.innerHTML = '';
         container.appendChild(table);
-    } else {
-        container.innerHTML = `<h5 class="display-4 text-center">Não há registros para mostrar...</h5>`;
-    }
-
+    } else container.innerHTML = `<h5 class="display-4 text-center">Não há registros para mostrar...</h5>`;
 }

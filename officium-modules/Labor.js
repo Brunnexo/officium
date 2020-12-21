@@ -48,6 +48,8 @@ class WorkerLabor {
     static getLabor() {
         let _info = WorkerLabor.info;
         return {
+            date: _info.date,
+            registry: _info.registry,
             function: _info.function,
             wo: _info.wo,
             description: _info.description,

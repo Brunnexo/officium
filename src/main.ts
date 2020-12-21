@@ -23,7 +23,7 @@ class Process {
                         "enableRemoteModule": true
                     }
                 });
-                Process.splash.loadURL(`${__dirname}/renderer-processes/html/splash.html`);
+                Process.splash.loadURL(`${__dirname}/renderer-processes/html/windows/splash.html`);
                 Process.splash.once('ready-to-show', () => {
                     Process.splash.show();
                     if (typeof(execute) === 'function') execute();
@@ -44,7 +44,7 @@ class Process {
                         "enableRemoteModule": true
                     }
                 });
-                Process.main.loadURL(`${__dirname}/renderer-processes/html/main.html`);
+                Process.main.loadURL(`${__dirname}/renderer-processes/html/windows/main.html`);
                 Process.main.once('ready-to-show', () => {
                     Process.main.show();
                     if (typeof(execute) === 'function') execute();
@@ -65,7 +65,7 @@ class Process {
                         "enableRemoteModule": true
                     }
                 });
-                Process.workerScreen.loadURL(`${__dirname}/renderer-processes/html/workerScreen.html`);
+                Process.workerScreen.loadURL(`${__dirname}/renderer-processes/html/windows/workerScreen.html`);
                 Process.workerScreen.once('ready-to-show', () => {
                     Process.workerScreen.show();
                     if (typeof(execute) === 'function') execute();
@@ -77,8 +77,8 @@ class Process {
                     "modal": true,
                     "show": false,
                     "frame": false,
-                    "width": 720,
-                    "height": 400,
+                    "width": 960,
+                    "height": 460,
                     "resizable": false,
                     "transparent": true,
                     "webPreferences": {
@@ -86,7 +86,7 @@ class Process {
                         "enableRemoteModule": true
                     }
                 });
-                Process.confirmDialog.loadURL(`${__dirname}/renderer-processes/html/confirmDialog.html`);
+                Process.confirmDialog.loadURL(`${__dirname}/renderer-processes/html/dialogs/confirmDialog.html`);
                 Process.confirmDialog.once('ready-to-show', () => {
                     Process.confirmDialog.show();
                 });
@@ -98,7 +98,7 @@ class Process {
                     "show": false,
                     "frame": false,
                     "width": 720,
-                    "height": 400,
+                    "height": 420,
                     "resizable": false,
                     "transparent": true,
                     "webPreferences": {
@@ -106,7 +106,7 @@ class Process {
                         "enableRemoteModule": true
                     }
                 });
-                Process.srSearchDialog.loadURL(`${__dirname}/renderer-processes/html/srSearchDialog.html`);
+                Process.srSearchDialog.loadURL(`${__dirname}/renderer-processes/html/dialogs/srSearchDialog.html`);
                 Process.srSearchDialog.once('ready-to-show', () => {
                     Process.srSearchDialog.show();
                 });
@@ -116,3 +116,4 @@ class Process {
 }
 
 export { Process };
+

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Officium</title>
-    <link rel="stylesheet" type="text/css" href="../css/officium.css">
+    <link rel="stylesheet" type="text/css" href="../../css/officium.css">
 </head>
 
 <body class="transparent">
@@ -37,19 +37,20 @@
         <div class="sidebar">
             <div class="pop" id="colorMode">
                 <div class="tab">
-                    <img class="icon" src="../assets/icons/contrast.png">
+                    <img class="icon" src="../../assets/icons/contrast.png">
                     <div class="name"></div>
                 </div>
             </div>
             <div class="pop" id="home">
                 <div class="tab">
-                    <img class="icon" src="../assets/icons/home.png">
+                    <img class="icon" src="../../assets/icons/home.png">
                     <div class="name">Início</div>
                 </div>
             </div>
         </div>
 
         <div class="container-fluid" c-loader-container></div>
+
 
         <!-- Resumo pessoal -->
         <div id="personal-resume" class="container" c-loader updateable>
@@ -80,13 +81,13 @@
                 <div class="center-buttons">
                     <div class="choose-button">
                         <button type="button" id="btn-sr">
-                                <img src="../assets/icons/tools.png">
+                                <img src="../../assets/icons/tools.png">
                                 <h6>Service Request</h6>
                         </button>
                     </div>
                     <div class="choose-button">
                         <button type="button" id="btn-activities">
-                                <img src="../assets/icons/project.svg">
+                                <img src="../../assets/icons/project.svg">
                                 <h6>Projetos/Atividades do Setor</h6>
                         </button>
                     </div>
@@ -94,7 +95,7 @@
             </div>
             <!-- Registrar SR -->
             <div id="reg-sr" r-loader>
-                <h1 class="display-4 font-italic">Service Request <button class="btn btn-outline-secondary btn-sm" id="btn-service-search" type="button">Procurar</button></h1>
+                <h1 class="display-4 font-italic">Service Request</h1>
                 <hr />
                 <div class="center-forms">
                     <form onsubmit="return false;">
@@ -117,7 +118,8 @@
                         </div>
                         <div class="buttons-container">
                             <button type="button" class="btn" btn-back>Voltar</button>
-                            <button type="button" class="btn" btn-next style="display: none;">Próximo</button>
+                            <button class="btn btn-outline-info btn-sm ignore-theme" id="btn-service-search" type="button">Procurar</button>
+                            <button type="button" class="btn" btn-next disabled>Próximo</button>
                         </div>
                     </form>
                 </div>
@@ -146,7 +148,7 @@
         </div>
     </div>
     <!-- Scripts -->
-    <script type="text/javascript" src="../../renderer-processes/js/workerScreen.js"></script>
+    <script type="text/javascript" src="../../../renderer-processes/js/workerScreen.js"></script>
     <script c-loader-script r-loader-script defer></script>
 </body>
 

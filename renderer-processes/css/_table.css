@@ -3,6 +3,10 @@
     overflow-y: auto;
 }
 
+.table {
+    white-space: nowrap;
+}
+
 .dark .table,
 .dark .table>th,
 .dark .table>td {

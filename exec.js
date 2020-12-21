@@ -17,7 +17,7 @@ electron_1.app.on('ready', () => {
 electron_1.ipcMain.on('show-main', () => {
     main_1.Process.build('main', () => { main_1.Process.splash.destroy(); });
 });
-electron_1.ipcMain.on('back-main', (evt, arg) => {
+electron_1.ipcMain.on('back-main', () => {
     main_1.Process.build('main', () => { main_1.Process.workerScreen.destroy(); });
 });
 var laborInfo;
@@ -31,12 +31,15 @@ electron_1.ipcMain.on('sr-search', (evt, arg) => {
     workerScreenEvt = evt;
     main_1.Process.build('srSearchDialog');
 });
+electron_1.ipcMain.on('show-resume', () => {
+    workerScreenEvt.reply('show-resume');
+});
 electron_1.ipcMain.on('sr-found', (evt, arg) => {
     workerScreenEvt.reply('sr-fill', arg);
 });
 electron_1.ipcMain.on('request-labor-info', (evt) => {
     evt.returnValue = laborInfo;
 });
-electron_1.ipcMain.on('open-workerScreen', (evt) => {
+electron_1.ipcMain.on('open-workerScreen', () => {
     main_1.Process.build('workerScreen', () => { main_1.Process.main.destroy(); });
 });

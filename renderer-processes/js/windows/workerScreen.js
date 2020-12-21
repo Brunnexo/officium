@@ -3,7 +3,7 @@ const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
 // Extensões internas
-const { PageLoader, ColorMode, Charts, WorkerLabor, MSSQL } = require('../../officium-modules/Officium');
+const { PageLoader, ColorMode, Charts, WorkerLabor, MSSQL } = require('../../../officium-modules/Officium');
 
 // Instâncias
 const HTML = new PageLoader();
@@ -70,6 +70,14 @@ window.onload = () => {
 
     HTML.load('personal-resume');
 }
+
+ipc.on('show-resume', () => {
+    document.querySelectorAll('.active').forEach((elmnt) => {
+        elmnt.classList.remove('active');
+    });
+    document.getElementById('nav-resume').classList.add('active');
+    HTML.load('personal-resume');
+})
 
 document.getElementById('date').onchange = () => {
     clearTimeout(this.inputDelay);
@@ -139,7 +147,6 @@ function LoadScripts() {
             totalChart: 'total-chart',
             extraChart: 'extra-chart',
         });
-
         WorkerLabor.getData();
     });
 
@@ -174,12 +181,12 @@ function LoadScripts() {
             inputwo.value = arg.wo;
             inputsr.value = arg.sr;
             inputservice.value = arg.description;
-            woChange();
+            nextbutton.removeAttribute('disabled');
         });
 
         nextbutton.onclick = () => {
             WorkerLabor.updateInfo({
-                function: `SR: ${inputsr.value}`,
+                function: `SR ${inputsr.value}`,
                 wo: inputwo.value,
                 description: inputservice.value,
                 date: document.getElementById("date").value,
@@ -199,16 +206,16 @@ function LoadScripts() {
                     if (typeof(wosearch) !== 'undefined') {
                         inputsr.value = wosearch.SR.value;
                         inputservice.value = wosearch.Descrição.value;
-                        nextbutton.style.display = 'unset';
+                        nextbutton.removeAttribute('disabled');
                     } else {
                         inputsr.value = '';
                         inputservice.value = '';
-                        nextbutton.style.display = 'none';
+                        nextbutton.setAttribute('disabled', '');
                     }
                 } else {
                     inputsr.value = '';
                     inputservice.value = '';
-                    nextbutton.style.display = 'none';
+                    nextbutton.setAttribute('disabled', '');
                 }
             }, 500);
         }
@@ -224,16 +231,16 @@ function LoadScripts() {
                     if (typeof(srsearch) !== 'undefined') {
                         inputwo.value = srsearch.WO.value;
                         inputservice.value = srsearch.Descrição.value;
-                        if (srsearch.WO.value !== '') nextbutton.style.display = 'unset';
+                        if (srsearch.WO.value !== '') nextbutton.removeAttribute('disabled');
                     } else {
                         inputwo.value = '';
                         inputservice.value = '';
-                        nextbutton.style.display = 'none';
+                        nextbutton.setAttribute('disabled', '');
                     }
                 } else {
                     inputwo.value = '';
                     inputservice.value = '';
-                    nextbutton.style.display = 'none';
+                    nextbutton.setAttribute('disabled', '');
                 }
             }, 500);
         }

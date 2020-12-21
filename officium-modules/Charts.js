@@ -105,6 +105,7 @@ class Charts {
                 times: [],
                 projects: []
             };
+            console.log(JSON.stringify(_remainTime, null, '\t'));
             _data.labor.forEach((data) => {
                 if (data.Extra.value == 'NÃO') {
                     splitData.times.push(data.Tempo.value);
@@ -244,7 +245,7 @@ class Charts {
                     },
                     title: {
                         display: true,
-                        text: 'Últimos 15 registros'
+                        text: 'Últimos 15 dias registrados'
                     }
                 }
             });

@@ -2,7 +2,10 @@
 const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 // Extensões internas
-const { MSSQL, ColorMode } = require('../../officium-modules/officium');
+
+
+
+const { MSSQL, ColorMode } = require(`../../../officium-modules/Officium`);
 
 const SQL_DRIVER = new MSSQL();
 
