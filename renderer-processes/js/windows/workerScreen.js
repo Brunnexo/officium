@@ -161,6 +161,75 @@ function LoadScripts() {
         }
     });
 
+    HTML.loadScript('reg-activities', () => {
+        let listfunctions = document.getElementById('list-functions'),
+            listactivities = document.getElementById('list-activities');
+
+        let function_activities = remote.getGlobal('activities')['Activities'],
+            common_activities = remote.getGlobal('activities')['Common'];
+
+        const functions = {
+            "E": "Eletricista",
+            "M": "Mecânico",
+            "P": "Programador",
+            "R": "Projetista",
+            "A": "Administrativo",
+            "N": "Engenheiro"
+        };
+
+        worker['Funções'].value.split('').forEach(s => {
+            if (s != ' ') {
+                let option = document.createElement('option');
+                option.value = s;
+                option.innerHTML = `${functions[s]}`
+                listfunctions.appendChild(option);
+            }
+        });
+
+        listfunctions.onchange = () => {
+            let fnc = functions[listfunctions.selectedOptions[0].value];
+            listactivities.innerHTML = '';
+            Object.keys(function_activities[fnc]).forEach(d => {
+                let option = document.createElement('option');
+                option.innerHTML = d;
+                listactivities.appendChild(option);
+            })
+        }
+
+        // listfunctions.onchange = () => {
+        //     let fnc = functions[listfunctions.selectedOptions[0].value];
+        //     listactivities.innerHTML = '';
+        //     Object.keys(function_activities[fnc]).forEach(d => {
+        //         let cat = function_activities[fnc][d];
+        //         cat['Descriptions'].forEach(e => {
+        //             let option = document.createElement('option');
+        //             option.setAttribute('project', cat['Project']);
+        //             option.setAttribute('wo-each', cat['WO each']);
+        //             option.setAttribute('wo-as', cat['WO as']);
+        //             option.innerHTML = e;
+        //             listactivities.appendChild(option);
+        //         });
+        //     });
+        //     Object.keys(common_activities).forEach(d => {
+        //         common_activities[d].forEach(e => {
+        //             let option = document.createElement('option');
+        //             option.setAttribute('project', false);
+        //             option.setAttribute('wo-each', true);
+        //             option.innerHTML = e;
+        //             listactivities.appendChild(option);
+        //         });
+        //     });
+        // }
+
+        // listactivities.onchange = () => {
+        //     console.log(listactivities.selectedOptions[0].getAttribute('project'));
+        //     console.log(listactivities.selectedOptions[0].getAttribute('wo-each'));
+        //     console.log(listactivities.selectedOptions[0].getAttribute('wo-as'));
+        // }
+
+        listfunctions.onchange();
+    });
+
     HTML.loadScript('reg-sr', () => {
         let inputwo = document.getElementById('input-wo'),
             inputsr = document.getElementById('input-sr'),

@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import { Process } from './main';
 
 global['parameters'] = JSON.parse(fs.readFileSync('./data/Parameters.json', 'utf-8'));
+global['activities'] = JSON.parse(fs.readFileSync('./data/Activities.json', 'utf-8'));
 global['sql'] = {
     projects: {},
     srs: {},

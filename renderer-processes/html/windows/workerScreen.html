@@ -82,17 +82,48 @@
                     <div class="choose-button">
                         <button type="button" id="btn-sr">
                                 <img src="../../assets/icons/tools.png">
-                                <h6>Service Request</h6>
+                                <h5>Service Request</h5>
                         </button>
                     </div>
                     <div class="choose-button">
                         <button type="button" id="btn-activities">
                                 <img src="../../assets/icons/project.svg">
-                                <h6>Projetos/Atividades do Setor</h6>
+                                <h5>Projetos/Atividades do Setor</h5>
                         </button>
                     </div>
                 </div>
             </div>
+
+            <!-- Registrar Projeto -->
+            <div id="reg-activities" r-loader>
+                <h1 class="display-4 font-italic">Projetos/Atividades do Setor</h1>
+                <hr />
+                <div class="center-forms">
+                    <form onsubmit="return false;">
+                        <h6>Qual sua função?</h6>
+                        <hr />
+                        <div class="form-row">
+                            <div class="form-group">
+                                <select class="form-control" id="list-functions">
+                                </select>
+                            </div>
+                        </div>
+                        <h6>Exerceu qual atividade?</h6>
+                        <hr />
+                        <div class="form-row">
+                            <div class="form-group ml-2">
+                                <select class="form-control" id="list-activities">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="buttons-container">
+                            <button type="button" class="btn" btn-back>Voltar</button>
+                            <button type="button" class="btn" btn-next disabled>Próximo</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
             <!-- Registrar SR -->
             <div id="reg-sr" r-loader>
                 <h1 class="display-4 font-italic">Service Request</h1>

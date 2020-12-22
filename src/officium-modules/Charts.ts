@@ -108,16 +108,18 @@ class Charts {
                     label: 'Apagar',
                     click: () => {
                         this.MSSQL.execute(`DELETE FROM [Relatórios] WHERE [ID] = ${id}`).then(() => {
+                            let postElmnt = elmnt;
                             elmnt.style.transitionDuration = '1s';
                             elmnt.style.opacity = '0';
-                            setTimeout(() => { elmnt.style.display = 'none' }, 1000);
+                            setTimeout(() => {
+                                postElmnt.style.display = 'none';
+                            }, 1000);
                         });
                     }
                 });
                 menu.append(menuItem);
                 // Menu de contexto
                 tbody.oncontextmenu = (ev: MouseEvent) => {
-                    ev.preventDefault();
                     elmnt = (ev.target as HTMLElement).parentElement;
                     id = Number(elmnt.getElementsByTagName("th")[0].innerHTML);
                     menu.popup();
@@ -137,8 +139,6 @@ class Charts {
                 times: [],
                 projects: []
             }
-
-            console.log(JSON.stringify(_remainTime, null, '\t'));
 
             _data.labor.forEach((data: any) => {
                 if (data.Extra.value == 'NÃO') {

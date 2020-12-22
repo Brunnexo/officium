@@ -4,6 +4,7 @@ const electron_1 = require("electron");
 const fs = require("fs");
 const main_1 = require("./main");
 global['parameters'] = JSON.parse(fs.readFileSync('./data/Parameters.json', 'utf-8'));
+global['activities'] = JSON.parse(fs.readFileSync('./data/Activities.json', 'utf-8'));
 global['sql'] = {
     projects: {},
     srs: {},
