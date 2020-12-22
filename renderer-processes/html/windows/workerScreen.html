@@ -98,24 +98,28 @@
             <div id="reg-activities" r-loader>
                 <h1 class="display-4 font-italic">Projetos/Atividades do Setor</h1>
                 <hr />
-                <div class="center-forms">
-                    <form onsubmit="return false;">
+                <div class="row justify-content-center">
+                    <div class="col-auto">
                         <h6>Qual sua função?</h6>
-                        <hr />
                         <div class="form-row">
                             <div class="form-group">
                                 <select class="form-control" id="list-functions">
                                 </select>
                             </div>
                         </div>
+                    </div>
+                    <div class="col-auto">
                         <h6>Exerceu qual atividade?</h6>
-                        <hr />
                         <div class="form-row">
                             <div class="form-group ml-2">
                                 <select class="form-control" id="list-activities">
-                                </select>
+                                    </select>
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="center-forms">
+                    <form onsubmit="return false;">
                         <div class="buttons-container">
                             <button type="button" class="btn" btn-back>Voltar</button>
                             <button type="button" class="btn" btn-next disabled>Próximo</button>
