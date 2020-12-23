@@ -2,17 +2,14 @@
 const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 // Extensões internas
-
-
-
 const { MSSQL, ColorMode } = require(`../../../officium-modules/Officium`);
-
 const SQL_DRIVER = new MSSQL();
 
 const DATA = {
     projects: new Array,
     srs: new Array,
     general: new Array,
+    department: new Array,
 
     async SQL() {
         document.getElementById('description')
@@ -31,14 +28,23 @@ const DATA = {
             .then(() => {
                 remote.getGlobal('sql').projects = DATA.projects;
             });
-        description.innerHTML = 'Carregando SRs...';
 
+        description.innerHTML = 'Carregando SRs...'
         await SQL_DRIVER.select(MSSQL.QueryBuilder('SRs'), (data) => {
                 DATA.srs.push(data);
             })
             .then(() => {
                 remote.getGlobal('sql').srs = DATA.srs;
             });
+
+        description.innerHTML = 'Carregando departamento...'
+        await SQL_DRIVER.select(MSSQL.QueryBuilder('Department'), (data) => {
+                DATA.department.push(data);
+            })
+            .then(() => {
+                remote.getGlobal('sql').department = DATA.department;
+            });
+
         description.innerHTML = 'Carregando geral...';
         await SQL_DRIVER.select(MSSQL.QueryBuilder('General'), (data) => {
                 DATA.general.push(data);

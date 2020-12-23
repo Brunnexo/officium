@@ -255,6 +255,6 @@ exports.Charts = Charts;
 function randomColors(num) {
     let colors = new Array;
     for (let i = 0; i < num; i++)
-        colors.push("#" + ((1 << 24) * Math.random() | 0).toString(16));
+        colors.push(`#${((((1 << 24) - 1) * Math.random() | 0).toString(16)).padEnd(6, '0')}`);
     return colors;
 }

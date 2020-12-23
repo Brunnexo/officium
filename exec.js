@@ -6,6 +6,7 @@ const main_1 = require("./main");
 global['parameters'] = JSON.parse(fs.readFileSync('./data/Parameters.json', 'utf-8'));
 global['activities'] = JSON.parse(fs.readFileSync('./data/Activities.json', 'utf-8'));
 global['sql'] = {
+    department: {},
     projects: {},
     srs: {},
     general: {}

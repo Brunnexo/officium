@@ -29,6 +29,27 @@
                     "Gestão de Projeto",
                     "Follow Up e Demanda"
                 ]
+            },
+            "Retrabalhos e Melhorias": {
+                "Project": false,
+                "WO each": true,
+                "Descriptions": [
+                    "Retrabalho Interno",
+                    "Retrabalho Externo",
+                    "Melhorias"
+                ]
+            },
+            "Geral": {
+                "Project": false,
+                "WO each": true,
+                "Descriptions": [
+                    "Testes e Protótipos",
+                    "Manutenção",
+                    "Almoxarifado",
+                    "5S",
+                    "Não Produtivos",
+                    "Ausência"
+                ]
             }
         },
         "Eletricista": {
@@ -86,6 +107,27 @@
                     "Acompanhamento de Fornecedor",
                     "Acompanhamento de Evento",
                     "Acompanhamento de Montagem"
+                ]
+            },
+            "Retrabalhos e Melhorias": {
+                "Project": false,
+                "WO each": true,
+                "Descriptions": [
+                    "Retrabalho Interno",
+                    "Retrabalho Externo",
+                    "Melhorias"
+                ]
+            },
+            "Geral": {
+                "Project": false,
+                "WO each": true,
+                "Descriptions": [
+                    "Testes e Protótipos",
+                    "Manutenção",
+                    "Almoxarifado",
+                    "5S",
+                    "Não Produtivos",
+                    "Ausência"
                 ]
             }
         },
@@ -150,6 +192,27 @@
                 "Descriptions": [
                     "Gestão de Projeto"
                 ]
+            },
+            "Retrabalhos e Melhorias": {
+                "Project": false,
+                "WO each": true,
+                "Descriptions": [
+                    "Retrabalho Interno",
+                    "Retrabalho Externo",
+                    "Melhorias"
+                ]
+            },
+            "Geral": {
+                "Project": false,
+                "WO each": true,
+                "Descriptions": [
+                    "Testes e Protótipos",
+                    "Manutenção",
+                    "Almoxarifado",
+                    "5S",
+                    "Não Produtivos",
+                    "Ausência"
+                ]
             }
         },
         "Programador": {
@@ -192,6 +255,27 @@
                 "WO as": "Gestão de Projeto",
                 "Descriptions": [
                     "Gestão de Pojeto"
+                ]
+            },
+            "Retrabalhos e Melhorias": {
+                "Project": false,
+                "WO each": true,
+                "Descriptions": [
+                    "Retrabalho Interno",
+                    "Retrabalho Externo",
+                    "Melhorias"
+                ]
+            },
+            "Geral": {
+                "Project": false,
+                "WO each": true,
+                "Descriptions": [
+                    "Testes e Protótipos",
+                    "Manutenção",
+                    "Almoxarifado",
+                    "5S",
+                    "Não Produtivos",
+                    "Ausência"
                 ]
             }
         },
@@ -246,6 +330,27 @@
                     "Documentação Geral",
                     "Orçamento"
                 ]
+            },
+            "Retrabalhos e Melhorias": {
+                "Project": false,
+                "WO each": true,
+                "Descriptions": [
+                    "Retrabalho Interno",
+                    "Retrabalho Externo",
+                    "Melhorias"
+                ]
+            },
+            "Geral": {
+                "Project": false,
+                "WO each": true,
+                "Descriptions": [
+                    "Testes e Protótipos",
+                    "Manutenção",
+                    "Almoxarifado",
+                    "5S",
+                    "Não Produtivos",
+                    "Ausência"
+                ]
             }
         },
         "Engenheiro": {
@@ -299,22 +404,28 @@
                     "Documentação Geral",
                     "Orçamento"
                 ]
+            },
+            "Retrabalhos e Melhorias": {
+                "Project": false,
+                "WO each": true,
+                "Descriptions": [
+                    "Retrabalho Interno",
+                    "Retrabalho Externo",
+                    "Melhorias"
+                ]
+            },
+            "Geral": {
+                "Project": false,
+                "WO each": true,
+                "Descriptions": [
+                    "Testes e Protótipos",
+                    "Manutenção",
+                    "Almoxarifado",
+                    "5S",
+                    "Não Produtivos",
+                    "Ausência"
+                ]
             }
         }
-    },
-    "Common": {
-        "Retrabalhos e Melhorias": [
-            "Retrabalho Interno",
-            "Retrabalho Externo",
-            "Melhorias"
-        ],
-        "Geral": [
-            "Testes e Protótipos",
-            "Manutenção",
-            "Almoxarifado",
-            "5S",
-            "Não Produtivos",
-            "Ausência"
-        ]
     }
 }

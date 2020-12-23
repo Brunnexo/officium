@@ -77,7 +77,7 @@ class Process {
                     "show": false,
                     "frame": false,
                     "width": 960,
-                    "height": 460,
+                    "height": 400,
                     "resizable": false,
                     "transparent": true,
                     "webPreferences": {

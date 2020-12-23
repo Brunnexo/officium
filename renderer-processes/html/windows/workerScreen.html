@@ -55,6 +55,7 @@
         <!-- Resumo pessoal -->
         <div id="personal-resume" class="container" c-loader updateable>
             <h1 class="display-4" id="title"></h1>
+            <hr />
             <div class="row justify-content-center">
                 <div class="col-auto">
                     <canvas id="labor-chart" width="300" height="300"></canvas>
@@ -95,34 +96,41 @@
             </div>
 
             <!-- Registrar Projeto -->
-            <div id="reg-activities" r-loader>
-                <h1 class="display-4 font-italic">Projetos/Atividades do Setor</h1>
+            <div id="reg-function" r-loader>
+                <h1 class="display-4">Projetos/Atividades do Setor</h1>
                 <hr />
-                <div class="row justify-content-center">
-                    <div class="col-auto">
-                        <h6>Qual sua função?</h6>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <select class="form-control" id="list-functions">
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <h6>Exerceu qual atividade?</h6>
-                        <div class="form-row">
-                            <div class="form-group ml-2">
-                                <select class="form-control" id="list-activities">
-                                    </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="center-forms">
-                    <form onsubmit="return false;">
-                        <div class="buttons-container">
+                    <form>
+                        <h6 class="display-6">Qual sua função?</h6>
+                        <div class="form-group">
+                            <select class="form-control form-control-lg" id="list-functions">
+                                </select>
+                        </div>
+                        <div class="buttons-container mt-2">
                             <button type="button" class="btn" btn-back>Voltar</button>
-                            <button type="button" class="btn" btn-next disabled>Próximo</button>
+                            <button type="button" class="btn" btn-next>Próximo</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="reg-activity" r-loader>
+                <h1 class="display-4">Projetos/Atividades do Setor</h1>
+                <hr />
+                <div class="center-forms">
+                    <form>
+                        <h6 class="display-6">Qual atividade exerceu?</h6>
+                        <div class="form-group">
+                            <select class="form-control form-control-lg" id="list-activities">
+                                <select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control form-control-lg" id="list-descriptions">
+                                <select>
+                            </div>
+                        <div class="buttons-container mt-2">
+                            <button type="button" class="btn" btn-back>Voltar</button>
+                            <button type="button" class="btn" btn-next>Próximo</button>
                         </div>
                     </form>
                 </div>
@@ -160,8 +168,8 @@
                 </div>
             </div>
             <!-- Apontar tempo  -->
-            <div id="reg-sr-time" r-loader updateable>
-                <h1 class="display-4 font-italic">Service Request</h1>
+            <div id="reg-time" r-loader updateable>
+                <h1 class="display-4">Confirmar registro</h1>
                 <hr />
                 <div class="row justify-content-center">
                     <div class="col-auto">

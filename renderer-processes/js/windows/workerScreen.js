@@ -157,16 +157,15 @@ function LoadScripts() {
             HTML.load('reg-sr');
         }
         document.getElementById('btn-activities').onclick = () => {
-            HTML.load('reg-activities');
+            HTML.load('reg-function');
         }
     });
 
-    HTML.loadScript('reg-activities', () => {
-        let listfunctions = document.getElementById('list-functions'),
-            listactivities = document.getElementById('list-activities');
+    HTML.loadScript('reg-function', () => {
+        let nextbutton = document.querySelectorAll('[btn-next]')[0],
+            backbutton = document.querySelectorAll('[btn-back]')[0];
 
-        let function_activities = remote.getGlobal('activities')['Activities'],
-            common_activities = remote.getGlobal('activities')['Common'];
+        let list_functions = document.getElementById('list-functions');
 
         const functions = {
             "E": "Eletricista",
@@ -182,52 +181,68 @@ function LoadScripts() {
                 let option = document.createElement('option');
                 option.value = s;
                 option.innerHTML = `${functions[s]}`
-                listfunctions.appendChild(option);
+                list_functions.appendChild(option);
             }
         });
 
-        listfunctions.onchange = () => {
-            let fnc = functions[listfunctions.selectedOptions[0].value];
-            listactivities.innerHTML = '';
-            Object.keys(function_activities[fnc]).forEach(d => {
+        backbutton.onclick = () => { HTML.load('reg-type') };
+        nextbutton.onclick = () => {
+            WorkerLabor.updateInfo({ function: functions[list_functions.selectedOptions[0].value] });
+            HTML.load('reg-activity');
+        };
+    });
+
+    HTML.loadScript('reg-activity', () => {
+        let department = remote.getGlobal('sql').department;
+
+        let list_activities = document.getElementById('list-activities'),
+            list_descriptions = document.getElementById('list-descriptions');
+
+        let nextbutton = document.querySelectorAll('[btn-next]')[0],
+            backbutton = document.querySelectorAll('[btn-back]')[0];
+
+        let worker_function = WorkerLabor.info.function;
+
+        let function_activities = remote.getGlobal('activities')['Activities'][worker_function];
+
+        Object.keys(function_activities).forEach(d => {
+            let option = document.createElement('option');
+            option.setAttribute('project', function_activities[d]['Project']);
+            option.setAttribute('wo-each', function_activities[d]['WO each']);
+            option.setAttribute('wo-as', function_activities[d]['WO as']);
+            option.innerHTML = `${d}`;
+            list_activities.appendChild(option);
+        });
+
+        list_activities.onchange = () => {
+            let activity = list_activities.selectedOptions[0].value;
+            list_descriptions.innerHTML = '';
+            function_activities[activity]['Descriptions'].forEach(e => {
                 let option = document.createElement('option');
-                option.innerHTML = d;
-                listactivities.appendChild(option);
-            })
-        }
+                option.innerHTML = e;
+                list_descriptions.appendChild(option);
+            });
+        };
 
-        // listfunctions.onchange = () => {
-        //     let fnc = functions[listfunctions.selectedOptions[0].value];
-        //     listactivities.innerHTML = '';
-        //     Object.keys(function_activities[fnc]).forEach(d => {
-        //         let cat = function_activities[fnc][d];
-        //         cat['Descriptions'].forEach(e => {
-        //             let option = document.createElement('option');
-        //             option.setAttribute('project', cat['Project']);
-        //             option.setAttribute('wo-each', cat['WO each']);
-        //             option.setAttribute('wo-as', cat['WO as']);
-        //             option.innerHTML = e;
-        //             listactivities.appendChild(option);
-        //         });
-        //     });
-        //     Object.keys(common_activities).forEach(d => {
-        //         common_activities[d].forEach(e => {
-        //             let option = document.createElement('option');
-        //             option.setAttribute('project', false);
-        //             option.setAttribute('wo-each', true);
-        //             option.innerHTML = e;
-        //             listactivities.appendChild(option);
-        //         });
-        //     });
-        // }
+        list_activities.onchange();
 
-        // listactivities.onchange = () => {
-        //     console.log(listactivities.selectedOptions[0].getAttribute('project'));
-        //     console.log(listactivities.selectedOptions[0].getAttribute('wo-each'));
-        //     console.log(listactivities.selectedOptions[0].getAttribute('wo-as'));
-        // }
+        backbutton.onclick = () => { HTML.load('reg-function') };
+        nextbutton.onclick = () => {
+            if (eval(list_activities.selectedOptions[0].getAttribute('project'))) {
 
-        listfunctions.onchange();
+
+            } else {
+                if (eval(list_activities.selectedOptions[0].getAttribute('wo-each'))) {
+
+                } else {
+                    let wo_description = list_activities.selectedOptions[0].getAttribute('wo-as');
+
+
+
+                }
+
+            }
+        };
     });
 
     HTML.loadScript('reg-sr', () => {
@@ -238,13 +253,9 @@ function LoadScripts() {
             nextbutton = document.querySelectorAll('[btn-next]')[0],
             backbutton = document.querySelectorAll('[btn-back]')[0];
 
-        backbutton.onclick = () => {
-            HTML.load('reg-type');
-        }
+        backbutton.onclick = () => { HTML.load('reg-type') };
 
-        searchbutton.onclick = () => {
-            ipc.send('sr-search');
-        }
+        searchbutton.onclick = () => { ipc.send('sr-search') };
 
         ipc.on('sr-fill', (evt, arg) => {
             inputwo.value = arg.wo;
@@ -261,12 +272,12 @@ function LoadScripts() {
                 date: document.getElementById("date").value,
                 workTime: workTime
             });
-            HTML.load('reg-sr-time');
+            HTML.load('reg-time');
         }
 
-        inputwo.onkeyup = woChange;
+        inputwo.onkeyup = wo_changed;
 
-        function woChange() {
+        function wo_changed() {
             nextbutton.setAttribute('disabled', '');
             clearTimeout(this.inputDelay);
             this.inputDelay = setTimeout(() => {
@@ -290,9 +301,9 @@ function LoadScripts() {
             }, 500);
         }
 
-        inputsr.onkeyup = srChange;
+        inputsr.onkeyup = sr_changed;
 
-        function srChange() {
+        function sr_changed() {
             nextbutton.setAttribute('disabled', '');
             clearTimeout(this.inputDelay);
             this.inputDelay = setTimeout(() => {
@@ -317,10 +328,10 @@ function LoadScripts() {
         }
 
         inputwo.value = (typeof(WorkerLabor.info.wo) === 'undefined' ? '' : WorkerLabor.info.wo);
-        woChange();
+        wo_changed();
     });
 
-    HTML.loadScript('reg-sr-time', () => {
+    HTML.loadScript('reg-time', () => {
         WorkerLabor.getData();
 
         document.querySelectorAll('[btn-back]')[0]
