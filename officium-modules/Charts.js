@@ -141,7 +141,8 @@ class Charts {
                     ]
                 },
                 options: {
-                    aspectRatio: 1,
+                    responsive: true,
+                    maintainAspectRatio: false,
                     legend: {
                         position: 'bottom'
                     },
@@ -195,7 +196,8 @@ class Charts {
                     ]
                 },
                 options: {
-                    aspectRatio: 1,
+                    responsive: true,
+                    maintainAspectRatio: false,
                     legend: {
                         position: 'bottom'
                     },
@@ -238,6 +240,7 @@ class Charts {
                     ]
                 },
                 options: {
+                    responsive: true,
                     maintainAspectRatio: false,
                     legend: {
                         display: false

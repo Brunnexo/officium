@@ -22,6 +22,7 @@
         "hourly": 528,
         "monthly": 522,
         "dailyExtra": 60,
-        "weekendExtra": 660
+        "weekendExtra": 660,
+        "hourBank": 90
     }
 }

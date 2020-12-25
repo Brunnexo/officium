@@ -3,9 +3,9 @@ import { BrowserWindow } from 'electron';
 class Process {
     static splash: BrowserWindow;
     static main: BrowserWindow;
-    static workerScreen: BrowserWindow;
-    static confirmDialog: BrowserWindow;
-    static srSearchDialog: BrowserWindow;
+    static worker_screen: BrowserWindow;
+    static confirm: BrowserWindow;
+    static sr_search: BrowserWindow;
 
     static build(window: string, execute?: Function) {
         switch(window) {
@@ -50,14 +50,14 @@ class Process {
                     if (typeof(execute) === 'function') execute();
                 });
                 break;
-            case 'workerScreen':
-                Process.workerScreen = new BrowserWindow({
+            case 'worker_screen':
+                Process.worker_screen = new BrowserWindow({
                     "show": false,
                     "frame": false,
                     "width": 1280,
                     "height": 730,
-                    "minWidth": 1280,
-                    "minHeight": 730,
+                    // "minWidth": 1280,
+                    // "minHeight": 730,
                     "resizable": true,
                     "transparent": true,
                     "webPreferences": {
@@ -65,15 +65,15 @@ class Process {
                         "enableRemoteModule": true
                     }
                 });
-                Process.workerScreen.loadURL(`${__dirname}/renderer-processes/html/windows/workerScreen.html`);
-                Process.workerScreen.once('ready-to-show', () => {
-                    Process.workerScreen.show();
-                    if (typeof(execute) === 'function') execute();
+                Process.worker_screen.loadURL(`${__dirname}/renderer-processes/html/windows/worker_screen.html`);
+                Process.worker_screen.once('ready-to-show', () => {
+                    Process.worker_screen.show();
+                    if (typeof(execute) === 'function')  execute() ;
                 });
                 break;
-            case 'confirmDialog':
-                Process.confirmDialog = new BrowserWindow({
-                    "parent": Process.workerScreen,
+            case 'confirm':
+                Process.confirm = new BrowserWindow({
+                    "parent": Process.worker_screen,
                     "modal": true,
                     "show": false,
                     "frame": false,
@@ -86,14 +86,14 @@ class Process {
                         "enableRemoteModule": true
                     }
                 });
-                Process.confirmDialog.loadURL(`${__dirname}/renderer-processes/html/dialogs/confirmDialog.html`);
-                Process.confirmDialog.once('ready-to-show', () => {
-                    Process.confirmDialog.show();
+                Process.confirm.loadURL(`${__dirname}/renderer-processes/html/dialogs/confirm.html`);
+                Process.confirm.once('ready-to-show', () => {
+                    Process.confirm.show();
                 });
                 break;
             case 'srSearchDialog':
-                Process.srSearchDialog = new BrowserWindow({
-                    "parent": Process.workerScreen,
+                Process.sr_search = new BrowserWindow({
+                    "parent": Process.worker_screen,
                     "modal": true,
                     "show": false,
                     "frame": false,
@@ -106,9 +106,9 @@ class Process {
                         "enableRemoteModule": true
                     }
                 });
-                Process.srSearchDialog.loadURL(`${__dirname}/renderer-processes/html/dialogs/srSearchDialog.html`);
-                Process.srSearchDialog.once('ready-to-show', () => {
-                    Process.srSearchDialog.show();
+                Process.sr_search.loadURL(`${__dirname}/renderer-processes/html/dialogs/sr_search.html`);
+                Process.sr_search.once('ready-to-show', () => {
+                    Process.sr_search.show();
                 });
             break;
         }

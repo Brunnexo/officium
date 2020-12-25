@@ -33,26 +33,6 @@ window.onload = () => {
         .getElementsByClassName('name')[0]
         .textContent = (color == 'light' ? 'Tema: claro' : color == 'dark' ? 'Tema: escuro' : 'Tema: auto.');
 
-    document.body.onmouseover = function(ev) {
-        ev.preventDefault();
-        let windowSize = remote.getCurrentWindow().getBounds();
-        let w = {
-            width: windowSize.width,
-            height: windowSize.height
-        };
-        let c = {
-            x: ev.clientX,
-            y: ev.clientY
-        };
-
-        const border = 25;
-
-        if (((c.x >= 0 && c.x <= border) && (c.y >= 0 && c.y <= border)) ||
-            ((c.x >= (w.width - border)) && (c.y >= (w.height - border))))
-            document.body.classList.add('corner');
-        else document.body.classList.remove('corner');
-    }
-
     remote.getCurrentWindow()
         .on('focus', () => {
             document.querySelector('.view').classList.remove('no-focus');
@@ -60,6 +40,9 @@ window.onload = () => {
         .on('blur', () => {
             document.querySelector('.view').classList.add('no-focus');
         });
+    // .on('resize', () => {
+    //     console.log(JSON.stringify(remote.getCurrentWindow().getBounds()));
+    // })
 
     WorkerLabor.updateInfo({
         date: document.getElementById("date").value,
@@ -70,7 +53,6 @@ window.onload = () => {
 
     HTML.load('personal-resume');
 }
-
 ipc.on('show-resume', () => {
     document.querySelectorAll('.active').forEach((elmnt) => {
         elmnt.classList.remove('active');
@@ -201,15 +183,13 @@ function LoadScripts() {
         let nextbutton = document.querySelectorAll('[btn-next]')[0],
             backbutton = document.querySelectorAll('[btn-back]')[0];
 
-        let worker_function = WorkerLabor.info.function;
-
-        let function_activities = remote.getGlobal('activities')['Activities'][worker_function];
+        let function_activities = remote.getGlobal('activities')['Activities'][WorkerLabor.info.function];
 
         Object.keys(function_activities).forEach(d => {
             let option = document.createElement('option');
-            option.setAttribute('project', function_activities[d]['Project']);
-            option.setAttribute('wo-each', function_activities[d]['WO each']);
-            option.setAttribute('wo-as', function_activities[d]['WO as']);
+            if (function_activities[d]['Project']) option.setAttribute('project', function_activities[d]['Project']);
+            if (function_activities[d]['WO each']) option.setAttribute('wo-each', function_activities[d]['WO each']);
+            if (function_activities[d]['WO as']) option.setAttribute('wo-as', function_activities[d]['WO as']);
             option.innerHTML = `${d}`;
             list_activities.appendChild(option);
         });
@@ -228,21 +208,46 @@ function LoadScripts() {
 
         backbutton.onclick = () => { HTML.load('reg-function') };
         nextbutton.onclick = () => {
-            if (eval(list_activities.selectedOptions[0].getAttribute('project'))) {
+            let is_project = list_activities.selectedOptions[0].hasAttribute('project'),
+                wo_each = list_activities.selectedOptions[0].hasAttribute('wo-each'),
+                wo_as = list_activities.selectedOptions[0].getAttribute('wo-as');
 
-
+            if (is_project) {
+                WorkerLabor.updateInfo({
+                    description: list_descriptions.selectedOptions[0].value
+                });
+                HTML.load('reg-projects');
             } else {
-                if (eval(list_activities.selectedOptions[0].getAttribute('wo-each'))) {
-
+                if (wo_each) {
+                    let description = list_descriptions.selectedOptions[0].value;
+                    let wo = department.filter(d => { return d['Descrição'].value.toUpperCase() == description.toUpperCase() })[0][WorkerLabor['info']['function']]['value'];
+                    WorkerLabor.updateInfo({
+                        description: description,
+                        wo: wo
+                    });
+                    console.log(WorkerLabor.info.wo);
                 } else {
-                    let wo_description = list_activities.selectedOptions[0].getAttribute('wo-as');
-
-
-
+                    let wo = department.filter(d => { return d['Descrição'].value.toUpperCase() == wo_as.toUpperCase() })[0][WorkerLabor['info']['function']]['value'];
+                    WorkerLabor.updateInfo({
+                        description: list_descriptions.selectedOptions[0].value,
+                        wo: wo
+                    });
+                    console.log(WorkerLabor.info.wo);
                 }
-
             }
         };
+    });
+
+    HTML.loadScript('reg-projects', () => {
+        let badge_name = document.getElementById('badge-name');
+        let clients = remote.getGlobal('clients')['Clients'];
+
+
+        document.querySelectorAll('.badge-image').forEach(e => {
+            e.onclick = () => {
+
+            };
+        });
     });
 
     HTML.loadScript('reg-sr', () => {
@@ -275,9 +280,7 @@ function LoadScripts() {
             HTML.load('reg-time');
         }
 
-        inputwo.onkeyup = wo_changed;
-
-        function wo_changed() {
+        inputwo.onkeyup = function() {
             nextbutton.setAttribute('disabled', '');
             clearTimeout(this.inputDelay);
             this.inputDelay = setTimeout(() => {
@@ -299,11 +302,9 @@ function LoadScripts() {
                     nextbutton.setAttribute('disabled', '');
                 }
             }, 500);
-        }
+        };
 
-        inputsr.onkeyup = sr_changed;
-
-        function sr_changed() {
+        inputsr.onkeyup = function() {
             nextbutton.setAttribute('disabled', '');
             clearTimeout(this.inputDelay);
             this.inputDelay = setTimeout(() => {
@@ -325,10 +326,10 @@ function LoadScripts() {
                     nextbutton.setAttribute('disabled', '');
                 }
             }, 500);
-        }
+        };
 
         inputwo.value = (typeof(WorkerLabor.info.wo) === 'undefined' ? '' : WorkerLabor.info.wo);
-        wo_changed();
+        inputwo.onkeyup();
     });
 
     HTML.loadScript('reg-time', () => {

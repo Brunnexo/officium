@@ -20,7 +20,8 @@ interface Labor {
         hourly?: number,
         monthly?: number,
         dailyExtra?: number,
-        weekendExtra?: number
+        weekendExtra?: number,
+        hourBank?: number
     },
     data?: {
         history?: any[],

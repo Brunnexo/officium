@@ -59,6 +59,7 @@ class Charts {
             totalChart: document.getElementById(_components.totalChart),
             extraChart: document.getElementById(_components.extraChart),
         }
+        
         // Tabela de Resumo
         if (elements.historyTable != null && elements.title != null) {
             elements.title.innerHTML = `Resumo de ${week[new Date(data.date).getUTCDay()]}, ${dateFormat(data.date)}`;
@@ -179,7 +180,8 @@ class Charts {
                     ]
                 },
                 options: {
-                    aspectRatio: 1,
+                    responsive: true,
+                    maintainAspectRatio: false,
                     legend: {
                         position: 'bottom'
                     },
@@ -240,7 +242,8 @@ class Charts {
                     ]
                 },
                 options: {
-                    aspectRatio: 1,
+                    responsive: true,
+                    maintainAspectRatio: false,
                     legend: {
                         position: 'bottom'
                     },
@@ -288,6 +291,7 @@ class Charts {
                     ]
                 },
                 options: {
+                    responsive: true,
                     maintainAspectRatio: false,
                     legend: {
                         display: false

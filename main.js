@@ -22,7 +22,7 @@ class Process {
                 Process.splash.loadURL(`${__dirname}/renderer-processes/html/windows/splash.html`);
                 Process.splash.once('ready-to-show', () => {
                     Process.splash.show();
-                    if (typeof (execute) === 'function')
+                    if (typeof(execute) === 'function')
                         execute();
                 });
                 break;
@@ -44,18 +44,18 @@ class Process {
                 Process.main.loadURL(`${__dirname}/renderer-processes/html/windows/main.html`);
                 Process.main.once('ready-to-show', () => {
                     Process.main.show();
-                    if (typeof (execute) === 'function')
+                    if (typeof(execute) === 'function')
                         execute();
                 });
                 break;
-            case 'workerScreen':
-                Process.workerScreen = new electron_1.BrowserWindow({
+            case 'worker_screen':
+                Process.worker_screen = new electron_1.BrowserWindow({
                     "show": false,
                     "frame": false,
                     "width": 1280,
                     "height": 730,
-                    "minWidth": 1280,
-                    "minHeight": 730,
+                    "minWidth": 1135,
+                    "minHeight": 720,
                     "resizable": true,
                     "transparent": true,
                     "webPreferences": {
@@ -63,16 +63,16 @@ class Process {
                         "enableRemoteModule": true
                     }
                 });
-                Process.workerScreen.loadURL(`${__dirname}/renderer-processes/html/windows/workerScreen.html`);
-                Process.workerScreen.once('ready-to-show', () => {
-                    Process.workerScreen.show();
-                    if (typeof (execute) === 'function')
+                Process.worker_screen.loadURL(`${__dirname}/renderer-processes/html/windows/worker_screen.html`);
+                Process.worker_screen.once('ready-to-show', () => {
+                    Process.worker_screen.show();
+                    if (typeof(execute) === 'function')
                         execute();
                 });
                 break;
-            case 'confirmDialog':
-                Process.confirmDialog = new electron_1.BrowserWindow({
-                    "parent": Process.workerScreen,
+            case 'confirm':
+                Process.confirm = new electron_1.BrowserWindow({
+                    "parent": Process.worker_screen,
                     "modal": true,
                     "show": false,
                     "frame": false,
@@ -85,14 +85,14 @@ class Process {
                         "enableRemoteModule": true
                     }
                 });
-                Process.confirmDialog.loadURL(`${__dirname}/renderer-processes/html/dialogs/confirmDialog.html`);
-                Process.confirmDialog.once('ready-to-show', () => {
-                    Process.confirmDialog.show();
+                Process.confirm.loadURL(`${__dirname}/renderer-processes/html/dialogs/confirm.html`);
+                Process.confirm.once('ready-to-show', () => {
+                    Process.confirm.show();
                 });
                 break;
             case 'srSearchDialog':
-                Process.srSearchDialog = new electron_1.BrowserWindow({
-                    "parent": Process.workerScreen,
+                Process.sr_search = new electron_1.BrowserWindow({
+                    "parent": Process.worker_screen,
                     "modal": true,
                     "show": false,
                     "frame": false,
@@ -105,9 +105,9 @@ class Process {
                         "enableRemoteModule": true
                     }
                 });
-                Process.srSearchDialog.loadURL(`${__dirname}/renderer-processes/html/dialogs/srSearchDialog.html`);
-                Process.srSearchDialog.once('ready-to-show', () => {
-                    Process.srSearchDialog.show();
+                Process.sr_search.loadURL(`${__dirname}/renderer-processes/html/dialogs/sr_search.html`);
+                Process.sr_search.once('ready-to-show', () => {
+                    Process.sr_search.show();
                 });
                 break;
         }

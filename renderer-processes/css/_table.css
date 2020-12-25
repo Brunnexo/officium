@@ -3,6 +3,24 @@
     overflow-y: auto;
 }
 
+.chart-container {
+    height: 40vh;
+}
+
+.chart-element {
+    height: 30vh;
+}
+
+.chart-element.pie {
+    height: 30vh;
+    width: 30vw;
+}
+
+.chart-element.bar {
+    height: 30vh;
+    width: 40vw;
+}
+
 .table {
     white-space: nowrap;
 }
