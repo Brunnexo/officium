@@ -22,7 +22,7 @@ class Process {
                 Process.splash.loadURL(`${__dirname}/renderer-processes/html/windows/splash.html`);
                 Process.splash.once('ready-to-show', () => {
                     Process.splash.show();
-                    if (typeof(execute) === 'function')
+                    if (typeof (execute) === 'function')
                         execute();
                 });
                 break;
@@ -44,7 +44,7 @@ class Process {
                 Process.main.loadURL(`${__dirname}/renderer-processes/html/windows/main.html`);
                 Process.main.once('ready-to-show', () => {
                     Process.main.show();
-                    if (typeof(execute) === 'function')
+                    if (typeof (execute) === 'function')
                         execute();
                 });
                 break;
@@ -54,7 +54,7 @@ class Process {
                     "frame": false,
                     "width": 1280,
                     "height": 730,
-                    "minWidth": 1135,
+                    "minWidth": 1130,
                     "minHeight": 720,
                     "resizable": true,
                     "transparent": true,
@@ -66,7 +66,7 @@ class Process {
                 Process.worker_screen.loadURL(`${__dirname}/renderer-processes/html/windows/worker_screen.html`);
                 Process.worker_screen.once('ready-to-show', () => {
                     Process.worker_screen.show();
-                    if (typeof(execute) === 'function')
+                    if (typeof (execute) === 'function')
                         execute();
                 });
                 break;
@@ -90,7 +90,7 @@ class Process {
                     Process.confirm.show();
                 });
                 break;
-            case 'srSearchDialog':
+            case 'sr_search':
                 Process.sr_search = new electron_1.BrowserWindow({
                     "parent": Process.worker_screen,
                     "modal": true,

@@ -358,29 +358,31 @@ input::-webkit-inner-spin-button {
     padding: 5px 5px 5px 5px;
     align-content: center;
     justify-items: center;
+    border-style: solid;
+    border-width: 1px;
     border-radius: 20px;
     transition: var(--transition-in);
 }
 
-.light .sidebar .pop,
-.light .indexbar .pop {
-    background-color: var(--dark-primary-color);
-    color: var(--light);
+.light .sidebar .pop {
+    border-color: var(--light);
+    background-color: var(--bg-light);
+    box-shadow: -4px -4px 20px 0 rgba(255, 255, 255, 1), 4px 4px 20px 0 rgba(100, 100, 100, 0.3);
+    color: var(--bg-dark);
 }
 
-.dark .sidebar .pop,
-.dark .indexbar .pop {
-    background-color: var(--light-primary-color);
-    color: var(--dark);
+.dark .sidebar .pop {
+    border-color: var(--dark);
+    background-color: var(--bg-dark);
+    box-shadow: -4px -4px 20px 0 rgba(100, 100, 100, 0.3), 4px 4px 20px 0 rgba(10, 10, 10, 0.3);
+    color: var(--bg-light);
 }
 
-.sidebar .pop:hover,
-.indexbar .pop:hover {
+.sidebar .pop:hover {
     width: 150px;
 }
 
-.sidebar .pop>.tab,
-.indexbar .pop>.tab {
+.sidebar .pop>.tab {
     margin-top: 7px;
     display: flex;
     flex-flow: row;
@@ -389,8 +391,8 @@ input::-webkit-inner-spin-button {
     justify-content: center;
 }
 
-.sidebar .pop>.tab>.name,
-.indexbar .pop>.tab>.name {
+.sidebar .pop>.tab>.name {
+    white-space: nowrap;
     position: relative;
     top: -5px;
     font-weight: bold;
@@ -399,54 +401,24 @@ input::-webkit-inner-spin-button {
     width: 0;
     height: 0;
     opacity: 0;
-    font-size: 0;
     align-content: center;
     justify-content: center;
 }
 
-.sidebar .pop>.tab>.icon,
-.indexbar .pop>.tab>.icon {
-    width: 15px;
-    height: 15px;
+.sidebar .pop:hover>.tab>.name {
+    margin-left: 5px;
+    opacity: 1;
+    transition: var(--transition-in);
+    width: max-content;
 }
 
-.sidebar .pop>.tab>a.number,
-.indexbar .pop>.tab>a.number {
-    position: relative;
-    top: -5px;
-    text-decoration: none;
-    font-size: medium;
-    font-weight: bold;
-}
-
-.light .sidebar .pop>.tab>.icon,
-.light .indexbar .pop>.tab>.icon {
+.dark .sidebar .pop>.tab>.icon {
     filter: invert();
 }
 
-.light .sidebar .pop>.tab>a.number,
-.light .indexbar .pop>.tab>a.number {
-    color: var(--light-primary-color);
-}
-
-.dark .sidebar .pop>.tab>a.number,
-.dark .indexbar .pop>.tab>a.number {
-    color: var(--dark-primary-color);
-}
-
-.sidebar .pop:hover>.tab>a.number::after,
-.indexbar .pop:hover>.tab>a.number::after {
-    content: ' • ';
-}
-
-.sidebar .pop:hover>.tab>.name,
-.indexbar .pop:hover>.tab>.name {
-    margin-left: 5px;
-    transition: var(--transition-in);
-    width: auto;
-    height: auto;
-    opacity: 1;
-    font-size: medium;
+.sidebar .pop>.tab>.icon {
+    width: 15px;
+    height: 15px;
 }
 
 .center-buttons {
@@ -478,9 +450,6 @@ input::-webkit-inner-spin-button {
 .choose-button button {
     width: 100%;
     height: 100%;
-    /* box-shadow: -4px -4px 20px 0 rgba(255, 255, 255, 0.5), 4px 4px 20px 0 rgba(0, 0, 0, 0.3);
-    border-style: none;
-    border-radius: var(--window-radius); */
     border-style: none;
     outline: none;
     background: none;
@@ -497,11 +466,6 @@ input::-webkit-inner-spin-button {
 .dark .choose-button button img {
     filter: invert();
 }
-
-
-/* .dark .choose-button button {
-    box-shadow: -4px -4px 20px 0 rgba(10, 10, 10, 0.5), 4px 4px 20px 0 rgba(10, 10, 10, 0.3);
-} */
 
 .buttons-container {
     display: flex;
@@ -543,7 +507,7 @@ button.badge-image {
 }
 
 .badge-image {
-    margin: 0.75rem;
+    margin: 0.6rem;
     box-shadow: -4px -4px 20px 0 rgba(255, 255, 255, 0.5), 4px 4px 20px 0 rgba(0, 0, 0, 0.3);
     border-style: solid;
     border-width: 1px;
@@ -554,7 +518,7 @@ button.badge-image {
 
 .badge-image img {
     padding: 1.5rem;
-    max-width: 12vw;
+    max-width: 10vw;
     max-height: 20vh;
 }
 
@@ -567,12 +531,11 @@ button.badge-image {
     margin: 3px;
     padding: 2rem;
     box-shadow: -4px -4px 20px 0 rgba(255, 255, 255, 1), 4px 4px 20px 0 rgba(100, 100, 100, 0.3);
-    /* box-shadow: -4px -4px 20px 0 rgba(255, 255, 255, 0.5), 4px 4px 20px 0 rgba(0, 0, 0, 0.3);*/
     border-radius: var(--window-radius);
 }
 
 .dark .neumorphic {
-    box-shadow: -4px -4px 20px 0 rgba(10, 10, 10, 0.5), 4px 4px 20px 0 rgba(10, 10, 10, 0.3);
+    box-shadow: -4px -4px 20px 0 rgba(100, 100, 100, 0.3), 4px 4px 20px 0 rgba(10, 10, 10, 0.3);
 }
 
 .neumorphic.min {

@@ -63,7 +63,7 @@ class Charts {
                         <th>${data['Função'].value}</th>
                         <th>${data['WO'].value}</th>
                         <th>${data['Descrição'].value}</th>
-                        <th>${data['Tempo'].value}</th>
+                        <th>${data['Tempo'].value} min.</th>
                         <th>${data['Extra'].value}</th>`;
                     tbody.appendChild(tr);
                 });
@@ -144,7 +144,7 @@ class Charts {
                     responsive: true,
                     maintainAspectRatio: false,
                     legend: {
-                        position: 'bottom'
+                        position: 'left'
                     },
                     title: {
                         display: true,
@@ -199,7 +199,7 @@ class Charts {
                     responsive: true,
                     maintainAspectRatio: false,
                     legend: {
-                        position: 'bottom'
+                        position: 'left'
                     },
                     title: {
                         display: true,

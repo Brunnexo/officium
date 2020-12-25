@@ -4,21 +4,19 @@
 }
 
 .chart-container {
-    height: 40vh;
+    max-height: 40vh;
 }
 
 .chart-element {
-    height: 30vh;
+    max-height: 30vh;
 }
 
 .chart-element.pie {
-    height: 30vh;
-    width: 30vw;
+    max-width: 40vw;
 }
 
 .chart-element.bar {
-    height: 30vh;
-    width: 40vw;
+    max-width: 40vw;
 }
 
 .table {

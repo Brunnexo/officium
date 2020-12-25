@@ -56,8 +56,8 @@ class Process {
                     "frame": false,
                     "width": 1280,
                     "height": 730,
-                    // "minWidth": 1280,
-                    // "minHeight": 730,
+                    "minWidth": 1130,
+                    "minHeight": 720,
                     "resizable": true,
                     "transparent": true,
                     "webPreferences": {
@@ -91,7 +91,7 @@ class Process {
                     Process.confirm.show();
                 });
                 break;
-            case 'srSearchDialog':
+            case 'sr_search':
                 Process.sr_search = new BrowserWindow({
                     "parent": Process.worker_screen,
                     "modal": true,
