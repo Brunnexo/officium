@@ -160,7 +160,7 @@ function LoadScripts() {
         const workMan = new WorkerManager({
             list: 'list-workers',
             name: 'input-name',
-            registry: 'input-regisrty',
+            registry: 'input-regs',
             email: 'input-email',
             password: 'input-password',
 

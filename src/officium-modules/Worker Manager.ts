@@ -76,8 +76,8 @@ class WorkerManager {
         }).then(() => {
             _data.forEach(d => {
                 let option = document.createElement('option');
-                option.setAttribute('email', d['Email'].value);
-                option.setAttribute('regisrty', d['Registro'].value);
+                option.setAttribute('reg', d['Registro'].value);
+                option.setAttribute('email', d['Email'].value != null ? d['Email'].value : '');
                 option.setAttribute('functions', d['Funções'].value);
                 option.setAttribute('journey', d['Jornada'].value);
                 option.setAttribute('name', d['Nome'].value);
@@ -89,14 +89,16 @@ class WorkerManager {
 
             select.onchange = () => {
                 input_name.value = select.selectedOptions[0].getAttribute('name');
-                input_registry.value = select.selectedOptions[0].getAttribute('registry');
+                input_registry.value = select.selectedOptions[0].getAttribute('reg');
                 input_email.value = select.selectedOptions[0].getAttribute('email');
-                input_password.value = select.selectedOptions[0].getAttribute('password');
-
-                console.log(select.selectedOptions[0].getAttribute('registry'));
-
                 chk_hourly.checked = (select.selectedOptions[0].getAttribute('journey') == 'H');
                 chk_monthly.checked = (select.selectedOptions[0].getAttribute('journey') == 'M');
+                chk_adm.checked = (select.selectedOptions[0].getAttribute('functions').includes('A'));
+                chk_ele.checked = (select.selectedOptions[0].getAttribute('functions').includes('E'));
+                chk_eng.checked = (select.selectedOptions[0].getAttribute('functions').includes('N'));
+                chk_mec.checked = (select.selectedOptions[0].getAttribute('functions').includes('M'));
+                chk_prog.checked = (select.selectedOptions[0].getAttribute('functions').includes('P'));
+                chk_proj.checked = (select.selectedOptions[0].getAttribute('functions').includes('R'));
             }
 
             select.onchange(null);
