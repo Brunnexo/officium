@@ -1,3 +1,3 @@
 SELECT [SR], [WO], [Descrição], [Solicitante], [Responsável], [Tipo]
-                    FROM [SAT].[dbo].[SRs]
+                    FROM [SRs]
                         ORDER BY [SR]

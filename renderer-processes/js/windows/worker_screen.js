@@ -2,9 +2,6 @@
 const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
-// Dependências
-require('bootstrap');
-
 // Extensões internas
 const { PageLoader, ColorMode, Charts, WorkerLabor, MSSQL, WorkerManager } = require('../../../officium-modules/Officium');
 
@@ -156,13 +153,20 @@ function LoadScripts() {
     });
 
     HTML.loadScript('manage-workers', () => {
-        // SQL_DRIVER.select
+        let btn_save = document.getElementById('btn-save'),
+            btn_reset = document.getElementById('btn-reset'),
+            input_email = document.getElementById('input-email'),
+            input_password = document.getElementById('input-password'),
+            select = document.getElementById('list-workers');
+
         const workMan = new WorkerManager({
             list: 'list-workers',
             name: 'input-name',
             registry: 'input-regs',
             email: 'input-email',
             password: 'input-password',
+
+            buttons: ['btn-save', 'btn-reset'],
 
             status: 'loading',
 
@@ -182,8 +186,13 @@ function LoadScripts() {
             },
             chart: 'adm-delay-chart'
         });
-
         workMan.getList();
+        btn_reset.onclick = () => {
+            select.onchange();
+            input_password.value = '';
+            btn_reset.setAttribute('disabled', '');
+            btn_save.setAttribute('disabled', '');
+        };
     });
 
     HTML.loadScript('reg-type', () => {

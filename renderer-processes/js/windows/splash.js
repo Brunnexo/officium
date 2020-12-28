@@ -66,7 +66,7 @@ const DATA = {
 
 window.onload = () => {
     let colorMode = localStorage.getItem('colorMode');
-    localStorage.setItem('colorMode', colorMode == 'null' ? 'auto' : colorMode);
+    localStorage.setItem('colorMode', colorMode == null ? 'auto' : colorMode);
     ColorMode(localStorage.getItem('colorMode'));
     remote.getCurrentWindow()
         .on('focus', () => {

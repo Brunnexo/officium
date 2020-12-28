@@ -160,8 +160,7 @@ class Charts {
             let colors = randomColors(splitData.times.length);
 
             this.renderChartLabor;
-            if (!(typeof (this.renderChartLabor) == 'undefined'))
-                this.renderChartLabor.destroy();
+            if (!(typeof (this.renderChartLabor) == 'undefined')) this.renderChartLabor.destroy();
 
             this.renderChartLabor = new Chart((elements.laborChart as HTMLCanvasElement), {
                 type: 'pie',
@@ -220,8 +219,7 @@ class Charts {
             let colors = randomColors(splitData.times.length);
 
             this.renderChartExtra;
-            if (!(typeof (this.renderChartExtra) == 'undefined'))
-                this.renderChartExtra.destroy();
+            if (!(typeof (this.renderChartExtra) == 'undefined')) this.renderChartExtra.destroy();
 
             this.renderChartExtra = new Chart((elements.extraChart as HTMLCanvasElement), {
                 type: 'pie',
@@ -268,10 +266,7 @@ class Charts {
 
              this.renderChartTotal;
 
-            if (!(typeof (this.renderChartTotal) === 'undefined')) {
-                this.renderChartTotal.destroy();
-            }
-
+            if (!(typeof (this.renderChartTotal) === 'undefined')) this.renderChartTotal.destroy();
             this.renderChartTotal = new Chart((elements.totalChart as HTMLCanvasElement), {
                 type: 'bar',
                 data: {
@@ -316,5 +311,5 @@ function randomColors(num: number) {
     return colors;
 }
 
-export { Charts };
+export { Charts, randomColors };
 

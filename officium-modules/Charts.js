@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.Charts = void 0;
+exports.randomColors = exports.Charts = void 0;
 const chart_js_1 = require("chart.js");
 const electron_1 = require("electron");
 const MSSQL_1 = require("./MSSQL");
@@ -219,9 +219,8 @@ class Charts {
                 splitData.times.push(data.Tempo.value);
             });
             this.renderChartTotal;
-            if (!(typeof (this.renderChartTotal) === 'undefined')) {
+            if (!(typeof (this.renderChartTotal) === 'undefined'))
                 this.renderChartTotal.destroy();
-            }
             this.renderChartTotal = new chart_js_1.Chart(elements.totalChart, {
                 type: 'bar',
                 data: {
@@ -261,3 +260,4 @@ function randomColors(num) {
         colors.push(`#${((((1 << 24) - 1) * Math.random() | 0).toString(16)).padEnd(6, '0')}`);
     return colors;
 }
+exports.randomColors = randomColors;

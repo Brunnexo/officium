@@ -101,16 +101,11 @@
                                 <div class="input-group-prepend">
                                     <label class="input-group-text" for="input-email" style="font-weight: bold;">E-mail</label>
                                 </div>
-                                <input type="email" class="form-control" id="input-email" readonly>
-
+                                <input type="email" class="form-control" id="input-email">
                                 <div class="input-group-prepend">
                                     <label class="input-group-text" for="input-password" style="font-weight: bold;">Senha</label>
                                 </div>
-                                <input type="number" class="form-control" id="input-password" readonly>
-
-                                <div class="input-group-append">
-                                    <button class="btn btn-secondary ignore-theme" type="button" id="btn-set-password">Definir</button>
-                                </div>
+                                <input type="password" class="form-control" id="input-password">
                             </div>
 
                             <div class="row">
@@ -130,16 +125,21 @@
                                     <div class="label">Mensalista</div>
                                 </label>
                                 </div>
-
+                                <div class="ml-4 neumorphic min">
+                                    <div class="flex-column justify-content-center">
+                                        <button type="button" class="btn btn-success ignore-theme" id="btn-save" disabled>Salvar</button>
+                                        <button type="button" class="btn btn-secondary ignore-theme" id="btn-reset" disabled>Redefinir</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="neumorphic ml-4">
                         <div class="col">
-                            <h6 class="display-6">Atrasos</h6>
+                            <h6 class="display-6">Atrasos por mês</h6>
                             <div class="d-flex justify-content-center">
                                 <div class="justify-content-center">
-                                    <canvas id="adm-delay-chart" width="410" height="250"></canvas>
+                                    <canvas id="adm-delay-chart" width="465" height="250"></canvas>
                                 </div>
                             </div>
                         </div>
