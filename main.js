@@ -52,9 +52,9 @@ class Process {
                 Process.worker_screen = new electron_1.BrowserWindow({
                     "show": false,
                     "frame": false,
-                    "width": 1280,
+                    "width": 1350,
                     "height": 730,
-                    "minWidth": 1130,
+                    "minWidth": 1350,
                     "minHeight": 720,
                     "resizable": true,
                     "transparent": true,
@@ -77,7 +77,7 @@ class Process {
                     "show": false,
                     "frame": false,
                     "width": 960,
-                    "height": 400,
+                    "height": 530,
                     "resizable": false,
                     "transparent": true,
                     "webPreferences": {
@@ -108,6 +108,26 @@ class Process {
                 Process.sr_search.loadURL(`${__dirname}/renderer-processes/html/dialogs/sr_search.html`);
                 Process.sr_search.once('ready-to-show', () => {
                     Process.sr_search.show();
+                });
+                break;
+            case 'select_project':
+                Process.select_project = new electron_1.BrowserWindow({
+                    "parent": Process.worker_screen,
+                    "modal": true,
+                    "show": false,
+                    "frame": false,
+                    "width": 960,
+                    "height": 560,
+                    "resizable": false,
+                    "transparent": true,
+                    "webPreferences": {
+                        "nodeIntegration": true,
+                        "enableRemoteModule": true
+                    }
+                });
+                Process.select_project.loadURL(`${__dirname}/renderer-processes/html/dialogs/select_project.html`);
+                Process.select_project.once('ready-to-show', () => {
+                    Process.select_project.show();
                 });
                 break;
         }

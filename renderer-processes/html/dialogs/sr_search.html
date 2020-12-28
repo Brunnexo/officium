@@ -8,41 +8,42 @@
 </head>
 
 <body class="transparent">
-    <div class="workerscreen dialog view">
+    <div class="workerscreen dialog view drag">
         <h1 class="display-4">Procurar S.R.</h1>
-        <hr>
-        <div class="container-fluid">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <label class="input-group-text" for="sr-list" style="font-weight: bold;">
+        <div class="neumorphic">
+            <div class="container-fluid">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text" for="sr-list" style="font-weight: bold;">
                         <span class="spinner-border spinner-border-sm mr-2" role="status" id="loading"></span>
                         SR
                     </label>
-                </div>
-                <select class="custom-select" id="sr-list">
+                    </div>
+                    <select class="custom-select" id="sr-list">
                 </select>
-            </div>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" style="font-weight: bold;">Work Order</span>
                 </div>
-                <input type="text" class="form-control text-center" id="input-wo" readonly>
-                <div class="input-group-prepend">
-                    <span class="input-group-text" style="font-weight: bold;">Service Request</span>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" style="font-weight: bold;">Work Order</span>
+                    </div>
+                    <input type="text" class="form-control text-center" id="input-wo" readonly>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" style="font-weight: bold;">Service Request</span>
+                    </div>
+                    <input type="text" class="form-control text-center" id="input-sr" readonly>
                 </div>
-                <input type="text" class="form-control text-center" id="input-sr" readonly>
-            </div>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" style="font-weight: bold;">Responsável do Serviço</span>
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" style="font-weight: bold;">Responsável do Serviço</span>
+                    </div>
+                    <input type="text" class="form-control text-center" id="input-responsible" readonly>
                 </div>
-                <input type="text" class="form-control text-center" id="input-responsible" readonly>
-            </div>
 
-            <div class="to-bottom">
-                <div class="d-flex align-middle align-items-center justify-content-between">
-                    <button class="btn btn-danger ignore-theme" type="button" id="btn-cancel">Cancelar</button>
-                    <button class="btn btn-success ignore-theme" type="button" id="btn-confirm">Confirmar</button>
+                <div class="to-bottom">
+                    <div class="d-flex align-middle align-items-center justify-content-between">
+                        <button class="btn btn-danger ignore-theme" type="button" id="btn-cancel">Cancelar</button>
+                        <button class="btn btn-success ignore-theme" type="button" id="btn-confirm">Confirmar</button>
+                    </div>
                 </div>
             </div>
         </div>

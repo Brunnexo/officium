@@ -2,8 +2,13 @@
 const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
+// Dependências
+require('bootstrap');
+
 // Extensões internas
-const { PageLoader, ColorMode, Charts, WorkerLabor, MSSQL } = require('../../../officium-modules/Officium');
+const { PageLoader, ColorMode, Charts, WorkerLabor, MSSQL, WorkerManager } = require('../../../officium-modules/Officium');
+
+const SQL_DRIVER = new MSSQL();
 
 // Instâncias
 const HTML = new PageLoader();
@@ -20,6 +25,15 @@ const charts = new Charts({
     totalChart: 'total-chart',
     extraChart: 'extra-chart',
 });
+
+const functions = {
+    "E": "Eletricista",
+    "M": "Mecânico",
+    "P": "Programador",
+    "R": "Projetista",
+    "A": "Administrativo",
+    "N": "Engenheiro"
+};
 
 // Funções ao carregar a página
 window.onload = () => {
@@ -40,9 +54,6 @@ window.onload = () => {
         .on('blur', () => {
             document.querySelector('.view').classList.add('no-focus');
         });
-    // .on('resize', () => {
-    //     console.log(JSON.stringify(remote.getCurrentWindow().getBounds()));
-    // })
 
     WorkerLabor.updateInfo({
         date: document.getElementById("date").value,
@@ -51,7 +62,8 @@ window.onload = () => {
         workTime: workTime,
     }).onLoad = () => { charts.render(WorkerLabor.info) };
 
-    HTML.load('personal-resume');
+    HTML.load('manage-workers');
+    // HTML.load('personal-resume');
 }
 ipc.on('show-resume', () => {
     document.querySelectorAll('.active').forEach((elmnt) => {
@@ -85,6 +97,15 @@ document.getElementById('nav-reg').onclick = () => {
     });
     document.getElementById('nav-reg').classList.add('active');
     HTML.load('reg-type');
+}
+
+// Gerenciar colaboradores
+document.getElementById('nav-manage-workers').onclick = () => {
+    document.querySelectorAll('.active').forEach((elmnt) => {
+        elmnt.classList.remove('active');
+    });
+    document.getElementById('nav-manage-workers').classList.add('active');
+    HTML.load('manage-workers');
 }
 
 // Abrir preferências
@@ -121,6 +142,8 @@ document.querySelectorAll('.close-btn')[0].onclick = () => {
 };
 
 function LoadScripts() {
+    var back_page;
+
     HTML.loadScript('personal-resume', () => {
         charts.updateInfo({
             title: 'title',
@@ -132,13 +155,47 @@ function LoadScripts() {
         WorkerLabor.getData();
     });
 
+    HTML.loadScript('manage-workers', () => {
+        // SQL_DRIVER.select
+        const workMan = new WorkerManager({
+            list: 'list-workers',
+            name: 'input-name',
+            registry: 'input-regisrty',
+            email: 'input-email',
+            password: 'input-password',
+
+            status: 'loading',
+
+            switches: {
+                journey: {
+                    hourly: 'chk-hourly',
+                    monthly: 'chk-monthly'
+                },
+                functions: {
+                    adm: 'chk-adm',
+                    eng: 'chk-eng',
+                    ele: 'chk-ele',
+                    mec: 'chk-mec',
+                    prog: 'chk-prog',
+                    proj: 'chk-proj'
+                }
+            },
+            chart: 'adm-delay-chart'
+        });
+
+        workMan.getList();
+    });
+
     HTML.loadScript('reg-type', () => {
         WorkerLabor.clear();
 
-        document.getElementById('btn-sr').onclick = () => {
+        let btn_sr = document.getElementById('btn-sr'),
+            btn_activities = document.getElementById('btn-activities');
+
+        btn_sr.onclick = () => {
             HTML.load('reg-sr');
         }
-        document.getElementById('btn-activities').onclick = () => {
+        btn_activities.onclick = () => {
             HTML.load('reg-function');
         }
     });
@@ -149,17 +206,8 @@ function LoadScripts() {
 
         let list_functions = document.getElementById('list-functions');
 
-        const functions = {
-            "E": "Eletricista",
-            "M": "Mecânico",
-            "P": "Programador",
-            "R": "Projetista",
-            "A": "Administrativo",
-            "N": "Engenheiro"
-        };
-
         worker['Funções'].value.split('').forEach(s => {
-            if (s != ' ') {
+            if (s != ' ' && s != 'D') {
                 let option = document.createElement('option');
                 option.value = s;
                 option.innerHTML = `${functions[s]}`
@@ -175,6 +223,7 @@ function LoadScripts() {
     });
 
     HTML.loadScript('reg-activity', () => {
+        back_page = 'reg-activity';
         let department = remote.getGlobal('sql').department;
 
         let list_activities = document.getElementById('list-activities'),
@@ -225,32 +274,42 @@ function LoadScripts() {
                         description: description,
                         wo: wo
                     });
-                    console.log(WorkerLabor.info.wo);
+                    HTML.load('reg-time');
                 } else {
                     let wo = department.filter(d => { return d['Descrição'].value.toUpperCase() == wo_as.toUpperCase() })[0][WorkerLabor['info']['function']]['value'];
                     WorkerLabor.updateInfo({
                         description: list_descriptions.selectedOptions[0].value,
                         wo: wo
                     });
-                    console.log(WorkerLabor.info.wo);
+                    HTML.load('reg-time');
                 }
             }
         };
     });
 
     HTML.loadScript('reg-projects', () => {
-        let badge_name = document.getElementById('badge-name');
-        let clients = remote.getGlobal('clients')['Clients'];
+        let backbutton = document.querySelectorAll('[btn-back]')[0];
+        backbutton.onclick = () => { HTML.load('reg-activity') };
+        back_page = 'reg-projects';
 
+        ipc.on('reg-project-time', (evt, arg) => {
+            WorkerLabor.updateInfo(arg);
+            HTML.load('reg-time');
+        });
 
         document.querySelectorAll('.badge-image').forEach(e => {
             e.onclick = () => {
-
+                ipc.send('select-project', { badge: e.id, info: WorkerLabor.getLabor() });
             };
         });
+
+        document.getElementById('btn-others').onclick = () => {
+            ipc.send('select-project', { badge: 'common', info: WorkerLabor.getLabor() });
+        }
     });
 
     HTML.loadScript('reg-sr', () => {
+        back_page = 'reg-sr';
         let inputwo = document.getElementById('input-wo'),
             inputsr = document.getElementById('input-sr'),
             inputservice = document.getElementById('input-service'),
@@ -337,7 +396,7 @@ function LoadScripts() {
 
         document.querySelectorAll('[btn-back]')[0]
             .onclick = () => {
-                HTML.load('reg-sr');
+                HTML.load(back_page);
             };
 
         document.getElementById('input-time').onkeyup = () => {

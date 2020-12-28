@@ -29,16 +29,15 @@ document.getElementById('btn-cancel').onclick = () => {
 document.getElementById('btn-confirm').onclick = () => {
     if (hasTime) {
         let query = '';
-
         if (data.laborTime.common > 0) {
             query += `INSERT INTO [Relatórios]
-                        ([Registro], [Data], [Função], [WO], [Descrição], [Tempo], [Extra])
-                            VALUES (${data.registry}, '${data.date}', '${data.function}', '${data.wo}', '${data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description']}', ${data.laborTime.common}, 0)`;
+                        ([Registro], [Data], [Função], [WO], [Descrição], [Tempo], [Extra], [Efetuado])
+                            VALUES (${data.registry}, '${data.date}', '${data.function}', '${data.wo}', '${data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description']}', ${data.laborTime.common}, 0, GETDATE())`;
         }
         if (data.laborTime.extra > 10) {
             query += ` INSERT INTO [Relatórios]
-            ([Registro], [Data], [Função], [WO], [Descrição], [Tempo], [Extra])
-                VALUES (${data.registry}, '${data.date}', '${data.function}', '${data.wo}', '${data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description']}', ${data.laborTime.extra}, 1)`;
+            ([Registro], [Data], [Função], [WO], [Descrição], [Tempo], [Extra], [Efetuado])
+                VALUES (${data.registry}, '${data.date}', '${data.function}', '${data.wo}', '${data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description']}', ${data.laborTime.extra}, 1, GETDATE())`;
         }
 
         SQL_DRIVER.execute(query)
@@ -48,6 +47,12 @@ document.getElementById('btn-confirm').onclick = () => {
             });
     }
 };
+
+function getToday() {
+    let d = new Date();
+    let d_string = d.toISOString();
+    return d_string.substring(0, d_string.indexOf('T'));
+}
 
 function renderTable() {
     let container = document.getElementById('container');

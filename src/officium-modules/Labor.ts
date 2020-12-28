@@ -49,8 +49,6 @@ class WorkerLabor {
             isWeekend = (weekDay == 0 || weekDay == 6),
             _remainTime = WorkerLabor.info.remainTime;
 
-        let message: string;
-
         if (time > 0) {
             let commonTime = Math.min(time, _remainTime.common),
                 extraTime = Math.min(((time - commonTime) > 10 ? (time - commonTime) : 0), _remainTime.extra);
@@ -65,7 +63,6 @@ class WorkerLabor {
                     common: 0,
                     extra: Math.min((time > 10 ? time : 0), _remainTime.extra)
                 }
-                message = '';
             } 
         } else {
             WorkerLabor.info.laborTime = {

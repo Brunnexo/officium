@@ -27,28 +27,47 @@ ipc.on('back-main', () => {
     Process.build('main', () => { Process.worker_screen.destroy() })
 });
 
-var labor_info: any;
+var labor_info: any,
+    badge: string;
 var worker_screen_evt: Electron.IpcMainEvent;
 
 ipc.on('show-confirm-dialog', (evt, arg) => {
     worker_screen_evt = evt;
     labor_info = arg;
     Process.build('confirm');
-})
+});
+
+ipc.on('select-project', (evt, arg) => {
+    worker_screen_evt = evt;
+    badge = arg.badge;
+    labor_info = arg.info;
+    Process.build('select_project');
+});
+
+ipc.on('request-labor-info', evt => {
+    evt.returnValue = labor_info;
+});
+
+ipc.on('request-badge-name', evt => {
+    evt.returnValue = badge;
+});
+
 ipc.on('sr-search', (evt, arg) => {
     worker_screen_evt = evt;
     Process.build('sr_search');
-})
+});
+
 ipc.on('show-resume', () => {
     worker_screen_evt.reply('show-resume');
-})
+});
+
 ipc.on('sr-found', (evt, arg) => {
     worker_screen_evt.reply('sr-fill', arg);
-})
+});
 
-ipc.on('request-labor-info', (evt) => {
-    evt.returnValue = labor_info;
-})
+ipc.on('project-selected', (evt, arg) => {
+    worker_screen_evt.reply('reg-project-time', arg);
+});
 
 ipc.on('open-worker-screen', () => {
     Process.build('worker_screen', () => { Process.main.destroy() })

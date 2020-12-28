@@ -22,7 +22,6 @@ class WorkerLabor {
     }
     static inputTime(time) {
         let weekDay = new Date(WorkerLabor.info.date).getUTCDay(), isWeekend = (weekDay == 0 || weekDay == 6), _remainTime = WorkerLabor.info.remainTime;
-        let message;
         if (time > 0) {
             let commonTime = Math.min(time, _remainTime.common), extraTime = Math.min(((time - commonTime) > 10 ? (time - commonTime) : 0), _remainTime.extra);
             if (!isWeekend) {
@@ -36,7 +35,6 @@ class WorkerLabor {
                     common: 0,
                     extra: Math.min((time > 10 ? time : 0), _remainTime.extra)
                 };
-                message = '';
             }
         }
         else {

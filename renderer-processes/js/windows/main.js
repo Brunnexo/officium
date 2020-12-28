@@ -7,6 +7,8 @@ const { MSSQL, ColorMode } = require('../../../officium-modules/officium');
 
 const SQL_DRIVER = new MSSQL();
 
+const original_text = 'Insira seu registro';
+
 // Página pronta
 window.onload = () => {
     ColorMode(localStorage.getItem('colorMode'));
@@ -103,33 +105,16 @@ function authenticate(registry, password) {
         });
 }
 
-function warning(sel) {
-    let text = document.getElementById('instruction').textContent,
-        instruction = document.getElementById('instruction');
-    instruction.style = {
-        display: 'none',
-        transitionDuration: '500ms'
-    };
-    instruction.classList.add('text-danger');
-    instruction.textContent = sel;
-    instruction.style = {
-        display: 'unset',
-        opacity: '0'
-    };
-    instruction.style.opacity = '1';
-
+function warning(text) {
     clearTimeout(this.delay);
+    let instruction = document.getElementById('instruction');
+    instruction.style.transitionDuration = '1s';
+    instruction.classList.add('text-warning');
+    instruction.textContent = text;
     this.delay = setTimeout(() => {
-        instruction.style.display = 'none';
-        instruction.classList.remove('text-danger');
-        instruction.textContent = text;
-        instruction.style = {
-            display: 'unset',
-            opacity: '0'
-        };
-        instruction.style.opacity = '1';
-    }, 3000);
-    instruction.style.transitionDuration = '0s';
+        instruction.classList.remove('text-warning');
+        instruction.textContent = original_text;
+    }, 2000);
 }
 
 function welcome() {

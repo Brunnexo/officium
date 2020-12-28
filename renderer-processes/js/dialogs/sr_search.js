@@ -20,9 +20,7 @@ window.onload = () => {
             document.querySelector('.view').classList.add('no-focus');
         });
 
-    setImmediate(() => {
-        fill_list();
-    });
+    setImmediate(() => { fill_list() });
 }
 
 // Botões de janela
@@ -41,7 +39,7 @@ function fill_list() {
         woinput = document.getElementById('input-wo'),
         srinput = document.getElementById('input-sr');
 
-    srs.forEach((data) => {
+    srs.forEach(data => {
         if (data['WO'].value !== null && data['WO'].value != '') {
             let option = document.createElement('option');
             option.setAttribute('responsible', data['Responsável'].value);

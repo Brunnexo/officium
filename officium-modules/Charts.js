@@ -63,7 +63,7 @@ class Charts {
                         <th>${data['Função'].value}</th>
                         <th>${data['WO'].value}</th>
                         <th>${data['Descrição'].value}</th>
-                        <th>${data['Tempo'].value} min.</th>
+                        <th>${toHour(data['Tempo'].value)} (${data['Tempo'].value}min)</th>
                         <th>${data['Extra'].value}</th>`;
                     tbody.appendChild(tr);
                 });
@@ -117,11 +117,9 @@ class Charts {
                 splitData.times.push(_laborTime.common > 0 ? (_remainTime.common - _laborTime.common) : _remainTime.common);
                 splitData.projects.push('RESTANTE');
             }
-            if (typeof (_laborTime) !== 'undefined') {
-                if (_laborTime.common > 0) {
-                    splitData.times.push(_laborTime.common);
-                    splitData.projects.push('SEU REGISTRO');
-                }
+            if (typeof (_laborTime) !== 'undefined' && _laborTime.common > 0) {
+                splitData.times.push(_laborTime.common);
+                splitData.projects.push('SEU REGISTRO');
             }
             let colors = randomColors(splitData.times.length);
             this.renderChartLabor;
@@ -135,16 +133,16 @@ class Charts {
                         {
                             data: splitData.times,
                             backgroundColor: colors,
-                            borderColor: colors,
+                            borderColor: 'rgba(200, 200, 200, 0.5)',
                             borderWidth: 1
                         }
                     ]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: false,
+                    maintainAspectRatio: true,
                     legend: {
-                        position: 'left'
+                        position: 'bottom'
                     },
                     title: {
                         display: true,
@@ -172,11 +170,9 @@ class Charts {
                 splitData.times.push(_laborTime.extra > 0 ? (_remainTime.extra - _laborTime.extra) : _remainTime.extra);
                 splitData.projects.push('RESTANTE');
             }
-            if (typeof (_laborTime) !== 'undefined') {
-                if (_laborTime.extra > 0) {
-                    splitData.times.push(_laborTime.extra);
-                    splitData.projects.push('SEU REGISTRO');
-                }
+            if (typeof (_laborTime) !== 'undefined' && _laborTime.extra > 0) {
+                splitData.times.push(_laborTime.extra);
+                splitData.projects.push('SEU REGISTRO');
             }
             let colors = randomColors(splitData.times.length);
             this.renderChartExtra;
@@ -190,16 +186,16 @@ class Charts {
                         {
                             data: splitData.times,
                             backgroundColor: colors,
-                            borderColor: colors,
+                            borderColor: 'rgba(200, 200, 200, 0.5)',
                             borderWidth: 1
                         }
                     ]
                 },
                 options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
+                    responsive: false,
+                    maintainAspectRatio: true,
                     legend: {
-                        position: 'left'
+                        position: 'bottom'
                     },
                     title: {
                         display: true,
@@ -240,7 +236,7 @@ class Charts {
                     ]
                 },
                 options: {
-                    responsive: true,
+                    responsive: false,
                     maintainAspectRatio: false,
                     legend: {
                         display: false
@@ -255,6 +251,10 @@ class Charts {
     }
 }
 exports.Charts = Charts;
+function toHour(num) {
+    var hours = (num / 60), rhours = Math.floor(hours), minutes = (hours - rhours) * 60, rminutes = Math.round(minutes);
+    return `${rhours}h ${rminutes}min`;
+}
 function randomColors(num) {
     let colors = new Array;
     for (let i = 0; i < num; i++)

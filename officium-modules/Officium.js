@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SQLConfig = exports.WorkerLabor = exports.Charts = exports.PageLoader = exports.MSSQL = exports.ColorMode = void 0;
+exports.SQLConfig = exports.WorkerLabor = exports.WorkerManager = exports.Charts = exports.PageLoader = exports.MSSQL = exports.ColorMode = void 0;
 const electron_1 = require("electron");
-//import { RenderResume, RenderSR } from './ChartsRender';
 const Charts_1 = require("./Charts");
 Object.defineProperty(exports, "Charts", { enumerable: true, get: function () { return Charts_1.Charts; } });
 const ColorMode_1 = require("./ColorMode");
@@ -13,5 +12,7 @@ const MSSQL_1 = require("./MSSQL");
 Object.defineProperty(exports, "MSSQL", { enumerable: true, get: function () { return MSSQL_1.MSSQL; } });
 const PageLoader_1 = require("./PageLoader");
 Object.defineProperty(exports, "PageLoader", { enumerable: true, get: function () { return PageLoader_1.PageLoader; } });
+const Worker_Manager_1 = require("./Worker Manager");
+Object.defineProperty(exports, "WorkerManager", { enumerable: true, get: function () { return Worker_Manager_1.WorkerManager; } });
 const SQLConfig = electron_1.remote.getGlobal('parameters')['sql'].config;
 exports.SQLConfig = SQLConfig;

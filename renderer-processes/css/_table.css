@@ -1,22 +1,22 @@
 .table-container {
-    height: 30vh;
+    height: 35vh;
     overflow-y: auto;
 }
 
 .chart-container {
-    max-height: 40vh;
+    height: auto;
 }
 
 .chart-element {
-    max-height: 30vh;
+    height: 32vh;
 }
 
 .chart-element.pie {
-    max-width: 40vw;
+    width: 35vw;
 }
 
 .chart-element.bar {
-    max-width: 40vw;
+    width: 20vw;
 }
 
 .table {

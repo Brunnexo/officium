@@ -23,12 +23,24 @@ electron_1.ipcMain.on('show-main', () => {
 electron_1.ipcMain.on('back-main', () => {
     main_1.Process.build('main', () => { main_1.Process.worker_screen.destroy(); });
 });
-var labor_info;
+var labor_info, badge;
 var worker_screen_evt;
 electron_1.ipcMain.on('show-confirm-dialog', (evt, arg) => {
     worker_screen_evt = evt;
     labor_info = arg;
     main_1.Process.build('confirm');
+});
+electron_1.ipcMain.on('select-project', (evt, arg) => {
+    worker_screen_evt = evt;
+    badge = arg.badge;
+    labor_info = arg.info;
+    main_1.Process.build('select_project');
+});
+electron_1.ipcMain.on('request-labor-info', evt => {
+    evt.returnValue = labor_info;
+});
+electron_1.ipcMain.on('request-badge-name', evt => {
+    evt.returnValue = badge;
 });
 electron_1.ipcMain.on('sr-search', (evt, arg) => {
     worker_screen_evt = evt;
@@ -40,8 +52,8 @@ electron_1.ipcMain.on('show-resume', () => {
 electron_1.ipcMain.on('sr-found', (evt, arg) => {
     worker_screen_evt.reply('sr-fill', arg);
 });
-electron_1.ipcMain.on('request-labor-info', (evt) => {
-    evt.returnValue = labor_info;
+electron_1.ipcMain.on('project-selected', (evt, arg) => {
+    worker_screen_evt.reply('reg-project-time', arg);
 });
 electron_1.ipcMain.on('open-worker-screen', () => {
     main_1.Process.build('worker_screen', () => { main_1.Process.main.destroy(); });
