@@ -1,6 +1,6 @@
-import { MSSQL } from './MSSQL';
 import { Chart } from 'chart.js';
 import { randomColors } from './Charts';
+import { MSSQL } from './MSSQL';
 
 interface Components {
     list?: string,
@@ -8,8 +8,6 @@ interface Components {
     registry?: string,
     email?: string,
     password?: string,
-
-    buttons?: Array<string>,
 
     status?: string,
 
@@ -72,45 +70,6 @@ class WorkerManager {
             chk_mec = (document.getElementById(`${_switches.functions.mec}`) as HTMLInputElement),
             chk_prog = (document.getElementById(`${_switches.functions.prog}`) as HTMLInputElement),
             chk_proj = (document.getElementById(`${_switches.functions.proj}`) as HTMLInputElement);
-
-        function input_change(ev: Event) {
-            let selected = select.selectedOptions[0];
-            if (input_name.value != selected.getAttribute('name') ||
-                input_registry.value != selected.getAttribute('reg') ||
-                input_email.value != selected.getAttribute('email') ||
-                input_password.value != '') {
-                    _components.buttons.forEach(e => {
-                        document.getElementById(e).removeAttribute('disabled');
-                    });
-                } else {
-                    _components.buttons.forEach(e => {
-                        document.getElementById(e).setAttribute('disabled', '');
-                    });
-                }
-        }
-        input_name.onchange = input_registry.onchange = input_email.onchange = input_password.onchange = input_change;
-
-        function toggle_change(ev: Event) {
-            let selected = select.selectedOptions[0];
-
-            if (chk_hourly.checked != (selected.getAttribute('journey') == 'H') ||
-                chk_monthly.checked != (selected.getAttribute('journey') == 'M') ||
-                chk_adm.checked != (selected.getAttribute('functions').includes('A')) ||
-                chk_ele.checked != (selected.getAttribute('functions').includes('E')) ||
-                chk_eng.checked != (selected.getAttribute('functions').includes('N')) ||
-                chk_mec.checked != (selected.getAttribute('functions').includes('M')) ||
-                chk_prog.checked != (selected.getAttribute('functions').includes('P')) ||
-                chk_proj.checked != (selected.getAttribute('functions').includes('R'))) {
-                    _components.buttons.forEach(e => {
-                        document.getElementById(e).removeAttribute('disabled');
-                    });
-            } else {
-                _components.buttons.forEach(e => {
-                    document.getElementById(e).setAttribute('disabled', '');
-                });
-            }
-        }
-        chk_hourly.onchange = chk_monthly.onchange = chk_adm.onchange = chk_ele.onchange = chk_eng.onchange = chk_mec.onchange = chk_prog.onchange = chk_proj.onchange = toggle_change;
 
         let status = document.getElementById(`${_components.status}`);
 
@@ -187,6 +146,57 @@ class WorkerManager {
                     display: false,
                 }
             }      
+        });
+    }
+
+    async updateWorker() {
+        let _components = this.components,
+        _SQL = this.SQL_DRIVER,
+        _switches = this.components.switches;
+
+        let select = (document.getElementById(`${_components.list}`) as HTMLSelectElement),
+            input_name = (document.getElementById(`${_components.name}`) as HTMLInputElement), 
+            input_registry = (document.getElementById(`${_components.registry}`) as HTMLInputElement),
+            input_email = (document.getElementById(`${_components.email}`) as HTMLInputElement),
+            input_password = (document.getElementById(`${_components.password}`) as HTMLInputElement);
+
+            select.innerHTML = '';
+
+        let chk_hourly = (document.getElementById(`${_switches.journey.hourly}`) as HTMLInputElement),
+            chk_monthly = (document.getElementById(`${_switches.journey.monthly}`) as HTMLInputElement),
+            
+            chk_adm = (document.getElementById(`${_switches.functions.adm}`) as HTMLInputElement),
+            chk_eng = (document.getElementById(`${_switches.functions.eng}`) as HTMLInputElement),
+            chk_ele = (document.getElementById(`${_switches.functions.ele}`) as HTMLInputElement),
+            chk_mec = (document.getElementById(`${_switches.functions.mec}`) as HTMLInputElement),
+            chk_prog = (document.getElementById(`${_switches.functions.prog}`) as HTMLInputElement),
+            chk_proj = (document.getElementById(`${_switches.functions.proj}`) as HTMLInputElement);
+
+        let journey_query = `${chk_hourly.checked ? 'H' : chk_monthly.checked ? 'M' : 'H'}`,
+            functions_query = `${chk_adm.checked ? 'A' : ' '}${chk_eng.checked ? 'N' : ' '}${chk_ele.checked ? 'E' : ' '}${chk_mec.checked ? 'M' : ' '}${chk_prog.checked ? 'P' : ' '}${chk_proj.checked ? 'R' : ' '}`;
+
+// UPDATE table_name
+// SET column1 = value1, column2 = value2, ...
+// WHERE condition;
+
+        return new Promise<void>((resolve, reject) => {
+            console.log( MSSQL.QueryBuilder('UpdateWorker',
+            input_registry.value,
+                input_password.value,
+                    input_email.value,
+                        input_name.value,
+                            functions_query,
+                                journey_query));
+            _SQL.execute(
+                MSSQL.QueryBuilder('UpdateWorker',
+                                        input_registry.value,
+                                            input_password.value,
+                                                input_email.value,
+                                                    input_name.value,
+                                                        functions_query,
+                                                            journey_query))
+                .then(() => { resolve() })
+                .catch(() => { reject() });
         });
     }
 }

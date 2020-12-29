@@ -3,9 +3,7 @@ const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
 // Extensões internas
-const { PageLoader, ColorMode, Charts, WorkerLabor, MSSQL, WorkerManager } = require('../../../officium-modules/Officium');
-
-const SQL_DRIVER = new MSSQL();
+const { PageLoader, ColorMode, Charts, WorkerLabor, WorkerManager } = require('../../../officium-modules/Officium');
 
 // Instâncias
 const HTML = new PageLoader();
@@ -165,11 +163,7 @@ function LoadScripts() {
             registry: 'input-regs',
             email: 'input-email',
             password: 'input-password',
-
-            buttons: ['btn-save', 'btn-reset'],
-
             status: 'loading',
-
             switches: {
                 journey: {
                     hourly: 'chk-hourly',
@@ -187,11 +181,14 @@ function LoadScripts() {
             chart: 'adm-delay-chart'
         });
         workMan.getList();
+
         btn_reset.onclick = () => {
             select.onchange();
             input_password.value = '';
-            btn_reset.setAttribute('disabled', '');
-            btn_save.setAttribute('disabled', '');
+        };
+
+        btn_save.onclick = () => {
+            workMan.updateWorker().then(() => { console.log('Deu certo!') }).catch(() => { console.log('Deu merda!') });
         };
     });
 
