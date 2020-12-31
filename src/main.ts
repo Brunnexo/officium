@@ -4,7 +4,7 @@ class Process {
     static splash: BrowserWindow;
     static main: BrowserWindow;
     static worker_screen: BrowserWindow;
-    static confirm: BrowserWindow;
+    static labor_confirm: BrowserWindow;
     static sr_search: BrowserWindow;
     static select_project: BrowserWindow;
 
@@ -72,8 +72,8 @@ class Process {
                     if (typeof(execute) === 'function')  execute() ;
                 });
                 break;
-            case 'confirm':
-                Process.confirm = new BrowserWindow({
+            case 'labor_confirm':
+                Process.labor_confirm = new BrowserWindow({
                     "parent": Process.worker_screen,
                     "modal": true,
                     "show": false,
@@ -87,9 +87,9 @@ class Process {
                         "enableRemoteModule": true
                     }
                 });
-                Process.confirm.loadURL(`${__dirname}/renderer-processes/html/dialogs/confirm.html`);
-                Process.confirm.once('ready-to-show', () => {
-                    Process.confirm.show();
+                Process.labor_confirm.loadURL(`${__dirname}/renderer-processes/html/dialogs/labor_confirm.html`);
+                Process.labor_confirm.once('ready-to-show', () => {
+                    Process.labor_confirm.show();
                 });
                 break;
             case 'sr_search':

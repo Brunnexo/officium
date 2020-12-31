@@ -37,6 +37,8 @@ window.onload = () => {
     document.getElementById('nav-name').textContent = worker.Nome.value;
     document.getElementById("date").valueAsDate = new Date();
 
+    if (worker['Funções'].value.includes('A')) document.getElementById('nav-manage-workers').style.display = 'unset';
+
     let color = localStorage.getItem('colorMode');
     document.getElementById('colorMode')
         .getElementsByClassName('name')[0]
@@ -57,8 +59,7 @@ window.onload = () => {
         workTime: workTime,
     }).onLoad = () => { charts.render(WorkerLabor.info) };
 
-    HTML.load('manage-workers');
-    // HTML.load('personal-resume');
+    HTML.load('personal-resume');
 }
 ipc.on('show-resume', () => {
     document.querySelectorAll('.active').forEach((elmnt) => {
@@ -188,7 +189,8 @@ function LoadScripts() {
         };
 
         btn_save.onclick = () => {
-            workMan.updateWorker().then(() => { console.log('Deu certo!') }).catch(() => { console.log('Deu merda!') });
+            workMan.updateWorker()
+                .then(() => { console.log('Deu certo!') }).catch((x) => { console.log('Deu merda!: ' + x) });
         };
     });
 

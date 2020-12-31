@@ -5,13 +5,13 @@
             "authentication": {
                 "type": "default",
                 "options": {
-                    "userName": "SAT_LOGON",
-                    "password": "pAcMaN2@"
+                    "userName": "sa",
+                    "password": "sa"
                 }
             },
             "options": {
                 "encrypt": false,
-                "database": "SAT",
+                "database": "relger",
                 "enableArithAbort": true,
                 "appName": "Officium",
                 "useColumnNames": true

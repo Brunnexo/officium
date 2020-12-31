@@ -1,7 +1,14 @@
 {
+    "build": {
+        "appId": "com.bnx.officium",
+        "buildVersion": "A0.0.1",
+        "win": {
+            "target": "portable"
+        }
+    },
     "name": "officium",
     "version": "0.0.1",
-    "description": "Sistema de Relatório de Mão-de-obra",
+    "description": "Officium",
     "main": "exec.js",
     "scripts": {
         "watch": "tsc -w"
@@ -11,7 +18,6 @@
     "dependencies": {
         "bootstrap": "^4.5.3",
         "chart.js": "^2.9.4",
-        "crypto-js": "^4.0.0",
         "mssql": "^6.2.3"
     },
     "devDependencies": {

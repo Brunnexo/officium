@@ -150,53 +150,39 @@ class WorkerManager {
     }
 
     async updateWorker() {
-        let _components = this.components,
-        _SQL = this.SQL_DRIVER,
-        _switches = this.components.switches;
-
-        let select = (document.getElementById(`${_components.list}`) as HTMLSelectElement),
-            input_name = (document.getElementById(`${_components.name}`) as HTMLInputElement), 
-            input_registry = (document.getElementById(`${_components.registry}`) as HTMLInputElement),
-            input_email = (document.getElementById(`${_components.email}`) as HTMLInputElement),
-            input_password = (document.getElementById(`${_components.password}`) as HTMLInputElement);
-
-            select.innerHTML = '';
-
-        let chk_hourly = (document.getElementById(`${_switches.journey.hourly}`) as HTMLInputElement),
-            chk_monthly = (document.getElementById(`${_switches.journey.monthly}`) as HTMLInputElement),
-            
-            chk_adm = (document.getElementById(`${_switches.functions.adm}`) as HTMLInputElement),
-            chk_eng = (document.getElementById(`${_switches.functions.eng}`) as HTMLInputElement),
-            chk_ele = (document.getElementById(`${_switches.functions.ele}`) as HTMLInputElement),
-            chk_mec = (document.getElementById(`${_switches.functions.mec}`) as HTMLInputElement),
-            chk_prog = (document.getElementById(`${_switches.functions.prog}`) as HTMLInputElement),
-            chk_proj = (document.getElementById(`${_switches.functions.proj}`) as HTMLInputElement);
-
-        let journey_query = `${chk_hourly.checked ? 'H' : chk_monthly.checked ? 'M' : 'H'}`,
-            functions_query = `${chk_adm.checked ? 'A' : ' '}${chk_eng.checked ? 'N' : ' '}${chk_ele.checked ? 'E' : ' '}${chk_mec.checked ? 'M' : ' '}${chk_prog.checked ? 'P' : ' '}${chk_proj.checked ? 'R' : ' '}`;
-
-// UPDATE table_name
-// SET column1 = value1, column2 = value2, ...
-// WHERE condition;
-
         return new Promise<void>((resolve, reject) => {
-            console.log( MSSQL.QueryBuilder('UpdateWorker',
-            input_registry.value,
-                input_password.value,
-                    input_email.value,
-                        input_name.value,
-                            functions_query,
-                                journey_query));
+            let _components = this.components,
+            _SQL = this.SQL_DRIVER,
+            _switches = this.components.switches;
+
+            let input_name = (document.getElementById(`${_components.name}`) as HTMLInputElement), 
+                input_registry = (document.getElementById(`${_components.registry}`) as HTMLInputElement),
+                input_email = (document.getElementById(`${_components.email}`) as HTMLInputElement),
+                input_password = (document.getElementById(`${_components.password}`) as HTMLInputElement);
+
+            let chk_hourly = (document.getElementById(`${_switches.journey.hourly}`) as HTMLInputElement),
+                chk_monthly = (document.getElementById(`${_switches.journey.monthly}`) as HTMLInputElement),
+                
+                chk_adm = (document.getElementById(`${_switches.functions.adm}`) as HTMLInputElement),
+                chk_eng = (document.getElementById(`${_switches.functions.eng}`) as HTMLInputElement),
+                chk_ele = (document.getElementById(`${_switches.functions.ele}`) as HTMLInputElement),
+                chk_mec = (document.getElementById(`${_switches.functions.mec}`) as HTMLInputElement),
+                chk_prog = (document.getElementById(`${_switches.functions.prog}`) as HTMLInputElement),
+                chk_proj = (document.getElementById(`${_switches.functions.proj}`) as HTMLInputElement);
+
+            let journey_query = `${chk_hourly.checked ? 'H' : chk_monthly.checked ? 'M' : 'H'}`,
+                functions_query = `${chk_adm.checked ? 'A' : ' '}${chk_eng.checked ? 'N' : ' '}${chk_ele.checked ? 'E' : ' '}${chk_mec.checked ? 'M' : ' '}${chk_prog.checked ? 'P' : ' '}${chk_proj.checked ? 'R' : ' '}`;
+
             _SQL.execute(
                 MSSQL.QueryBuilder('UpdateWorker',
-                                        input_registry.value,
-                                            input_password.value,
-                                                input_email.value,
-                                                    input_name.value,
-                                                        functions_query,
-                                                            journey_query))
-                .then(() => { resolve() })
-                .catch(() => { reject() });
+                    input_registry.value,
+                    input_password.value,
+                    input_email.value,
+                    input_name.value,
+                    functions_query,
+                    journey_query)
+                    ).then(() => {resolve()})   
+                     .catch((err) => {reject(err)});
         });
     }
 }

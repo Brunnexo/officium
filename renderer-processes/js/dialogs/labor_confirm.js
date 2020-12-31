@@ -30,16 +30,15 @@ document.getElementById('btn-confirm').onclick = () => {
     if (hasTime) {
         let query = '';
         if (data.laborTime.common > 0) {
-            query += `INSERT INTO [Relatórios]
-                        ([Registro], [Data], [Função], [WO], [Descrição], [Tempo], [Extra], [Efetuado])
-                            VALUES (${data.registry}, '${data.date}', '${data.function}', '${data.wo}', '${data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description']}', ${data.laborTime.common}, 0, GETDATE())`;
+            query += MSSQL.QueryBuilder('InsertLabor', data.registry, data.date, data.function, data.wo,
+                data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description'],
+                data.laborTime.extra, '0');
         }
         if (data.laborTime.extra > 10) {
-            query += ` INSERT INTO [Relatórios]
-            ([Registro], [Data], [Função], [WO], [Descrição], [Tempo], [Extra], [Efetuado])
-                VALUES (${data.registry}, '${data.date}', '${data.function}', '${data.wo}', '${data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description']}', ${data.laborTime.extra}, 1, GETDATE())`;
+            query += MSSQL.QueryBuilder('InsertLabor', data.registry, data.date, data.function, data.wo,
+                data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description'],
+                data.laborTime.extra, '1');
         }
-
         SQL_DRIVER.execute(query)
             .then(() => {
                 ipc.send('show-resume');

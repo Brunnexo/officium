@@ -28,7 +28,7 @@ var worker_screen_evt;
 electron_1.ipcMain.on('show-confirm-dialog', (evt, arg) => {
     worker_screen_evt = evt;
     labor_info = arg;
-    main_1.Process.build('confirm');
+    main_1.Process.build('labor_confirm');
 });
 electron_1.ipcMain.on('select-project', (evt, arg) => {
     worker_screen_evt = evt;
