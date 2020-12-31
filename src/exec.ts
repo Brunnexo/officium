@@ -19,6 +19,10 @@ app.on('ready', () => {
     Process.build('splash');
 });
 
+app.on('window-all-closed', () => {
+    app.exit();
+});
+
 ipc.on('show-main', () => {
     Process.build('main', () => { Process.splash.destroy() });
 });

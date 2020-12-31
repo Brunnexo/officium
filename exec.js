@@ -17,6 +17,9 @@ global['data'].worker = {};
 electron_1.app.on('ready', () => {
     main_1.Process.build('splash');
 });
+electron_1.app.on('window-all-closed', () => {
+    electron_1.app.exit();
+});
 electron_1.ipcMain.on('show-main', () => {
     main_1.Process.build('main', () => { main_1.Process.splash.destroy(); });
 });

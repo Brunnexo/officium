@@ -1,12 +1,6 @@
 {
-    "build": {
-        "appId": "com.bnx.officium",
-        "buildVersion": "A0.0.1",
-        "win": {
-            "target": "portable"
-        }
-    },
     "name": "officium",
+    "productName": "Officium",
     "version": "0.0.1",
     "description": "Officium",
     "main": "exec.js",
@@ -25,6 +19,7 @@
         "@types/crypto-js": "^4.0.1",
         "@types/tedious": "^4.0.2",
         "electron": "^11.0.0",
+        "electron-packager": "^15.2.0",
         "typescript": "^4.0.5"
     }
 }
