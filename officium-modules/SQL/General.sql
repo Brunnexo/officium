@@ -1,6 +1,5 @@
-SELECT [CC], [CLIENTE] AS [Cliente], [PROJETO] AS [Projeto], [CLASSE] AS [Classe], [DESCRICAO] AS [Descrição], [EQUIPAMENTO] AS [Equipamento], [OS],
-		[WOCOMPRAS] AS [Compras], [WOADM] AS [Administrativo], [WOELETRICISTA] AS [Eletricista], [WOMECANICO] AS [Mecânico],
-			[WOENGENHEIRO] AS [Engenheiro], [WOPROJETISTA] AS [Projetista], [WOPROGRAMADOR] AS [Programador],
-				[WOFERRAMENTARIA] AS [Ferramentaria]
-  FROM [relger].[dbo].[PROJETOS]
-        WHERE [CLIENTE] LIKE '%-%' AND [CLIENTE] NOT LIKE '%AUTOMAÇÃO%'
+SELECT [P].[ID], [P].[CC], [P].[Cliente], [P].[Projeto], [P].[Classe], [P].[Descrição], [P].[Equipamento], [P].[OS],
+                    [W].[Administrativo], [W].[Compras], [W].[Eletricista], [W].[Engenheiro], [W].[Ferramentaria], [W].[Mecânico], [W].[Programador], [W].[Projetista]
+                        FROM [Projetos] AS [P] RIGHT JOIN [WOs] AS [W] ON [W].[ID] = [P].[ID] 
+                            WHERE [P].[Cliente] LIKE '%-%' AND [P].[Cliente] NOT LIKE '%AUTOMAÇÃO%'
+                                ORDER BY [P].[ID]

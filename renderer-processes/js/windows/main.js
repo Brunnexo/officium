@@ -87,7 +87,7 @@ function authenticate(registry, password) {
                                 authenticated = authenticated[0]['Autenticado'].value;
                                 if (authenticated === 'TRUE') {
                                     remote.getGlobal('data').worker = worker;
-                                    ipc.send('open-worker-screen');
+                                    ipc.send('show-worker-screen', 'main');
                                 } else {
                                     warning('Senha incorreta!');
                                 }
@@ -95,7 +95,7 @@ function authenticate(registry, password) {
                     }
                 } else {
                     remote.getGlobal('data').worker = worker;
-                    ipc.send('open-worker-screen');
+                    ipc.send('show-worker-screen', 'main');
                 }
             } else {
                 passwordInput.style.display = 'none';

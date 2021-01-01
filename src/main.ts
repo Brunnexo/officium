@@ -4,7 +4,6 @@ class Process {
     static splash: BrowserWindow;
     static main: BrowserWindow;
     static worker_screen: BrowserWindow;
-    static labor_confirm: BrowserWindow;
     static sr_search: BrowserWindow;
     static select_project: BrowserWindow;
 
@@ -29,7 +28,7 @@ class Process {
                     Process.splash.show();
                     if (typeof(execute) === 'function') execute();
                 });
-                break;
+            break;
             case 'main':
                 Process.main = new BrowserWindow({
                     "show": false,
@@ -50,7 +49,7 @@ class Process {
                     Process.main.show();
                     if (typeof(execute) === 'function') execute();
                 });
-                break;
+            break;
             case 'worker_screen':
                 Process.worker_screen = new BrowserWindow({
                     "show": false,
@@ -71,27 +70,7 @@ class Process {
                     Process.worker_screen.show();
                     if (typeof(execute) === 'function')  execute() ;
                 });
-                break;
-            case 'labor_confirm':
-                Process.labor_confirm = new BrowserWindow({
-                    "parent": Process.worker_screen,
-                    "modal": true,
-                    "show": false,
-                    "frame": false,
-                    "width": 960,
-                    "height": 530,
-                    "resizable": false,
-                    "transparent": true,
-                    "webPreferences": {
-                        "nodeIntegration": true,
-                        "enableRemoteModule": true
-                    }
-                });
-                Process.labor_confirm.loadURL(`${__dirname}/renderer-processes/html/dialogs/labor_confirm.html`);
-                Process.labor_confirm.once('ready-to-show', () => {
-                    Process.labor_confirm.show();
-                });
-                break;
+            break;
             case 'sr_search':
                 Process.sr_search = new BrowserWindow({
                     "parent": Process.worker_screen,
@@ -131,7 +110,7 @@ class Process {
                 Process.select_project.once('ready-to-show', () => {
                     Process.select_project.show();
                 });
-                break;
+            break;
         }
     }
 }

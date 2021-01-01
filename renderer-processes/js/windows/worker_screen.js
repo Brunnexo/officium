@@ -37,7 +37,7 @@ window.onload = () => {
     document.getElementById('nav-name').textContent = worker.Nome.value;
     document.getElementById("date").valueAsDate = new Date();
 
-    if (worker['Funções'].value.includes('A')) document.getElementById('nav-manage-workers').style.display = 'unset';
+    if (worker['Funções'].value.includes('A')) document.getElementById('nav-manage-workers').classList.remove('hidden');
 
     let color = localStorage.getItem('colorMode');
     document.getElementById('colorMode')
@@ -129,7 +129,7 @@ document.getElementById('colorMode').onclick = () => {
 
 // Voltar ao início
 document.getElementById('home').onclick = () => {
-    ipc.send('back-main');
+    ipc.send('show-main', 'worker_screen');
 }
 
 // Botões de janela
@@ -189,8 +189,7 @@ function LoadScripts() {
         };
 
         btn_save.onclick = () => {
-            workMan.updateWorker()
-                .then(() => { console.log('Deu certo!') }).catch((x) => { console.log('Deu merda!: ' + x) });
+            workMan.updateWorker();
         };
     });
 
@@ -402,6 +401,60 @@ function LoadScripts() {
     HTML.loadScript('reg-time', () => {
         WorkerLabor.getData();
 
+        let _data = WorkerLabor.info;
+        let hasTime = (_data.laborTime.common > 0 || _data.laborTime.extra > 0);
+
+        let renderTable = () => {
+            let container = document.getElementById('table-container');
+
+            if (hasTime) {
+                let thead = document.createElement('thead');
+                let table = document.createElement('table');
+                table.classList.add('table');
+                thead.innerHTML = `
+                  <thead>
+                      <tr>
+                          <th scope="col">Função</th>
+                          <th scope="col">WO</th>
+                          <th scope="col">Descrição</th>
+                          <th scope="col">Tempo</th>
+                          <th scope="col">Extra</th>
+                      </tr>
+                  </thead>`;
+                table.appendChild(thead);
+
+                let tbody = document.createElement('tbody');
+
+                if (_data.laborTime.common > 0) {
+                    let trCommon = document.createElement('tr');
+                    trCommon.innerHTML = `
+                        <th scope="row">${_data['function']}</th>
+                        <th>${_data['wo']}</th>
+                        <th>${_data['description'].length > LIMIT ? _data['description'].substring(0, LIMIT) + '...' : _data['description']}</th>
+                        <th>${_data.laborTime.common}</th>
+                        <th>Não</th>`;
+                    tbody.appendChild(trCommon);
+                }
+
+                if (_data.laborTime.extra > 10) {
+                    let trExtra = document.createElement('tr');
+                    trExtra.innerHTML = `
+                        <th scope="row">${_data['function']}</th>
+                        <th>${_data['wo']}</th>
+                        <th>${_data['description'].length > LIMIT ? _data['description'].substring(0, LIMIT) + '...' : _data['description']}</th>
+                        <th>${data.laborTime.extra}</th>
+                        <th>Sim</th>`;
+                    tbody.appendChild(trExtra);
+                }
+                table.appendChild(tbody);
+
+                container.innerHTML = '';
+                container.appendChild(table);
+            } else container.innerHTML = `<h6 class="display-6 text-center">Não há registros para mostrar...</h6>`;
+        }
+
+        renderTable();
+
         document.querySelectorAll('[btn-back]')[0]
             .onclick = () => {
                 HTML.load(back_page);
@@ -418,7 +471,9 @@ function LoadScripts() {
                 if (!WorkerLabor.inputTime(time)) btn.setAttribute('disabled', '');
                 else btn.removeAttribute('disabled');
                 charts.render(WorkerLabor.info);
+                renderTable();
             }, 500);
+
         };
 
         document.getElementById('reg-btn').onclick = () => {

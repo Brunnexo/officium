@@ -51,6 +51,10 @@
     -webkit-app-region: no-drag;
 }
 
+.hidden {
+    display: none;
+}
+
 .content-margin {
     margin-top: 56px;
 }

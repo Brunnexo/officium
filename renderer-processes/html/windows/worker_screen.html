@@ -23,7 +23,7 @@
                         <a class="nav-link" id="nav-reg">Registrar serviço</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="nav-manage-workers" style="display: none;">Gerenciar colaboradores</a>
+                        <a class="nav-link hidden" id="nav-manage-workers">Gerenciar colaboradores</a>
                     </li>
                 </ul>
             </div>
@@ -382,20 +382,24 @@
                 <div class="neumorphic">
                     <div class="d-flex justify-content-center">
                         <div class="justify-content-center">
-                            <canvas id="labor-chart" width="250" height="250"></canvas>
+                            <canvas id="labor-chart" width="200" height="200"></canvas>
                         </div>
                         <div class="justify-content-center">
-                            <canvas id="extra-chart" width="250" height="250"></canvas>
+                            <canvas id="extra-chart" width="200" height="200"></canvas>
                         </div>
                     </div>
-                    <div class="mt-4">
-                        <div class="row justify-content-center">
-                            <button type="button" class="btn mr-1" btn-back>Voltar</button>
-                            <form onsubmit="return false;">
-                                <input id="input-time" onkeydown="if(event.key === '.' || event.key === ','){event.preventDefault();}" type="number" class="form-control text-center" placeholder="Tempo em minutos">
-                            </form>
-                            <button type="button" id="reg-btn" class="btn ml-1" disabled>Registrar</button>
+
+                    <div class="neumorphic">
+                        <div id="table-container">
                         </div>
+                    </div>
+
+                    <div class="row justify-content-center mt-4">
+                        <button type="button" class="btn mr-1" btn-back>Voltar</button>
+                        <form onsubmit="return false;">
+                            <input id="input-time" onkeydown="if(event.key === '.' || event.key === ','){event.preventDefault();}" type="number" class="form-control text-center" placeholder="Tempo em minutos">
+                        </form>
+                        <button type="button" id="reg-btn" class="btn ml-1" disabled>Registrar</button>
                     </div>
                 </div>
             </div>

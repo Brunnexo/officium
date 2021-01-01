@@ -70,26 +70,6 @@ class Process {
                         execute();
                 });
                 break;
-            case 'labor_confirm':
-                Process.labor_confirm = new electron_1.BrowserWindow({
-                    "parent": Process.worker_screen,
-                    "modal": true,
-                    "show": false,
-                    "frame": false,
-                    "width": 960,
-                    "height": 530,
-                    "resizable": false,
-                    "transparent": true,
-                    "webPreferences": {
-                        "nodeIntegration": true,
-                        "enableRemoteModule": true
-                    }
-                });
-                Process.labor_confirm.loadURL(`${__dirname}/renderer-processes/html/dialogs/labor_confirm.html`);
-                Process.labor_confirm.once('ready-to-show', () => {
-                    Process.labor_confirm.show();
-                });
-                break;
             case 'sr_search':
                 Process.sr_search = new electron_1.BrowserWindow({
                     "parent": Process.worker_screen,

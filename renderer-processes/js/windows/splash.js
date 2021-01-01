@@ -52,7 +52,7 @@ const DATA = {
             .then(() => {
                 remote.getGlobal('sql').general = DATA.general;
                 description.innerHTML = 'Pronto!';
-                ipc.send('show-main');
+                ipc.send('show-main', 'splash');
             });
     },
     error(err) {
