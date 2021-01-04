@@ -1,11 +1,26 @@
 {
+    "build": {
+        "productName": "Officium",
+        "appId": "bnx.app.officium",
+        "copyright": "Bruno Costa",
+        "win": {
+            "target": "nsis",
+            "asarUnpack": ["officium-modules/**/*"]
+        },
+        "directories": {
+            "buildResources": "build",
+            "output": "appDist"
+        }
+    },
     "name": "officium",
-    "productName": "Officium",
     "version": "0.0.1",
     "description": "Officium",
     "main": "exec.js",
     "scripts": {
-        "watch": "tsc -w"
+        "watch": "tsc -w",
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder",
+        "postinstall": "electron-builder install-app-deps"
     },
     "author": "Bruno Costa",
     "license": "ISC",
@@ -19,6 +34,7 @@
         "@types/crypto-js": "^4.0.1",
         "@types/tedious": "^4.0.2",
         "electron": "^11.0.0",
+        "electron-builder": "^22.9.1",
         "electron-packager": "^15.2.0",
         "typescript": "^4.0.5"
     }

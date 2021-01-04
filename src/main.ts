@@ -6,6 +6,7 @@ class Process {
     static worker_screen: BrowserWindow;
     static sr_search: BrowserWindow;
     static select_project: BrowserWindow;
+    static dialog: BrowserWindow;
 
     static build(window: string, execute?: Function) {
         switch(window) {
@@ -16,6 +17,7 @@ class Process {
                     "width": 300,
                     "height": 300,
                     "resizable": false,
+                    "maximizable": false,
                     "transparent": true,
                     "skipTaskbar": true,
                     "webPreferences": {
@@ -38,6 +40,7 @@ class Process {
                     "width": 500,
                     "height": 350,
                     "resizable": false,
+                    "maximizable": false,
                     "transparent": true,
                     "webPreferences": {
                         "nodeIntegration": true,
@@ -56,9 +59,8 @@ class Process {
                     "frame": false,
                     "width": 1350,
                     "height": 730,
-                    "minWidth": 1350,
-                    "minHeight": 720,
-                    "resizable": true,
+                    "resizable": false,
+                    "maximizable": false,
                     "transparent": true,
                     "webPreferences": {
                         "nodeIntegration": true,
@@ -67,8 +69,10 @@ class Process {
                 });
                 Process.worker_screen.loadURL(`${__dirname}/renderer-processes/html/windows/worker_screen.html`);
                 Process.worker_screen.once('ready-to-show', () => {
-                    Process.worker_screen.show();
-                    if (typeof(execute) === 'function')  execute() ;
+                    setTimeout(() => {
+                        Process.worker_screen.show();
+                        if (typeof(execute) === 'function') execute();
+                    }, 1000);
                 });
             break;
             case 'sr_search':
@@ -80,6 +84,7 @@ class Process {
                     "width": 720,
                     "height": 420,
                     "resizable": false,
+                    "maximizable": false,
                     "transparent": true,
                     "webPreferences": {
                         "nodeIntegration": true,
@@ -100,6 +105,7 @@ class Process {
                     "width": 960,
                     "height": 560,
                     "resizable": false,
+                    "maximizable": false,
                     "transparent": true,
                     "webPreferences": {
                         "nodeIntegration": true,
@@ -111,6 +117,26 @@ class Process {
                     Process.select_project.show();
                 });
             break;
+            case 'dialog':
+                Process.dialog = new BrowserWindow({
+                    "parent": Process.worker_screen,
+                    "modal": true,
+                    "show": false,
+                    "frame": false,
+                    "width": 720,
+                    "height": 360,
+                    "resizable": false,
+                    "maximizable": false,
+                    "transparent": true,
+                    "webPreferences": {
+                        "nodeIntegration": true,
+                        "enableRemoteModule": true
+                    }
+                });
+                Process.dialog.loadURL(`${__dirname}/renderer-processes/html/dialogs/dialog.html`);
+                Process.dialog.once('ready-to-show', () => {
+                    Process.dialog.show();
+                });
         }
     }
 }

@@ -36,7 +36,7 @@
 }
 
 .view {
-    overflow: auto;
+    overflow: hidden;
 }
 
 .drag {
@@ -57,11 +57,6 @@
 
 .content-margin {
     margin-top: 56px;
-}
-
-.to-bottom {
-    display: fixed;
-    bottom: 0;
 }
 
 

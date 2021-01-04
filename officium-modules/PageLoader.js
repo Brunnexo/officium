@@ -1,16 +1,17 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PageLoader = void 0;
+const fs = require("fs");
 const TRANSITION = 300;
 const R = {
     loader: 'r-loader',
     container: 'r-loader-container',
     previous: 'r-previous',
-    next: 'r-next'
 };
 const C = {
     loader: 'c-loader',
-    container: 'c-loader-container'
+    container: 'c-loader-container',
+    script: 'c-loader-script'
 };
 class PageLoader {
     constructor() {
@@ -25,21 +26,25 @@ class PageLoader {
         // Row pages
         document.querySelectorAll(`[${R.loader}]`)
             .forEach((elmnt) => {
+            let path = `${__dirname}/Scripts/${elmnt.id}.js`;
             this.content.pages.Row.push({
                 id: elmnt.id,
                 html: elmnt.innerHTML,
                 updateable: elmnt.hasAttribute('updateable'),
                 parent: elmnt.parentElement,
+                onLoad: fs.existsSync(path) ? eval(fs.readFileSync(path, 'utf-8')) : undefined
             });
             elmnt.remove();
         });
         // Column pages
         document.querySelectorAll(`[${C.loader}]`)
             .forEach((elmnt, key) => {
+            let path = `${__dirname}/Scripts/${elmnt.id}.js`;
             this.content.pages.Column.push({
                 id: elmnt.id,
                 html: elmnt.innerHTML,
-                updateable: elmnt.hasAttribute('updateable')
+                updateable: elmnt.hasAttribute('updateable'),
+                onLoad: fs.existsSync(path) ? eval(fs.readFileSync(path, 'utf-8')) : undefined
             });
             elmnt.remove();
         });
@@ -48,11 +53,11 @@ class PageLoader {
         let Row = this.content.pages.Row, Column = this.content.pages.Column;
         if (Row.some(page => page.id === id)) {
             let page = Row.filter((val) => { return val.id === id; })[0];
-            page.script = script;
+            page.onLoad = script;
         }
         else if (Column.some(page => page.id === id)) {
             let page = Column.filter((val) => { return val.id === id; })[0];
-            page.script = script;
+            page.onLoad = script;
         }
         else
             throw new Error(`Couldn't find page with ID: ${id}`);
@@ -68,8 +73,8 @@ class PageLoader {
                 document.querySelector(`[${C.container}]`).innerHTML = cPage.html;
                 document.querySelector(`[${R.container}]`).innerHTML = rPage.html;
                 document.querySelector(`[${C.container}]`).style.opacity = '1';
-                if (typeof (rPage.script) === 'function')
-                    rPage.script();
+                if (typeof (rPage.onLoad) === 'function')
+                    rPage.onLoad();
             }, TRANSITION);
             this.content.status = {
                 actual: {
@@ -84,8 +89,8 @@ class PageLoader {
             setTimeout(() => {
                 document.querySelector(`[${C.container}]`).innerHTML = cPage.html;
                 document.querySelector(`[${C.container}]`).style.opacity = '1';
-                if (typeof (cPage.script) === 'function')
-                    cPage.script();
+                if (typeof (cPage.onLoad) === 'function')
+                    cPage.onLoad();
             }, TRANSITION);
             this.content.status = {
                 actual: {
@@ -109,3 +114,5 @@ class PageLoader {
     }
 }
 exports.PageLoader = PageLoader;
+function pl(pageId) {
+}
