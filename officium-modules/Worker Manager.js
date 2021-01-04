@@ -29,7 +29,7 @@ class WorkerManager {
     getList() {
         return __awaiter(this, void 0, void 0, function* () {
             let _components = this.components, _SQL = this.SQL_DRIVER, _data = this.data, _switches = this.components.switches;
-            let select = document.getElementById(`${_components.list}`), input_name = document.getElementById(`${_components.name}`), input_registry = document.getElementById(`${_components.registry}`), input_email = document.getElementById(`${_components.email}`), input_password = document.getElementById(`${_components.password}`);
+            let select = document.getElementById(`${_components.list}`), input_name = document.getElementById(`${_components.name}`), input_registry = document.getElementById(`${_components.registry}`), input_email = document.getElementById(`${_components.email}`);
             select.innerHTML = '';
             let chk_hourly = document.getElementById(`${_switches.journey.hourly}`), chk_monthly = document.getElementById(`${_switches.journey.monthly}`), chk_adm = document.getElementById(`${_switches.functions.adm}`), chk_eng = document.getElementById(`${_switches.functions.eng}`), chk_ele = document.getElementById(`${_switches.functions.ele}`), chk_mec = document.getElementById(`${_switches.functions.mec}`), chk_prog = document.getElementById(`${_switches.functions.prog}`), chk_proj = document.getElementById(`${_switches.functions.proj}`);
             let status = document.getElementById(`${_components.status}`);
@@ -108,11 +108,21 @@ class WorkerManager {
         return __awaiter(this, void 0, void 0, function* () {
             return new Promise((resolve, reject) => {
                 let _components = this.components, _SQL = this.SQL_DRIVER, _switches = this.components.switches;
-                let input_name = document.getElementById(`${_components.name}`), input_registry = document.getElementById(`${_components.registry}`), input_email = document.getElementById(`${_components.email}`), input_password = document.getElementById(`${_components.password}`);
+                let input_name = document.getElementById(`${_components.name}`), input_registry = document.getElementById(`${_components.registry}`), input_email = document.getElementById(`${_components.email}`);
                 let chk_hourly = document.getElementById(`${_switches.journey.hourly}`), chk_monthly = document.getElementById(`${_switches.journey.monthly}`), chk_adm = document.getElementById(`${_switches.functions.adm}`), chk_eng = document.getElementById(`${_switches.functions.eng}`), chk_ele = document.getElementById(`${_switches.functions.ele}`), chk_mec = document.getElementById(`${_switches.functions.mec}`), chk_prog = document.getElementById(`${_switches.functions.prog}`), chk_proj = document.getElementById(`${_switches.functions.proj}`);
                 let journey_query = `${chk_hourly.checked ? 'H' : chk_monthly.checked ? 'M' : 'H'}`, functions_query = `${chk_adm.checked ? 'A' : ' '}${chk_eng.checked ? 'N' : ' '}${chk_ele.checked ? 'E' : ' '}${chk_mec.checked ? 'M' : ' '}${chk_prog.checked ? 'P' : ' '}${chk_proj.checked ? 'R' : ' '}`;
-                _SQL.execute(MSSQL_1.MSSQL.QueryBuilder('UpdateWorker', input_registry.value, input_password.value, input_email.value, input_name.value, functions_query, journey_query)).then(() => { resolve(); })
+                _SQL.execute(MSSQL_1.MSSQL.QueryBuilder('UpdateWorker', input_registry.value, input_email.value, input_name.value, functions_query, journey_query)).then(() => { resolve(); })
                     .catch((err) => { reject(err); });
+            });
+        });
+    }
+    eraseWorker(registry) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return new Promise((resolve, reject) => {
+                let _SQL = this.SQL_DRIVER;
+                _SQL.execute(MSSQL_1.MSSQL.QueryBuilder('EraseWorker', registry))
+                    .then(() => { resolve(); })
+                    .catch(() => { reject(); });
             });
         });
     }

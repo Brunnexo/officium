@@ -2,6 +2,7 @@ import { Chart } from 'chart.js';
 import { randomColors } from './Charts';
 import { MSSQL } from './MSSQL';
 
+
 interface Components {
     list?: string,
     name?: string,
@@ -57,8 +58,7 @@ class WorkerManager {
         let select = (document.getElementById(`${_components.list}`) as HTMLSelectElement),
             input_name = (document.getElementById(`${_components.name}`) as HTMLInputElement), 
             input_registry = (document.getElementById(`${_components.registry}`) as HTMLInputElement),
-            input_email = (document.getElementById(`${_components.email}`) as HTMLInputElement),
-            input_password = (document.getElementById(`${_components.password}`) as HTMLInputElement);
+            input_email = (document.getElementById(`${_components.email}`) as HTMLInputElement);
 
             select.innerHTML = '';
 
@@ -157,12 +157,10 @@ class WorkerManager {
 
             let input_name = (document.getElementById(`${_components.name}`) as HTMLInputElement), 
                 input_registry = (document.getElementById(`${_components.registry}`) as HTMLInputElement),
-                input_email = (document.getElementById(`${_components.email}`) as HTMLInputElement),
-                input_password = (document.getElementById(`${_components.password}`) as HTMLInputElement);
+                input_email = (document.getElementById(`${_components.email}`) as HTMLInputElement);
 
             let chk_hourly = (document.getElementById(`${_switches.journey.hourly}`) as HTMLInputElement),
                 chk_monthly = (document.getElementById(`${_switches.journey.monthly}`) as HTMLInputElement),
-                
                 chk_adm = (document.getElementById(`${_switches.functions.adm}`) as HTMLInputElement),
                 chk_eng = (document.getElementById(`${_switches.functions.eng}`) as HTMLInputElement),
                 chk_ele = (document.getElementById(`${_switches.functions.ele}`) as HTMLInputElement),
@@ -176,13 +174,21 @@ class WorkerManager {
             _SQL.execute(
                 MSSQL.QueryBuilder('UpdateWorker',
                     input_registry.value,
-                    input_password.value,
                     input_email.value,
                     input_name.value,
                     functions_query,
                     journey_query)
                     ).then(() => {resolve()})   
                      .catch((err) => {reject(err)});
+        });
+    }
+
+    async eraseWorker(registry: number | string) {
+        return new Promise<void>((resolve, reject) => {
+            let _SQL = this.SQL_DRIVER;
+            _SQL.execute(MSSQL.QueryBuilder('EraseWorker', registry))
+                .then(() => {resolve()})
+                .catch(() => {reject()});
         });
     }
 }

@@ -9,6 +9,8 @@ const SQL_DRIVER = new MSSQL();
 
 const original_text = 'Insira seu registro';
 
+let password_try = 0;
+
 // Página pronta
 window.onload = () => {
     ColorMode(localStorage.getItem('colorMode'));
@@ -89,7 +91,8 @@ function authenticate(registry, password) {
                                     remote.getGlobal('data').worker = worker;
                                     ipc.send('show-worker-screen', 'main');
                                 } else {
-                                    warning('Senha incorreta!');
+                                    if (password_try++ < 3) warning('Senha incorreta!');
+                                    else forgot_password();
                                 }
                             })
                     }
@@ -114,6 +117,21 @@ function warning(text) {
     this.delay = setTimeout(() => {
         instruction.classList.remove('text-warning');
         instruction.textContent = original_text;
+    }, 2000);
+}
+
+function forgot_password() {
+    let instruction = document.getElementById('instruction');
+
+    instruction.onclick = () => {
+        console.log('opa');
+    };
+
+    setTimeout(() => {
+        instruction.style.transitionDuration = '1s';
+        instruction.classList.add('text-danger');
+        instruction.textContent = 'Esqueceu sua senha? Clique aqui!';
+        instruction.style.cursor = 'pointer';
     }, 2000);
 }
 

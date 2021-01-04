@@ -80,7 +80,7 @@
 
         // ipc.send('show-confirm-dialog', WorkerLabor.getLabor());
         ipc.send('show-dialog', {
-            title: 'Confirmação',
+            title: 'Confirmação de registro',
             type: 'yes-no',
             content: `Confirmar registro de ${time} ${time > 1 ? 'minutos' : 'minuto'} para a WO ${WorkerLabor.info['wo']}?`
         });

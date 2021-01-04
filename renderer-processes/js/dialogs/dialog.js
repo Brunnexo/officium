@@ -37,8 +37,8 @@ window.onload = () => {
                 btn2.onclick = () => { send(true) };
                 break;
         }
-        title.innerText = opt['title'];
-        content.innerText = opt['content'];
+        title.innerHTML = opt['title'];
+        content.innerHTML = opt['content'];
     })();
 
     function send(arg) {

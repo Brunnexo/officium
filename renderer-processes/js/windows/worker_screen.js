@@ -36,7 +36,7 @@ back_page = '';
 window.onload = () => {
     ColorMode(localStorage.getItem('colorMode'));
     //LoadScripts();
-    document.getElementById('nav-name').textContent = worker.Nome.value;
+    document.getElementById('nav-name').textContent = worker['Nome'].value;
     document.getElementById("date").valueAsDate = new Date();
 
     if (worker['Funções'].value.includes('A')) document.getElementById('nav-manage-workers').classList.remove('hidden');
