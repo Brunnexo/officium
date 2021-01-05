@@ -3,7 +3,7 @@ const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
 // Extensões internas
-const { MSSQL, ColorMode } = require('' + '../../../officium-modules/officium');
+const { MSSQL, ColorMode } = require('../../../officium-modules/officium');
 
 const SQL_DRIVER = new MSSQL();
 
@@ -39,7 +39,7 @@ document.querySelector('.close-btn').parentElement.onclick = () => {
 }
 
 // Limpar campos
-document.getElementById('btnClear').onclick = () => {
+document.getElementById('btn-clear').onclick = () => {
     let registryInput = document.getElementById('input-registry'),
         passwordInput = document.getElementById('input-password');
     registryInput.value = '';
@@ -49,7 +49,7 @@ document.getElementById('btnClear').onclick = () => {
 }
 
 // Autenticar
-document.getElementById('btnAuth').onclick = () => {
+document.getElementById('btn-auth').onclick = () => {
     let registry = document.getElementById('input-registry').value,
         password = document.getElementById('input-password').value;
 
@@ -57,7 +57,7 @@ document.getElementById('btnAuth').onclick = () => {
 }
 
 function keyPress(ev) {
-    if (ev.key == 'Enter') document.getElementById('btnAuth').onclick();
+    if (ev.key == 'Enter') document.getElementById('btn-auth').onclick();
 }
 
 document.getElementById('input-registry').addEventListener('keypress', keyPress);
@@ -86,13 +86,19 @@ function authenticate(registry, password) {
                                 authenticated.push(data);
                             })
                             .then(() => {
-                                authenticated = authenticated[0]['Autenticado'].value;
-                                if (authenticated === 'TRUE') {
+                                try {
+                                    authenticated = authenticated[0]['Autenticado'].value;
+                                    if (authenticated === 'TRUE') {
+                                        remote.getGlobal('data').worker = worker;
+                                        ipc.send('show-worker-screen', 'main');
+                                    } else {
+                                        if (password_try++ < 3) warning('Senha incorreta!');
+                                        else forgot_password();
+                                    }
+                                } catch (e) {
+                                    warning('Você não possui senha!');
                                     remote.getGlobal('data').worker = worker;
                                     ipc.send('show-worker-screen', 'main');
-                                } else {
-                                    if (password_try++ < 3) warning('Senha incorreta!');
-                                    else forgot_password();
                                 }
                             })
                     }
@@ -108,31 +114,33 @@ function authenticate(registry, password) {
         });
 }
 
+
+let delay;
+
 function warning(text) {
-    clearTimeout(this.delay);
+    clearTimeout(delay);
     let instruction = document.getElementById('instruction');
     instruction.style.transitionDuration = '1s';
     instruction.classList.add('text-warning');
     instruction.textContent = text;
-    this.delay = setTimeout(() => {
+    delay = setTimeout(() => {
         instruction.classList.remove('text-warning');
         instruction.textContent = original_text;
     }, 2000);
 }
 
 function forgot_password() {
+    clearTimeout(delay);
     let instruction = document.getElementById('instruction');
 
     instruction.onclick = () => {
         ipc.send('forgot-password');
     };
 
-    setTimeout(() => {
-        instruction.style.transitionDuration = '1s';
-        instruction.classList.add('text-danger');
-        instruction.textContent = 'Esqueceu sua senha? Clique aqui!';
-        instruction.style.cursor = 'pointer';
-    }, 2000);
+    instruction.style.transitionDuration = '1s';
+    instruction.classList.add('text-danger');
+    instruction.textContent = 'Esqueceu sua senha? Clique aqui!';
+    instruction.style.cursor = 'pointer';
 }
 
 function welcome() {

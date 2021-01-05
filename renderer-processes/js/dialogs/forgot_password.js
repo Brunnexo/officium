@@ -15,7 +15,7 @@ window.onload = () => {
         input_name.onblur =
         input_validate;
 
-    input_confirm_password.onblur = password_validate;
+    input_new_password.onblur = input_confirm_password.onblur = password_validate;
 
     remote.getCurrentWindow()
         .on('focus', () => {
@@ -30,14 +30,20 @@ document.getElementById('btn-cancel').onclick = () => {
     remote.getCurrentWindow().close();
 };
 
-async function updatePassword() {
-
-}
-
 function input_validate(ev) {
     let elmnt = ev.target;
     if (elmnt.value == '') elmnt.classList.add('is-invalid');
     else elmnt.classList.remove('is-invalid');
+
+
+    (function() {
+        let input_registry = document.getElementById('input-registry'),
+            input_name = document.getElementById('input-name'),
+            input_confirm_password = document.getElementById('input-confirm-password');
+
+        let input_new_password = document.getElementById('input-new-password'),
+            input_confirm_password = document.getElementById('input-confirm-password');
+    })();
 }
 
 function password_validate(ev) {

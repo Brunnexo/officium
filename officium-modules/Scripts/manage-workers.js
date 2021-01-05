@@ -55,11 +55,11 @@ const { remote } = require("electron");
                             content: `Alteração bem-sucedida!`
                         })
                     })
-                    .catch(() => {
+                    .catch((err) => {
                         ipc.send('show-dialog', {
                             title: 'Opa!',
                             type: 'info',
-                            content: `Problema ao alterar as informações!`
+                            content: `Problema ao alterar as informações! Erro: [${err}]`
                         })
                     });
             }

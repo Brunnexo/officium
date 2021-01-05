@@ -100,7 +100,7 @@ class MSSQL {
                 })
                 .on('row', (data) => {if ( typeof(row) !== 'undefined') row(data) })
                 .on('requestCompleted', () => { resolve() })
-                .on('error', () => { reject() })
+                .on('error', (err) => { reject(err.message) })
             )
         });
     }
