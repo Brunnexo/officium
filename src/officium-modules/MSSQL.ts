@@ -91,13 +91,16 @@ class MSSQL {
         });
     }
 
-    async execute(query: string) {
+    async execute(query: string, row?: Function) {
         await this.connect();
         return new Promise<void>((resolve, reject) => {
             this.Attr!.Connection!.execSql(
                 new Request(query, (err) => {
                     if (err) reject(err.message);
-                }).on('requestCompleted', () => {resolve()})
+                })
+                .on('row', (data) => {if ( typeof(row) !== 'undefined') row(data) })
+                .on('requestCompleted', () => { resolve() })
+                .on('error', () => { reject() })
             )
         });
     }

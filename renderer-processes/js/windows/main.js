@@ -124,7 +124,7 @@ function forgot_password() {
     let instruction = document.getElementById('instruction');
 
     instruction.onclick = () => {
-        console.log('opa');
+        ipc.send('forgot-password');
     };
 
     setTimeout(() => {

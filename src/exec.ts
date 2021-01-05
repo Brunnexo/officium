@@ -85,3 +85,16 @@ ipc.on('dialog-closed', (evt, res: boolean) => {
 ipc.on('get-dialog-options', (evt, arg) => {
     evt.returnValue = dialog_opt;
 });
+
+ipc.on('forgot-password', (evt, arg) => {
+    Process.build('forgot_password');
+
+    ipc.once('password-saved', (evt, arg) => {
+        dialog_opt = {
+            title: 'Não se esqueça agora!',
+            type: 'info',
+            content: `Sua nova senha foi salva! [${''.padStart(arg.length, '*')}]`
+        }
+        Process.build('dialog');
+    });
+});

@@ -85,14 +85,18 @@ class MSSQL {
             });
         });
     }
-    execute(query) {
+    execute(query, row) {
         return __awaiter(this, void 0, void 0, function* () {
             yield this.connect();
             return new Promise((resolve, reject) => {
                 this.Attr.Connection.execSql(new tedious_1.Request(query, (err) => {
                     if (err)
                         reject(err.message);
-                }).on('requestCompleted', () => { resolve(); }));
+                })
+                    .on('row', (data) => { if (typeof (row) !== 'undefined')
+                    row(data); })
+                    .on('requestCompleted', () => { resolve(); })
+                    .on('error', () => { reject(); }));
             });
         });
     }

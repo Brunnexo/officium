@@ -135,6 +135,28 @@ class Process {
                 Process.dialog.once('ready-to-show', () => {
                     Process.dialog.show();
                 });
+                break;
+            case 'forgot_password':
+                Process.forgot_password = new electron_1.BrowserWindow({
+                    "parent": Process.main,
+                    "modal": true,
+                    "show": false,
+                    "frame": false,
+                    "width": 620,
+                    "height": 380,
+                    "resizable": false,
+                    "maximizable": false,
+                    "transparent": true,
+                    "webPreferences": {
+                        "nodeIntegration": true,
+                        "enableRemoteModule": true
+                    }
+                });
+                Process.forgot_password.loadURL(`${__dirname}/renderer-processes/html/dialogs/forgot_password.html`);
+                Process.forgot_password.once('ready-to-show', () => {
+                    Process.forgot_password.show();
+                });
+                break;
         }
     }
 }

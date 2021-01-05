@@ -62,3 +62,14 @@ electron_1.ipcMain.on('dialog-closed', (evt, res) => {
 electron_1.ipcMain.on('get-dialog-options', (evt, arg) => {
     evt.returnValue = dialog_opt;
 });
+electron_1.ipcMain.on('forgot-password', (evt, arg) => {
+    main_1.Process.build('forgot_password');
+    electron_1.ipcMain.once('password-saved', (evt, arg) => {
+        dialog_opt = {
+            title: 'Não se esqueça agora!',
+            type: 'info',
+            content: `Sua nova senha foi salva! [${''.padStart(arg.length, '*')}]`
+        };
+        main_1.Process.build('dialog');
+    });
+});
