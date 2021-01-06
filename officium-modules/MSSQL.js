@@ -93,7 +93,7 @@ class MSSQL {
                     if (err)
                         reject(err.message);
                 })
-                    .on('row', (data) => { if (typeof (row) !== 'undefined')
+                    .on('row', (data) => { if (typeof (row) === 'function')
                     row(data); })
                     .on('requestCompleted', () => { resolve(); })
                     .on('error', (err) => { reject(err.message); }));

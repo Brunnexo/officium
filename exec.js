@@ -3,9 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
 const fs = require("fs");
 const main_1 = require("./main");
-fs.readFile('./data/Parameters.json', 'utf-8', (err, data) => { global['parameters'] = JSON.parse(data); });
-fs.readFile('./data/Activities.json', 'utf-8', (err, data) => { global['activities'] = JSON.parse(data); });
-fs.readFile('./data/Clients.json', 'utf-8', (err, data) => { global['clients'] = JSON.parse(data); });
+fs.readFile('officium-modules/data/Parameters.json', 'utf-8', (err, data) => { global['parameters'] = JSON.parse(data); });
+fs.readFile('officium-modules/data/Activities.json', 'utf-8', (err, data) => { global['activities'] = JSON.parse(data); });
+fs.readFile('officium-modules/data/Clients.json', 'utf-8', (err, data) => { global['clients'] = JSON.parse(data); });
 global['sql'] = {
     department: {},
     projects: {},
@@ -52,7 +52,9 @@ electron_1.ipcMain.on('project-selected', (evt, arg) => {
     worker_screen_evt.reply('reg-time', arg);
 });
 electron_1.ipcMain.on('show-dialog', (evt, arg) => {
-    worker_screen_evt = evt;
+    electron_1.ipcMain.once('dialog-closed', (evt_1, arg_1) => {
+        evt.reply(arg_1);
+    });
     dialog_opt = arg;
     main_1.Process.build('dialog');
 });
@@ -65,11 +67,21 @@ electron_1.ipcMain.on('get-dialog-options', (evt, arg) => {
 electron_1.ipcMain.on('forgot-password', (evt, arg) => {
     main_1.Process.build('forgot_password');
     electron_1.ipcMain.once('password-saved', (evt, arg) => {
-        dialog_opt = {
-            title: 'Não se esqueça agora!',
-            type: 'info',
-            content: `Sua nova senha foi salva! [${''.padStart(arg.length, '*')}]`
-        };
-        main_1.Process.build('dialog');
+        if (arg[0]) {
+            dialog_opt = {
+                title: 'Não se esqueça agora!',
+                type: 'info',
+                content: `Sua nova senha foi salva!`
+            };
+            main_1.Process.build('dialog');
+        }
+        else {
+            dialog_opt = {
+                title: 'Opa!',
+                type: 'info',
+                content: `Problema ao atualizar a senha! Erro: [${arg[1]}]`
+            };
+            main_1.Process.build('dialog');
+        }
     });
 });

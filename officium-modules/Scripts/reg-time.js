@@ -75,18 +75,14 @@
     }
 
     document.getElementById('reg-btn').onclick = () => {
-            let _laborTime = WorkerLabor.info.laborTime,
-                time = (_laborTime.common + _laborTime.extra);
+        let _laborTime = WorkerLabor.info.laborTime,
+            time = (_laborTime.common + _laborTime.extra);
 
-            // ipc.send('show-confirm-dialog', WorkerLabor.getLabor());
-            ipc.send('show-dialog', {
-                        title: 'Confirmação de registro',
-                        type: 'yes-no',
-                        content: `Seu registro contém ${_laborTime.common > 0 ? `${_laborTime.common} ${_laborTime.common > 1 ? 'minutos' : 'minuto'} de tempo normal` : _laborTime.extra > 10 ? ``}`
-        });
-
-        ipc.once('dialog-reply', (evt, arg) => {
-            console.log('Reply: ' + arg);
+        // ipc.send('show-confirm-dialog', WorkerLabor.getLabor());
+        ipc.send('show-dialog', {
+            title: 'Confirmação de registro',
+            type: 'yes-no',
+            content: `Você está registrando ${time} minuto${time > 1 ? 's' : ''}. Confirmar?`
         });
     }
 }

@@ -3,9 +3,9 @@ import * as fs from 'fs';
 import { Process } from './main';
 
 
-fs.readFile('./data/Parameters.json', 'utf-8', (err, data) => { global['parameters'] = JSON.parse(data) });
-fs.readFile('./data/Activities.json', 'utf-8', (err, data) => { global['activities'] = JSON.parse(data) });
-fs.readFile('./data/Clients.json', 'utf-8', (err, data) => { global['clients'] = JSON.parse(data) });
+fs.readFile('officium-modules/data/Parameters.json', 'utf-8', (err, data) => { global['parameters'] = JSON.parse(data) });
+fs.readFile('officium-modules/data/Activities.json', 'utf-8', (err, data) => { global['activities'] = JSON.parse(data) });
+fs.readFile('officium-modules/data/Clients.json', 'utf-8', (err, data) => { global['clients'] = JSON.parse(data) });
 
 global['sql'] = {
     department: {},
@@ -73,7 +73,9 @@ ipc.on('project-selected', (evt, arg) => {
 });
 
 ipc.on('show-dialog', (evt, arg: DialogOptions) => {
-    worker_screen_evt = evt;
+    ipc.once('dialog-closed', (evt_1, arg_1) => {
+        evt.reply(arg_1);
+    })
     dialog_opt = arg;
     Process.build('dialog');
 });
@@ -90,11 +92,20 @@ ipc.on('forgot-password', (evt, arg) => {
     Process.build('forgot_password');
 
     ipc.once('password-saved', (evt, arg) => {
-        dialog_opt = {
-            title: 'Não se esqueça agora!',
-            type: 'info',
-            content: `Sua nova senha foi salva! [${''.padStart(arg.length, '*')}]`
+        if (arg[0]) {
+            dialog_opt = {
+                title: 'Não se esqueça agora!',
+                type: 'info',
+                content: `Sua nova senha foi salva!`
+            }
+            Process.build('dialog');
+        } else {
+            dialog_opt = {
+                title: 'Opa!',
+                type: 'info',
+                content: `Problema ao atualizar a senha! Erro: [${arg[1]}]`
+            }
+            Process.build('dialog');
         }
-        Process.build('dialog');
     });
 });

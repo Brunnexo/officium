@@ -98,7 +98,7 @@ class MSSQL {
                 new Request(query, (err) => {
                     if (err) reject(err.message);
                 })
-                .on('row', (data) => {if ( typeof(row) !== 'undefined') row(data) })
+                .on('row', (data) => {if ( typeof(row) === 'function') row(data) })
                 .on('requestCompleted', () => { resolve() })
                 .on('error', (err) => { reject(err.message) })
             )

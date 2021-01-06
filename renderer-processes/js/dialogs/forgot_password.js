@@ -61,14 +61,34 @@ function validate_fields() {
     let btn_save = document.getElementById('btn-save');
 
     if (password_match && not_empty_fields && passwords_not_empty) {
-        console.log('Sim!');
         btn_save.removeAttribute('disabled');
+        btn_save.onclick = save_password;
     } else {
-        console.log('Não!');
         btn_save.setAttribute('disabled', '');
+        btn_save.onclick = (ev) => {};
     }
 }
 
 document.getElementById('btn-cancel').onclick = () => {
     remote.getCurrentWindow().close();
 };
+
+function save_password(ev) {
+    ev.preventDefault();
+    let input_confirm_password = document.getElementById('input-confirm-password'),
+        input_registry = document.getElementById('input-registry'),
+        input_name = document.getElementById('input-name');
+
+    let elmnt = ev.target;
+    let updated = false;
+    // document.getElementById()
+    if (!elmnt.hasAttribute('disabled')) {
+        SQL_DRIVER.execute(MSSQL.QueryBuilder('UpdatePassword', input_registry.value, input_name.value, input_confirm_password.value), (data) => {
+            updated = (updated || (data['Atualizado'].value == 'TRUE'));
+        }).then(() => {
+            ipc.send('password-saved', [updated]);
+        }).catch((err) => {
+            ipc.send('password-saved', [false, err]);
+        });
+    }
+}
