@@ -1,12 +1,12 @@
+const path = require('path');
 // Electron
 const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
 // Extensões internas
-const { MSSQL, ColorMode } = require('../../../officium-modules/officium');
+const { MSSQL, ColorMode } = require(path.resolve(__dirname, '../../../officium-modules/Officium'));
 
 const SQL_DRIVER = new MSSQL();
-
 const original_text = 'Insira seu registro';
 
 let password_try = 0;

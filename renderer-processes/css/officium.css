@@ -60,7 +60,36 @@
 }
 
 
-/* Bootstrap */
+/* Bootstrap Override */
+
+.valid-feedback-officium {
+    /* display: none; */
+    transition: var(--transition-time);
+    opacity: 0;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 80%;
+    color: #28a745;
+}
+
+.invalid-feedback-officium {
+    transition: var(--transition-time);
+    opacity: 0;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 80%;
+    color: #dc3545;
+}
+
+.was-validated :invalid~.invalid-feedback-officium,
+.is-invalid~.invalid-feedback-officium {
+    opacity: 1;
+}
+
+.was-validated :valid~.valid-feedback-officium,
+.is-valid~.valid-feedback-officium {
+    opacity: 1;
+}
 
 .display-1 {
     font-size: calc(1.625rem + 4.5vw);

@@ -194,4 +194,3 @@ class WorkerManager {
 }
 
 export { WorkerManager };
-

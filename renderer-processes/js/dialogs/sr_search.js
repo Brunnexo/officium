@@ -23,16 +23,6 @@ window.onload = () => {
     setImmediate(() => { fill_list() });
 }
 
-// Botões de janela
-document.getElementById('btn-cancel').onclick = () => {
-    remote.getCurrentWindow().close();
-};
-
-document.getElementById('btn-confirm').onclick = () => {
-    ipc.send('sr-found', result);
-    remote.getCurrentWindow().close();
-};
-
 function fill_list() {
     let select = document.getElementById('sr-list'),
         responsibleinput = document.getElementById('input-responsible'),
@@ -49,7 +39,7 @@ function fill_list() {
             option.innerHTML = `${data['SR'].value}: ${data['Descrição'].value.length > LIMIT ? data['Descrição'].value.substring(0, LIMIT) + '...' : data['Descrição'].value}`;
             select.appendChild(option);
         }
-    })
+    });
 
     select.onchange = () => {
         result = {
@@ -65,3 +55,13 @@ function fill_list() {
     select.onchange();
     document.getElementById('loading').style.display = 'none';
 }
+
+// Botões de janela
+document.getElementById('btn-cancel').onclick = () => {
+    remote.getCurrentWindow().close();
+};
+
+document.getElementById('btn-confirm').onclick = () => {
+    ipc.send('sr-found', result);
+    remote.getCurrentWindow().close();
+};

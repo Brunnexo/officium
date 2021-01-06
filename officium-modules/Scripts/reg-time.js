@@ -75,14 +75,14 @@
     }
 
     document.getElementById('reg-btn').onclick = () => {
-        let _laborTime = WorkerLabor.info.laborTime,
-            time = (_laborTime.common + _laborTime.extra);
+            let _laborTime = WorkerLabor.info.laborTime,
+                time = (_laborTime.common + _laborTime.extra);
 
-        // ipc.send('show-confirm-dialog', WorkerLabor.getLabor());
-        ipc.send('show-dialog', {
-            title: 'Confirmação de registro',
-            type: 'yes-no',
-            content: `Confirmar registro de ${time} ${time > 1 ? 'minutos' : 'minuto'} para a WO ${WorkerLabor.info['wo']}?`
+            // ipc.send('show-confirm-dialog', WorkerLabor.getLabor());
+            ipc.send('show-dialog', {
+                        title: 'Confirmação de registro',
+                        type: 'yes-no',
+                        content: `Seu registro contém ${_laborTime.common > 0 ? `${_laborTime.common} ${_laborTime.common > 1 ? 'minutos' : 'minuto'} de tempo normal` : _laborTime.extra > 10 ? ``}`
         });
 
         ipc.once('dialog-reply', (evt, arg) => {
@@ -90,3 +90,24 @@
         });
     }
 }
+
+function labor_insert() {
+    if (hasTime) {
+        let query = '';
+        if (data.laborTime.common > 0) {
+            query += MSSQL.QueryBuilder('InsertLabor', data.registry, data.date, data.function, data.wo,
+                data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description'],
+                data.laborTime.extra, '0');
+        }
+        if (data.laborTime.extra > 10) {
+            query += MSSQL.QueryBuilder('InsertLabor', data.registry, data.date, data.function, data.wo,
+                data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description'],
+                data.laborTime.extra, '1');
+        }
+        SQL_DRIVER.execute(query)
+            .then(() => {
+                ipc.send('show-resume');
+                remote.getCurrentWindow().close();
+            });
+    }
+};

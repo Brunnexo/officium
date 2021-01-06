@@ -1,5 +1,3 @@
-const { remote } = require("electron");
-
 () => {
     let btn_save = document.getElementById('btn-save'),
         btn_reset = document.getElementById('btn-reset'),

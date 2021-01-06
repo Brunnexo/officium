@@ -1,9 +1,10 @@
+const path = require('path');
 // Electron
 const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
 // Extensões internas
-const { PageLoader, ColorMode, Charts, WorkerLabor, WorkerManager } = require('../../../officium-modules/Officium');
+const { PageLoader, ColorMode, Charts, WorkerLabor, WorkerManager } = require(path.resolve(__dirname, '../../../officium-modules/Officium'));
 
 // Instâncias
 const HTML = new PageLoader();

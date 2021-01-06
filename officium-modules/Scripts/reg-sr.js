@@ -9,7 +9,15 @@
 
     backbutton.onclick = () => { HTML.load('reg-type') };
 
-    searchbutton.onclick = () => { ipc.send('sr-search') };
+    searchbutton.onclick = () => {
+        ipc.send('sr-search');
+        ipc.once('sr-fill', (evt, arg) => {
+            inputwo.value = arg.wo;
+            inputsr.value = arg.sr;
+            inputservice.value = arg.description;
+            nextbutton.removeAttribute('disabled');
+        });
+    };
 
     nextbutton.onclick = () => {
         WorkerLabor.updateInfo({

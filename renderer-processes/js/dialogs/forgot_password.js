@@ -9,7 +9,8 @@ window.onload = () => {
 
     let input_registry = document.getElementById('input-registry'),
         input_name = document.getElementById('input-name'),
-        input_confirm_password = document.getElementById('input-confirm-password');
+        input_confirm_password = document.getElementById('input-confirm-password'),
+        input_new_password = document.getElementById('input-new-password');
 
     input_registry.onblur =
         input_name.onblur =
@@ -26,24 +27,11 @@ window.onload = () => {
         });
 }
 
-document.getElementById('btn-cancel').onclick = () => {
-    remote.getCurrentWindow().close();
-};
-
 function input_validate(ev) {
     let elmnt = ev.target;
     if (elmnt.value == '') elmnt.classList.add('is-invalid');
     else elmnt.classList.remove('is-invalid');
-
-
-    (function() {
-        let input_registry = document.getElementById('input-registry'),
-            input_name = document.getElementById('input-name'),
-            input_confirm_password = document.getElementById('input-confirm-password');
-
-        let input_new_password = document.getElementById('input-new-password'),
-            input_confirm_password = document.getElementById('input-confirm-password');
-    })();
+    validate_fields();
 }
 
 function password_validate(ev) {
@@ -57,9 +45,30 @@ function password_validate(ev) {
         input_confirm_password.classList.add('is-invalid');
         input_confirm_password.classList.remove('is-valid');
     }
+    validate_fields();
 }
 
-function enable_save_btn() {
+function validate_fields() {
+    let input_new_password = document.getElementById('input-new-password'),
+        input_confirm_password = document.getElementById('input-confirm-password'),
+        input_registry = document.getElementById('input-registry'),
+        input_name = document.getElementById('input-name');
+
+    let password_match = (input_new_password.value === input_confirm_password.value),
+        passwords_not_empty = (input_new_password.value.trim().length > 0 && input_confirm_password.value.trim().length > 0),
+        not_empty_fields = (input_registry.value.trim().length > 0 && input_name.value.trim().length > 0);
+
     let btn_save = document.getElementById('btn-save');
 
+    if (password_match && not_empty_fields && passwords_not_empty) {
+        console.log('Sim!');
+        btn_save.removeAttribute('disabled');
+    } else {
+        console.log('Não!');
+        btn_save.setAttribute('disabled', '');
+    }
 }
+
+document.getElementById('btn-cancel').onclick = () => {
+    remote.getCurrentWindow().close();
+};

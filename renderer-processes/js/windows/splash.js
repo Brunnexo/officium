@@ -1,8 +1,9 @@
+const path = require('path');
 // Electron
 const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 // Extensões internas
-const { MSSQL, ColorMode } = require(`../../../officium-modules/Officium`);
+const { MSSQL, ColorMode } = require(path.resolve(__dirname, '../../../officium-modules/Officium'));
 const SQL_DRIVER = new MSSQL();
 
 const DATA = {

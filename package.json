@@ -7,9 +7,12 @@
             "target": "nsis",
             "asarUnpack": ["officium-modules/**/*"]
         },
+        "nsis": {
+            "createDesktopShortcut": "always"
+        },
         "directories": {
             "buildResources": "build",
-            "output": "appDist"
+            "output": "dist"
         }
     },
     "name": "officium",
