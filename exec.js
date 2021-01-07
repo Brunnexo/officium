@@ -20,68 +20,42 @@ electron_1.app.on('ready', () => {
 electron_1.app.on('window-all-closed', () => {
     electron_1.app.exit();
 });
-let labor_info, badge;
-let worker_screen_evt;
-let dialog_opt;
-electron_1.ipcMain.on('show-main', (evt, arg) => {
-    main_1.Process.build('main', () => { main_1.Process[arg].destroy(); });
-});
-electron_1.ipcMain.on('show-worker-screen', (evt, arg) => {
-    main_1.Process.build('worker_screen', () => { main_1.Process[arg].destroy(); });
-});
-electron_1.ipcMain.on('select-project', (evt, arg) => {
-    worker_screen_evt = evt;
-    badge = arg.badge;
-    labor_info = arg.info;
-    main_1.Process.build('select_project');
-});
-electron_1.ipcMain.on('request-labor-info', evt => {
-    evt.returnValue = labor_info;
-});
-electron_1.ipcMain.on('request-badge-name', evt => {
-    evt.returnValue = badge;
-});
-electron_1.ipcMain.on('sr-search', (evt, arg) => {
-    worker_screen_evt = evt;
-    main_1.Process.build('sr_search');
-});
-electron_1.ipcMain.on('sr-found', (evt, arg) => {
-    worker_screen_evt.reply('sr-fill', arg);
-});
-electron_1.ipcMain.on('project-selected', (evt, arg) => {
-    worker_screen_evt.reply('reg-time', arg);
-});
-electron_1.ipcMain.on('show-dialog', (evt, arg) => {
-    electron_1.ipcMain.once('dialog-closed', (evt_1, arg_1) => {
-        evt.reply(arg_1);
-    });
-    dialog_opt = arg;
-    main_1.Process.build('dialog');
-});
-electron_1.ipcMain.on('dialog-closed', (evt, res) => {
-    worker_screen_evt.reply('dialog-reply', res);
-});
-electron_1.ipcMain.on('get-dialog-options', (evt, arg) => {
-    evt.returnValue = dialog_opt;
-});
-electron_1.ipcMain.on('forgot-password', (evt, arg) => {
-    main_1.Process.build('forgot_password');
-    electron_1.ipcMain.once('password-saved', (evt, arg) => {
-        if (arg[0]) {
-            dialog_opt = {
-                title: 'Não se esqueça agora!',
-                type: 'info',
-                content: `Sua nova senha foi salva!`
-            };
-            main_1.Process.build('dialog');
-        }
-        else {
-            dialog_opt = {
-                title: 'Opa!',
-                type: 'info',
-                content: `Problema ao atualizar a senha! Erro: [${arg[1]}]`
-            };
-            main_1.Process.build('dialog');
-        }
-    });
-});
+const ElectronEvent = {
+    show_main: function (evt, arg) {
+        main_1.Process.build('main', () => { main_1.Process[arg].destroy(); });
+    },
+    show_worker_screen: function (evt, arg) {
+        main_1.Process.build('worker_screen', () => { main_1.Process[arg].destroy(); });
+    },
+    select_project: function (evt, arg) {
+        this.evt_caller = evt;
+        this.badge = arg.badge;
+        this.info = arg.info;
+        main_1.Process.build('select_project');
+        electron_1.ipcMain.once('request-labor-info', evt => evt.returnValue = this.info);
+        electron_1.ipcMain.once('request-badge-name', evt => evt.returnValue = this.badge);
+        electron_1.ipcMain.once('project-selected', (evt, arg) => { this.evt_caller.reply('reg-time', arg); });
+    },
+    sr_search: function (evt) {
+        this.evt_caller = evt;
+        electron_1.ipcMain.once('sr-found', (evt, arg) => { this.evt_caller.reply('sr-fill', arg); });
+        main_1.Process.build('sr_search');
+    },
+    show_dialog: function (evt, opt) {
+        this.evt_caller = evt;
+        this.dialog_options = opt;
+        electron_1.ipcMain.once('get-dialog-options', (evt, arg) => { evt.returnValue = this.dialog_options; });
+        electron_1.ipcMain.once('dialog-closed', (evt, arg) => { if (typeof (arg) === 'boolean')
+            this.evt_caller.reply('dialog-reply', arg); });
+        main_1.Process.build('dialog');
+    },
+    forgot_password: function (evt) {
+        main_1.Process.build('forgot_password');
+    }
+};
+electron_1.ipcMain.on('show-main', ElectronEvent.show_main)
+    .on('show-worker-screen', ElectronEvent.show_worker_screen)
+    .on('select-project', ElectronEvent.select_project)
+    .on('sr-search', ElectronEvent.sr_search)
+    .on('show-dialog', ElectronEvent.show_dialog)
+    .on('forgot-password', ElectronEvent.forgot_password);

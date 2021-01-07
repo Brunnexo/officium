@@ -121,6 +121,7 @@ function warning(text) {
     clearTimeout(delay);
     let instruction = document.getElementById('instruction');
     instruction.style.transitionDuration = '1s';
+    instruction.classList.remove('text-danger');
     instruction.classList.add('text-warning');
     instruction.textContent = text;
     delay = setTimeout(() => {

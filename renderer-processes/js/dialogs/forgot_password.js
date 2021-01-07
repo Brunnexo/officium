@@ -9,14 +9,13 @@ window.onload = () => {
 
     let input_registry = document.getElementById('input-registry'),
         input_name = document.getElementById('input-name'),
-        input_confirm_password = document.getElementById('input-confirm-password'),
-        input_new_password = document.getElementById('input-new-password');
+        input_confirm_password = document.getElementById('input-confirm-password');
 
     input_registry.onblur =
         input_name.onblur =
         input_validate;
 
-    input_new_password.onblur = input_confirm_password.onblur = password_validate;
+    input_confirm_password.onblur = password_validate;
 
     remote.getCurrentWindow()
         .on('focus', () => {
@@ -86,9 +85,27 @@ function save_password(ev) {
         SQL_DRIVER.execute(MSSQL.QueryBuilder('UpdatePassword', input_registry.value, input_name.value, input_confirm_password.value), (data) => {
             updated = (updated || (data['Atualizado'].value == 'TRUE'));
         }).then(() => {
-            ipc.send('password-saved', [updated]);
-        }).catch((err) => {
-            ipc.send('password-saved', [false, err]);
+            show_dialog(updated);
+        }).catch((e) => {
+            show_dialog(false, e);
+        });
+    }
+}
+
+function show_dialog(updated, err) {
+    if (updated) {
+        ipc.send('show-dialog', {
+            title: 'Não se esqueça agora!',
+            type: 'info',
+            content: `Sua nova senha foi salva!`
+        });
+        ipc.once('dialog-reply', (evt, arg) => { remote.getCurrentWindow().close() });
+    } else {
+        ipc.send('show-dialog', {
+                    title: 'Opa!',
+                    type: 'info',
+                    content: `Problema ao atualizar a senha! As informações estão corretas? Lembre-se: o nome e o registro precisam coincidir com os dados salvos!
+            ${typeof(err) !== 'undefined' ? `Erro: [${err}]` : ''}`
         });
     }
 }
