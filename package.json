@@ -5,7 +5,9 @@
         "copyright": "Bruno Costa",
         "win": {
             "target": "nsis",
-            "asarUnpack": ["officium-modules/**/*"]
+            "asarUnpack": [
+                "officium-modules/**/*"
+            ]
         },
         "nsis": {
             "createDesktopShortcut": "always"

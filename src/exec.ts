@@ -1,10 +1,10 @@
 import { app, ipcMain as ipc } from 'electron';
-import * as fs from 'fs';
+import { activities, parameters, clients } from './datas';
 import { Process } from './main';
 
-fs.readFile('officium-modules/data/Parameters.json', 'utf-8', (err, data) => { global['parameters'] = JSON.parse(data) });
-fs.readFile('officium-modules/data/Activities.json', 'utf-8', (err, data) => { global['activities'] = JSON.parse(data) });
-fs.readFile('officium-modules/data/Clients.json', 'utf-8', (err, data) => { global['clients'] = JSON.parse(data) });
+global['parameters'] = parameters;
+global['activities'] = activities;
+global['clients'] = clients;
 
 global['sql'] = {
     department: {},

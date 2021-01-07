@@ -1,0 +1,1 @@
+DELETE FROM [Relatórios] WHERE [ID] = @VAR0

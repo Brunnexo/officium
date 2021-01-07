@@ -1,11 +1,35 @@
 () => {
     const LIMIT = 40;
     WorkerLabor.getData();
-    let renderTable = () => {
-        let _data = WorkerLabor.info;
-        let hasTime = (_data.laborTime.common > 0 || _data.laborTime.extra > 0);
-        let container = document.getElementById('table-container');
 
+    let _data = WorkerLabor.info;
+    let hasTime = (_data.laborTime.common > 0 || _data.laborTime.extra > 10);
+
+    var labor_insert = () => {
+        let query = '';
+        _data = WorkerLabor.info;
+        hasTime = (_data.laborTime.common > 0 || _data.laborTime.extra > 10);
+        if (_data.laborTime.common > 0) {
+            query += MSSQL.QueryBuilder('InsertLabor', _data.registry, _data.date, _data.function, _data.wo,
+                _data['description'].length > LIMIT ? _data['description'].substring(0, LIMIT) + '...' : _data['description'],
+                _data.laborTime.common, '0');
+        }
+        if (_data.laborTime.extra > 10) {
+            query += MSSQL.QueryBuilder('InsertLabor', _data.registry, _data.date, _data.function, _data.wo,
+                _data['description'].length > LIMIT ? _data['description'].substring(0, LIMIT) + '...' : _data['description'],
+                _data.laborTime.extra, '1');
+        }
+        if (hasTime) {
+            SQL_DRIVER.execute(query)
+                .then(() => {
+                    HTML.load('personal-resume');
+                });
+        }
+    };
+
+    let renderTable = () => {
+        let container = document.getElementById('table-container');
+        let hasTime = (_data.laborTime.common > 0 || _data.laborTime.extra > 10);
         if (hasTime) {
             let thead = document.createElement('thead');
             let table = document.createElement('table');
@@ -84,26 +108,6 @@
             type: 'yes-no',
             content: `Você está registrando ${time} minuto${time > 1 ? 's' : ''}. Confirmar?`
         });
+        ipc.once('dialog-reply', (evt, arg) => { if (arg) labor_insert() })
     }
 }
-
-function labor_insert() {
-    if (hasTime) {
-        let query = '';
-        if (data.laborTime.common > 0) {
-            query += MSSQL.QueryBuilder('InsertLabor', data.registry, data.date, data.function, data.wo,
-                data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description'],
-                data.laborTime.extra, '0');
-        }
-        if (data.laborTime.extra > 10) {
-            query += MSSQL.QueryBuilder('InsertLabor', data.registry, data.date, data.function, data.wo,
-                data['description'].length > LIMIT ? data['description'].substring(0, LIMIT) + '...' : data['description'],
-                data.laborTime.extra, '1');
-        }
-        SQL_DRIVER.execute(query)
-            .then(() => {
-                ipc.send('show-resume');
-                remote.getCurrentWindow().close();
-            });
-    }
-};

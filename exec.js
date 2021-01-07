@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const electron_1 = require("electron");
-const fs = require("fs");
+const datas_1 = require("./datas");
 const main_1 = require("./main");
-fs.readFile('officium-modules/data/Parameters.json', 'utf-8', (err, data) => { global['parameters'] = JSON.parse(data); });
-fs.readFile('officium-modules/data/Activities.json', 'utf-8', (err, data) => { global['activities'] = JSON.parse(data); });
-fs.readFile('officium-modules/data/Clients.json', 'utf-8', (err, data) => { global['clients'] = JSON.parse(data); });
+global['parameters'] = datas_1.parameters;
+global['activities'] = datas_1.activities;
+global['clients'] = datas_1.clients;
 global['sql'] = {
     department: {},
     projects: {},

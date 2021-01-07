@@ -4,11 +4,11 @@ const remote = require('electron').remote;
 const ipc = require('electron').ipcRenderer;
 
 // Extensões internas
-const { PageLoader, ColorMode, Charts, WorkerLabor, WorkerManager } = require(path.resolve(__dirname, '../../../officium-modules/Officium'));
+const { PageLoader, ColorMode, Charts, WorkerLabor, WorkerManager, MSSQL } = require(path.resolve(__dirname, '../../../officium-modules/Officium'));
 
 // Instâncias
 const HTML = new PageLoader();
-
+const SQL_DRIVER = new MSSQL();
 // Variáveis globais
 const worker = remote.getGlobal('data').worker;
 const srs = remote.getGlobal('sql').srs;

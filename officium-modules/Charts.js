@@ -75,7 +75,7 @@ class Charts {
                 const menuItem = new MenuItem({
                     label: 'Apagar',
                     click: () => {
-                        this.MSSQL.execute(`DELETE FROM [Relatórios] WHERE [ID] = ${id}`).then(() => {
+                        this.MSSQL.execute(MSSQL_1.MSSQL.QueryBuilder('DeleteLabor', id)).then(() => {
                             let postElmnt = elmnt;
                             elmnt.style.transitionDuration = '1s';
                             elmnt.style.opacity = '0';
