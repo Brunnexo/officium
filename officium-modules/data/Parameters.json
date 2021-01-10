@@ -1,0 +1,28 @@
+{
+    "sql": {
+        "config": {
+            "server": "10.144.201.115",
+            "authentication": {
+                "type": "default",
+                "options": {
+                    "userName": "sa",
+                    "password": "sa"
+                }
+            },
+            "options": {
+                "encrypt": false,
+                "database": "relger",
+                "enableArithAbort": true,
+                "appName": "Officium",
+                "useColumnNames": true
+            }
+        }
+    },
+    "workTime": {
+        "hourly": 528,
+        "monthly": 522,
+        "dailyExtra": 60,
+        "weekendExtra": 660,
+        "hourBank": 90
+    }
+}

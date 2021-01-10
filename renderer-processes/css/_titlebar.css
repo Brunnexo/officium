@@ -1,0 +1,35 @@
+.titlebar {
+    text-decoration: none;
+    display: block;
+    background: none;
+    height: 47px;
+    width: 100vw;
+    position: absolute;
+    left: 0;
+    top: 3px;
+    -webkit-app-region: drag;
+    padding: 15px;
+}
+
+.titlebar-button {
+    margin: 5px;
+    font-weight: bold;
+    font-size: xx-large;
+    cursor: pointer;
+    float: right;
+}
+
+.titlebar-button.absolute {
+    position: absolute;
+    right: 15px;
+    top: -5px;
+}
+
+.close-btn {
+    color: var(--close-button);
+    transition: var(--transition-time);
+}
+
+.close-btn::after {
+    content: '×';
+}

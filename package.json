@@ -1,28 +1,46 @@
 {
+    "build": {
+        "productName": "Officium",
+        "appId": "bnx.app.officium",
+        "copyright": "Bruno Costa",
+        "win": {
+            "target": "nsis",
+            "asarUnpack": [
+                "officium-modules/**/*"
+            ]
+        },
+        "nsis": {
+            "createDesktopShortcut": "always"
+        },
+        "directories": {
+            "buildResources": "build",
+            "output": "dist"
+        }
+    },
     "name": "officium",
-    "version": "1.0.0",
-    "description": "Gerenciador de Mão de Obra",
-    "main": "main.js",
-    "keywords": [
-        "joyson",
-        "jss",
-        "gmo",
-        "labor",
-        "relger",
-        "officium"
-    ],
+    "version": "0.0.1",
+    "description": "Officium",
+    "main": "exec.js",
+    "scripts": {
+        "watch": "tsc -w",
+        "pack": "electron-builder --dir",
+        "dist": "electron-builder",
+        "postinstall": "electron-builder install-app-deps"
+    },
     "author": "Bruno Costa",
     "license": "ISC",
     "dependencies": {
-        "@popperjs/core": "^2.4.0",
-        "bootstrap": "^4.5.0",
-        "chart.js": "^2.9.3",
-        "electron": "^9.0.5",
-        "jquery": "^3.5.1",
-        "mssql": "^6.2.0",
-        "popper.js": "^1.16.0",
-        "smb2": "^0.2.11",
-        "xlsx": "^0.16.2"
+        "bootstrap": "^4.5.3",
+        "chart.js": "^2.9.4",
+        "mssql": "^6.2.3"
     },
-    "devDependencies": {}
+    "devDependencies": {
+        "@types/chart.js": "^2.9.27",
+        "@types/crypto-js": "^4.0.1",
+        "@types/tedious": "^4.0.2",
+        "electron": "^11.0.0",
+        "electron-builder": "^22.9.1",
+        "electron-packager": "^15.2.0",
+        "typescript": "^4.0.5"
+    }
 }

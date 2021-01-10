@@ -1,12 +1,18 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.Process = void 0;
-const electron_1 = require("electron");
+import { BrowserWindow } from 'electron';
+
 class Process {
-    static build(window, execute) {
-        switch (window) {
+    static splash: BrowserWindow;
+    static main: BrowserWindow;
+    static worker_screen: BrowserWindow;
+    static sr_search: BrowserWindow;
+    static select_project: BrowserWindow;
+    static dialog: BrowserWindow;
+    static forgot_password: BrowserWindow;
+
+    static build(window: string, execute?: Function) {
+        switch(window) {
             case 'splash':
-                Process.splash = new electron_1.BrowserWindow({
+                Process.splash = new BrowserWindow({
                     "show": false,
                     "frame": false,
                     "width": 300,
@@ -23,12 +29,11 @@ class Process {
                 Process.splash.loadURL(`${__dirname}/renderer-processes/html/windows/splash.html`);
                 Process.splash.once('ready-to-show', () => {
                     Process.splash.show();
-                    if (typeof (execute) === 'function')
-                        execute();
+                    if (typeof(execute) === 'function') execute();
                 });
-                break;
+            break;
             case 'main':
-                Process.main = new electron_1.BrowserWindow({
+                Process.main = new BrowserWindow({
                     "show": false,
                     "frame": false,
                     "minWidth": 500,
@@ -46,12 +51,11 @@ class Process {
                 Process.main.loadURL(`${__dirname}/renderer-processes/html/windows/main.html`);
                 Process.main.once('ready-to-show', () => {
                     Process.main.show();
-                    if (typeof (execute) === 'function')
-                        execute();
+                    if (typeof(execute) === 'function') execute();
                 });
-                break;
+            break;
             case 'worker_screen':
-                Process.worker_screen = new electron_1.BrowserWindow({
+                Process.worker_screen = new BrowserWindow({
                     "show": false,
                     "frame": false,
                     "width": 1350,
@@ -68,13 +72,12 @@ class Process {
                 Process.worker_screen.once('ready-to-show', () => {
                     setTimeout(() => {
                         Process.worker_screen.show();
-                        if (typeof (execute) === 'function')
-                            execute();
+                        if (typeof(execute) === 'function') execute();
                     }, 1000);
                 });
-                break;
+            break;
             case 'sr_search':
-                Process.sr_search = new electron_1.BrowserWindow({
+                Process.sr_search = new BrowserWindow({
                     "parent": Process.worker_screen,
                     "modal": true,
                     "show": false,
@@ -93,9 +96,9 @@ class Process {
                 Process.sr_search.once('ready-to-show', () => {
                     Process.sr_search.show();
                 });
-                break;
+            break;
             case 'select_project':
-                Process.select_project = new electron_1.BrowserWindow({
+                Process.select_project = new BrowserWindow({
                     "parent": Process.worker_screen,
                     "modal": true,
                     "show": false,
@@ -114,9 +117,9 @@ class Process {
                 Process.select_project.once('ready-to-show', () => {
                     Process.select_project.show();
                 });
-                break;
+            break;
             case 'dialog':
-                Process.dialog = new electron_1.BrowserWindow({
+                Process.dialog = new BrowserWindow({
                     "parent": Process.worker_screen,
                     "modal": true,
                     "show": false,
@@ -135,9 +138,9 @@ class Process {
                 Process.dialog.once('ready-to-show', () => {
                     Process.dialog.show();
                 });
-                break;
+            break;
             case 'forgot_password':
-                Process.forgot_password = new electron_1.BrowserWindow({
+                Process.forgot_password = new BrowserWindow({
                     "parent": Process.main,
                     "modal": true,
                     "show": false,
@@ -156,8 +159,10 @@ class Process {
                 Process.forgot_password.once('ready-to-show', () => {
                     Process.forgot_password.show();
                 });
-                break;
+            break;
         }
     }
 }
-exports.Process = Process;
+
+export { Process };
+

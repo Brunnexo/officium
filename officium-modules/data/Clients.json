@@ -1,0 +1,47 @@
+{
+    "Clients": {
+        "GM": [
+            "General Motors",
+            "Chevrolet"
+        ],
+        "VW": [
+            "Volkswagen"
+        ],
+        "FORD": [
+            "Ford"
+        ],
+        "FCA": [
+            "Fiat",
+            "Chrysler",
+            "Jeep"
+        ],
+        "RENAULT": [
+            "Renault"
+        ],
+        "HONDA": [
+            "Honda"
+        ],
+        "NISSAN": [
+            "Nissan"
+        ],
+        "TOYOTA": [
+            "Toyota"
+        ],
+        "HYUNDAI": [
+            "Hyundai"
+        ],
+        "MERCEDES": [
+            "Mercedes",
+            "Mercedes-Benz"
+        ],
+        "PSA": [
+            "Peugeot",
+            "Citroen",
+            "Citröen",
+            "PSA"
+        ],
+        "MAN": [
+            "Man"
+        ]
+    }
+}
