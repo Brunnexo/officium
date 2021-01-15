@@ -1,1 +1,0 @@
-SELECT [Nome], [Registro], [Funções], [Jornada] FROM [Colaboradores] WHERE [Registro] = @VAR0

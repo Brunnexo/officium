@@ -31,7 +31,7 @@ class Process {
                     Process.splash.show();
                     if (typeof(execute) === 'function') execute();
                 });
-            break;
+            return Process.splash;
             case 'main':
                 Process.main = new BrowserWindow({
                     "show": false,
@@ -53,7 +53,7 @@ class Process {
                     Process.main.show();
                     if (typeof(execute) === 'function') execute();
                 });
-            break;
+            return Process.main;
             case 'worker_screen':
                 Process.worker_screen = new BrowserWindow({
                     "show": false,
@@ -75,7 +75,7 @@ class Process {
                         if (typeof(execute) === 'function') execute();
                     }, 1000);
                 });
-            break;
+            return Process.worker_screen;
             case 'sr_search':
                 Process.sr_search = new BrowserWindow({
                     "parent": Process.worker_screen,
@@ -96,7 +96,7 @@ class Process {
                 Process.sr_search.once('ready-to-show', () => {
                     Process.sr_search.show();
                 });
-            break;
+            return Process.sr_search;
             case 'select_project':
                 Process.select_project = new BrowserWindow({
                     "parent": Process.worker_screen,
@@ -117,7 +117,7 @@ class Process {
                 Process.select_project.once('ready-to-show', () => {
                     Process.select_project.show();
                 });
-            break;
+            return Process.select_project;
             case 'dialog':
                 Process.dialog = new BrowserWindow({
                     "parent": Process.worker_screen,
@@ -138,7 +138,7 @@ class Process {
                 Process.dialog.once('ready-to-show', () => {
                     Process.dialog.show();
                 });
-            break;
+            return Process.dialog;
             case 'forgot_password':
                 Process.forgot_password = new BrowserWindow({
                     "parent": Process.main,
@@ -159,7 +159,7 @@ class Process {
                 Process.forgot_password.once('ready-to-show', () => {
                     Process.forgot_password.show();
                 });
-            break;
+            return Process.forgot_password;
         }
     }
 }

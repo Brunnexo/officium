@@ -36,7 +36,7 @@ back_page = '';
 // Funções ao carregar a página
 window.onload = () => {
     ColorMode(localStorage.getItem('colorMode'));
-    //LoadScripts();
+
     document.getElementById('nav-name').textContent = worker['Nome'].value;
     document.getElementById("date").valueAsDate = new Date();
 

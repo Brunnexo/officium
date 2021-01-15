@@ -81,7 +81,8 @@ class Charts {
                             elmnt.style.opacity = '0';
                             setTimeout(() => {
                                 postElmnt.style.display = 'none';
-                            }, 1000);
+                                eval('HTML.update()');
+                            }, 500);
                         });
                     }
                 });
@@ -107,12 +108,20 @@ class Charts {
                 times: [],
                 projects: []
             };
+            let extraTime = 0;
             _data.labor.forEach((data) => {
                 if (data.Extra.value == 'NÃO') {
                     splitData.times.push(data.Tempo.value);
                     splitData.projects.push(data.Projeto.value);
                 }
+                else if (data.Extra.value == 'SIM') {
+                    extraTime += data.Tempo.value;
+                }
             });
+            if (extraTime > 0) {
+                splitData.times.push(extraTime);
+                splitData.projects.push('TEMPO EXTRA');
+            }
             if ((_remainTime.common - _laborTime.common) > 0) {
                 splitData.times.push(_laborTime.common > 0 ? (_remainTime.common - _laborTime.common) : _remainTime.common);
                 splitData.projects.push('RESTANTE');

@@ -1,17 +1,17 @@
 {
     "sql": {
         "config": {
-            "server": "10.144.201.115",
+            "server": "127.0.0.1",
             "authentication": {
                 "type": "default",
                 "options": {
-                    "userName": "sa",
-                    "password": "sa"
+                    "userName": "SAT_LOGON",
+                    "password": "pAcMaN2@"
                 }
             },
             "options": {
                 "encrypt": false,
-                "database": "relger",
+                "database": "SAT",
                 "enableArithAbort": true,
                 "appName": "Officium",
                 "useColumnNames": true

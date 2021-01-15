@@ -484,7 +484,7 @@ exports.clients = clients;
 const parameters = {
     "sql": {
         "config": {
-            "server": "10.144.201.115",
+            "server": "127.0.0.1",
             "authentication": {
                 "type": "default",
                 "options": {

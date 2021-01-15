@@ -1,5 +1,3 @@
- SELECT [ID], [DATA] AS [Data], [CRACHA] AS [Registro], [FUNCAO] AS [Função], [WO], [DESCRICAO] AS [Descrição], [TEMPO] AS [Tempo], (CASE WHEN [HE] <> 0 THEN 'SIM' ELSE 'NÃO' END) AS [Extra]
-  FROM [relger].[dbo].[RELATORIOS]
-    WHERE [CRACHA] = @VAR0
-        AND [DATA] = '@VAR1'
-
+SELECT [ID], [Função], [WO], [Descrição], [Tempo], (CASE WHEN [Extra] <> 0 THEN 'SIM' ELSE 'NÃO' END) AS [Extra] FROM [Relatórios]
+    WHERE [Registro] = @VAR0
+        AND [Data] = '@VAR1'
