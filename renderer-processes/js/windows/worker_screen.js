@@ -30,7 +30,6 @@ const functions = {
     "A": "Administrativo",
     "N": "Engenheiro"
 };
-
 back_page = '';
 
 // Funções ao carregar a página

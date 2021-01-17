@@ -72,20 +72,14 @@
         </div>
 
         <!-- Gerenciar colaboradores -->
-        <div id="manage-workers" class="container" c-loader>
-            <h1 class="display-4">Gerenciar colaboradores <button type="button" class="btn btn-outline-info ignore-theme" id="btn-new">Novo colaborador</button></h1>
-            <div class="col">
-                <div class="row">
-                    <div class="neumorphic">
-                        <div class="col">
+        <div id="adm-management" class="container" c-loader>
+            <div r-loader-container></div>
+            <div id="new-worker" r-loader>
+                <h1 class="display-4">Novo colaborador</h1>
+                <div class="center-forms">
+                    <div class="row">
+                        <div class="neumorphic">
                             <h6 class="display-6">Dados</h6>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <label class="input-group-text" for="list-workers" style="font-weight: bold;"><span class="spinner-border spinner-border-sm mr-2" role="status" id="loading"></span>Colaborador</label>
-                                </div>
-                                <select class="custom-select" id="list-workers">
-                            </select>
-                            </div>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <label class="input-group-text" for="input-name" style="font-weight: bold;">Nome</label>
@@ -95,7 +89,7 @@
                                 <div class="input-group-prepend">
                                     <label class="input-group-text" for="input-reg" style="font-weight: bold;">Registro</label>
                                 </div>
-                                <input type="text" class="form-control" id="input-regs">
+                                <input type="number" class="form-control" id="input-regs">
                             </div>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
@@ -104,97 +98,207 @@
                                 <input type="email" class="form-control" id="input-email">
                             </div>
 
-                            <div class="row">
+                            <div class="row mt-3 neumorphic">
+                                <h6 class="display-6">Funções</h6>
+                                <label class="toggle">
+                                    <div class="body">
+                                        <input type="checkbox" class="toggle-button" id="chk-adm">
+                                        <div class="selector"></div>
+                                    </div>
+                                    <div class="label">Administrativo</div>
+                                </label>
+                                <label class="toggle">
+                                    <div class="body">
+                                        <input type="checkbox" class="toggle-button" id="chk-eng">
+                                        <div class="selector"></div>
+                                    </div>
+                                    <div class="label">Engenheiro</div>
+                                </label>
+                                <label class="toggle">
+                                    <div class="body">
+                                        <input type="checkbox" class="toggle-button" id="chk-ele">
+                                        <div class="selector"></div>
+                                    </div>
+                                    <div class="label">Eletricista</div>
+                                </label>
+                                <label class="toggle">
+                                    <div class="body">
+                                        <input type="checkbox" class="toggle-button" id="chk-mec">
+                                        <div class="selector"></div>
+                                    </div>
+                                    <div class="label">Mecânico</div>
+                                </label>
+                                <label class="toggle">
+                                    <div class="body">
+                                        <input type="checkbox" class="toggle-button" id="chk-prog">
+                                        <div class="selector"></div>
+                                    </div>
+                                    <div class="label">Programador</div>
+                                </label>
+                                <label class="toggle">
+                                    <div class="body">
+                                        <input type="checkbox" class="toggle-button" id="chk-proj">
+                                        <div class="selector"></div>
+                                    </div>
+                                    <div class="label">Projetista</div>
+                                </label>
+                            </div>
+
+                            <div class="row mt-3 mr-1 justify-content-end">
                                 <div class="neumorphic min">
                                     <label class="toggle">
-                                    <div class="body">
-                                        <input type="radio" name="journey" class="toggle-button" id="chk-hourly">
-                                        <div class="selector"></div>
-                                    </div>
-                                    <div class="label">Horista</div>
-                                </label>
+                                        <div class="body">
+                                            <input type="radio" name="journey" class="toggle-button" id="chk-hourly">
+                                            <div class="selector"></div>
+                                        </div>
+                                        <div class="label">Horista</div>
+                                    </label>
                                     <label class="toggle">
-                                    <div class="body">
-                                        <input type="radio" name="journey" class="toggle-button" id="chk-monthly">
-                                        <div class="selector"></div>
-                                    </div>
-                                    <div class="label">Mensalista</div>
-                                </label>
+                                        <div class="body">
+                                            <input type="radio" name="journey" class="toggle-button" id="chk-monthly">
+                                            <div class="selector"></div>
+                                        </div>
+                                        <div class="label">Mensalista</div>
+                                    </label>
                                 </div>
                                 <div class="ml-4 neumorphic min">
                                     <div class="flex-column justify-content-center">
+                                        <button type="button" class="btn btn-secondary ignore-theme" id="btn-back">Voltar</button>
                                         <button type="button" class="btn btn-success ignore-theme" id="btn-save">Salvar</button>
-                                        <button type="button" class="btn btn-danger ignore-theme" id="btn-erase">Apagar</button>
-                                        <button type="button" class="btn btn-secondary ignore-theme" id="btn-reset">Redefinir</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="manage-workers" r-loader>
+                <h1 class="display-4">Gerenciar colaboradores
+                    <button type="button" class="btn btn-outline-info ignore-theme" id="btn-new">Novo colaborador</button>
+                </h1>
+                <div class="col">
+                    <div class="row">
+                        <div class="neumorphic">
+                            <div class="col">
+                                <h6 class="display-6">Dados</h6>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="list-workers" style="font-weight: bold;"><span class="spinner-border spinner-border-sm mr-2" role="status" id="loading"></span>Colaborador</label>
+                                    </div>
+                                    <select class="custom-select" id="list-workers">
+                                </select>
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="input-name" style="font-weight: bold;">Nome</label>
+                                    </div>
+                                    <input type="text" class="form-control" id="input-name">
+
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="input-reg" style="font-weight: bold;">Registro</label>
+                                    </div>
+                                    <input type="number" class="form-control" id="input-regs">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <label class="input-group-text" for="input-email" style="font-weight: bold;">E-mail</label>
+                                    </div>
+                                    <input type="email" class="form-control" id="input-email">
+                                </div>
+
+                                <div class="row">
+                                    <div class="neumorphic min">
+                                        <label class="toggle">
+                                        <div class="body">
+                                            <input type="radio" name="journey" class="toggle-button" id="chk-hourly">
+                                            <div class="selector"></div>
+                                        </div>
+                                        <div class="label">Horista</div>
+                                    </label>
+                                        <label class="toggle">
+                                        <div class="body">
+                                            <input type="radio" name="journey" class="toggle-button" id="chk-monthly">
+                                            <div class="selector"></div>
+                                        </div>
+                                        <div class="label">Mensalista</div>
+                                    </label>
+                                    </div>
+                                    <div class="ml-4 neumorphic min">
+                                        <div class="flex-column justify-content-center">
+                                            <button type="button" class="btn btn-success ignore-theme" id="btn-save">Salvar</button>
+                                            <button type="button" class="btn btn-danger ignore-theme" id="btn-erase">Apagar</button>
+                                            <button type="button" class="btn btn-secondary ignore-theme" id="btn-reset">Redefinir</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="neumorphic ml-4">
+                            <div class="col">
+                                <h6 class="display-6">Atrasos por mês</h6>
+                                <div class="d-flex justify-content-center">
+                                    <div class="justify-content-center">
+                                        <canvas id="adm-delay-chart" width="465" height="250"></canvas>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="neumorphic ml-4">
-                        <div class="col">
-                            <h6 class="display-6">Atrasos por mês</h6>
-                            <div class="d-flex justify-content-center">
-                                <div class="justify-content-center">
-                                    <canvas id="adm-delay-chart" width="465" height="250"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-4">
-                    <div class="neumorphic">
-                        <div class="col">
-                            <h6 class="display-6">Funções</h6>
-                            <label class="toggle">
+                    <div class="row mt-4">
+                        <div class="neumorphic">
+                            <div class="col">
+                                <h6 class="display-6">Funções</h6>
+                                <label class="toggle">
+                                    <div class="body">
+                                        <input type="checkbox" class="toggle-button" id="chk-adm">
+                                        <div class="selector"></div>
+                                    </div>
+                                    <div class="label">Administrativo</div>
+                                </label>
+                                <label class="toggle">
                                 <div class="body">
-                                    <input type="checkbox" class="toggle-button" id="chk-adm">
+                                    <input type="checkbox" class="toggle-button" id="chk-eng">
                                     <div class="selector"></div>
                                 </div>
-                                <div class="label">Administrativo</div>
+                                <div class="label">Engenheiro</div>
                             </label>
-                            <label class="toggle">
-                            <div class="body">
-                                <input type="checkbox" class="toggle-button" id="chk-eng">
-                                <div class="selector"></div>
+                                <label class="toggle">
+                                <div class="body">
+                                    <input type="checkbox" class="toggle-button" id="chk-ele">
+                                    <div class="selector"></div>
+                                </div>
+                                <div class="label">Eletricista</div>
+                            </label>
+                                <label class="toggle">
+                                <div class="body">
+                                    <input type="checkbox" class="toggle-button" id="chk-mec">
+                                    <div class="selector"></div>
+                                </div>
+                                <div class="label">Mecânico</div>
+                            </label>
+                                <label class="toggle">
+                                <div class="body">
+                                    <input type="checkbox" class="toggle-button" id="chk-prog">
+                                    <div class="selector"></div>
+                                </div>
+                                <div class="label">Programador</div>
+                            </label>
+                                <label class="toggle">
+                                <div class="body">
+                                    <input type="checkbox" class="toggle-button" id="chk-proj">
+                                    <div class="selector"></div>
+                                </div>
+                                <div class="label">Projetista</div>
+                            </label>
                             </div>
-                            <div class="label">Engenheiro</div>
-                        </label>
-                            <label class="toggle">
-                            <div class="body">
-                                <input type="checkbox" class="toggle-button" id="chk-ele">
-                                <div class="selector"></div>
-                            </div>
-                            <div class="label">Eletricista</div>
-                        </label>
-                            <label class="toggle">
-                            <div class="body">
-                                <input type="checkbox" class="toggle-button" id="chk-mec">
-                                <div class="selector"></div>
-                            </div>
-                            <div class="label">Mecânico</div>
-                        </label>
-                            <label class="toggle">
-                            <div class="body">
-                                <input type="checkbox" class="toggle-button" id="chk-prog">
-                                <div class="selector"></div>
-                            </div>
-                            <div class="label">Programador</div>
-                        </label>
-                            <label class="toggle">
-                            <div class="body">
-                                <input type="checkbox" class="toggle-button" id="chk-proj">
-                                <div class="selector"></div>
-                            </div>
-                            <div class="label">Projetista</div>
-                        </label>
                         </div>
-                    </div>
-                    <div class="neumorphic ml-4">
-                        <h6 class="display-6">Relatório</h6>
-                        <div class="flex-column justify-content-center">
-                            <button type="button" class="btn btn-primary">Total</button>
-                            <button type="button" class="btn btn-primary">Colaborador</button>
+                        <div class="neumorphic ml-4">
+                            <h6 class="display-6">Relatório</h6>
+                            <div class="flex-column justify-content-center">
+                                <button type="button" class="btn btn-primary">Total</button>
+                                <button type="button" class="btn btn-primary">Colaborador</button>
+                            </div>
                         </div>
                     </div>
                 </div>

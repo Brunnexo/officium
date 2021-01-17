@@ -2,6 +2,7 @@
     let btn_save = document.getElementById('btn-save'),
         btn_reset = document.getElementById('btn-reset'),
         btn_erase = document.getElementById('btn-erase'),
+        btn_new = document.getElementById('btn-new'),
         chk_adm = document.getElementById('chk-adm'),
         input_email = document.getElementById('input-email'),
         select = document.getElementById('list-workers');
@@ -98,5 +99,9 @@
                 }
             });
         }
+    }
+
+    btn_new.onclick = () => {
+        HTML.load('new-worker');
     }
 }
