@@ -157,6 +157,27 @@ class Process {
                     Process.forgot_password.show();
                 });
                 return Process.forgot_password;
+            case 'report':
+                Process.report = new electron_1.BrowserWindow({
+                    "parent": Process.worker_screen,
+                    "modal": true,
+                    "show": false,
+                    "frame": false,
+                    "width": 1280,
+                    "height": 720,
+                    "resizable": false,
+                    "maximizable": false,
+                    "transparent": true,
+                    "webPreferences": {
+                        "nodeIntegration": true,
+                        "enableRemoteModule": true
+                    }
+                });
+                Process.report.loadURL(`${__dirname}/renderer-processes/html/windows/report.html`);
+                Process.report.once('ready-to-show', () => {
+                    Process.report.show();
+                });
+                return Process.report;
         }
     }
 }

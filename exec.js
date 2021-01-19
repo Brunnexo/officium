@@ -70,6 +70,12 @@ const ElectronEvent = {
             .on('closed', () => {
             electron_1.ipcMain.once('forgot-password', ElectronEvent.forgot_password);
         });
+    },
+    show_report: function (evt) {
+        main_1.Process.build('report')
+            .on('closed', () => {
+            electron_1.ipcMain.once('show-report', ElectronEvent.show_report);
+        });
     }
 };
 electron_1.ipcMain.once('show-main', ElectronEvent.show_main)
@@ -77,4 +83,5 @@ electron_1.ipcMain.once('show-main', ElectronEvent.show_main)
     .once('select-project', ElectronEvent.select_project)
     .once('sr-search', ElectronEvent.sr_search)
     .once('show-dialog', ElectronEvent.show_dialog)
-    .once('forgot-password', ElectronEvent.forgot_password);
+    .once('forgot-password', ElectronEvent.forgot_password)
+    .once('show-report', ElectronEvent.show_report);

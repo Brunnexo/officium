@@ -10,9 +10,8 @@ SET @Nome = '@VAR2';
 SET @Funções = '@VAR3';
 SET @Jornada = '@VAR4';
 
-UPDATE [Colaboradores]
-	SET [Nome] = @Nome, [Funções] = @Funções, [Jornada] = @Jornada
-		WHERE [Registro] = @Registro
+INSERT INTO [Colaboradores] ([Registro], [Nome], [Funções], [Jornada])
+	VALUES (@Registro, @Nome, @Funções, @Jornada)
 
 IF @Funções LIKE '%A%'
 	BEGIN
