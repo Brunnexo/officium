@@ -41,11 +41,11 @@
 
     btn_save.onclick = () => {
         functions_query = `${chk_adm.checked ? 'A' : ' '}${chk_eng.checked ? 'N' : ' '}${chk_ele.checked ? 'E' : ' '}${chk_mec.checked ? 'M' : ' '}${chk_prog.checked ? 'P' : ' '}${chk_proj.checked ? 'R' : ' '}`;
-        journey_query = `${chk_hourly.checked ? 'H' : chk_monthly.checked ? 'M' : 'H'}`;
+        journey_query = (chk_hourly.checked ? 'H' : chk_monthly.checked ? 'M' : 'H');
 
         let functions_validated = (functions_query.trim(' ').length > 0),
             name_validated = (input_name.value.trim(' ').length > 0),
-            registry_validated = (input_reg.value != '' && Number(input_reg.value) > 0);
+            registry_validated = (input_reg.value != '');
 
         let all_validated = (functions_validated && name_validated && registry_validated);
 
@@ -53,7 +53,7 @@
 
         let worker_data = [];
 
-        SQL_DRIVER.select(MSSQL.QueryBuilder('Worker', input_reg.value), data => {
+        SQL_DRIVER.select(MSSQL.QueryBuilder('Worker', (input_reg.value || '0')), data => {
             worker_data.push(data);
         }).then(() => {
             new_worker = !(Object.keys(worker_data).length > 0);
@@ -62,7 +62,7 @@
                 ipc.send('show-dialog', {
                     title: (all_validated ? 'Confirmar inserção' : 'Opa!'),
                     type: (all_validated ? 'yes-no' : 'info'),
-                    content: (all_validated ? `Confirmar inserção de ${input_name.value}?${chk_adm.checked ? ' A senha administrativa inicial é "1234".' : ''}` : 'Não está faltando alguma informação? O e-mail é opcional!')
+                    content: (all_validated ? `Confirmar inserção de ${input_name.value}?${chk_adm.checked ? ' A senha administrativa inicial será "1234".' : ''}` : 'Não está faltando alguma informação? O e-mail é opcional!')
                 });
 
                 ipc.once('dialog-reply', (evt, arg) => {
