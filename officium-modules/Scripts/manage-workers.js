@@ -1,4 +1,9 @@
 () => {
+    document.querySelectorAll('.active').forEach((elmnt) => {
+        elmnt.classList.remove('active');
+    });
+    document.getElementById('nav-manage-workers').classList.add('active');
+
     let btn_save = document.getElementById('btn-save'),
         btn_reset = document.getElementById('btn-reset'),
         btn_erase = document.getElementById('btn-erase'),

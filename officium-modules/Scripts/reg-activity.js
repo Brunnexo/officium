@@ -37,6 +37,9 @@
             wo_each = list_activities.selectedOptions[0].hasAttribute('wo-each'),
             wo_as = list_activities.selectedOptions[0].getAttribute('wo-as');
 
+        console.log("WO as" + wo_as);
+        console.log('Each:' + wo_each);
+
         if (is_project) {
             WorkerLabor.updateInfo({
                 description: list_descriptions.selectedOptions[0].value

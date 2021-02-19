@@ -14,6 +14,10 @@
     });
 
     document.getElementById('btn-others').onclick = () => {
+        ipc.once('reg-time', (evt, arg) => {
+            WorkerLabor.updateInfo(arg);
+            HTML.load('reg-time');
+        });
         ipc.send('select-project', { badge: 'common', info: WorkerLabor.getLabor() });
     }
 }

@@ -585,3 +585,8 @@ button.badge-image {
 .neumorphic.min-np {
     padding: 0;
 }
+
+.time-counter p:not(:last-child)::after {
+    white-space: pre;
+    content: "  |  ";
+}

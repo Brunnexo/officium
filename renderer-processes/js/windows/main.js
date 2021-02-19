@@ -72,6 +72,7 @@ function authenticate(registry, password) {
             worker.push(data);
         })
         .then(() => {
+            console.log(JSON.stringify(worker, null, '\t'));
             if (Object.keys(worker).length > 0) {
                 worker = worker[0];
                 let functions = worker['Funções'].value;

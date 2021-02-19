@@ -1,4 +1,0 @@
-SELECT [P].[CC], [P].[CLIENTE] AS [Cliente], [P].[PROJETO] AS [Projeto], [P].[CLASSE] AS [Classe], [P].[DESCRICAO] AS [Descrição], [P].[EQUIPAMENTO] AS [Equipamento], [P].[OS],
-                    [P].[WOADM] AS [Administrativo], [P].[WOCOMPRAS] AS [Compras], [P].[WOELETRICISTA] AS [Eletricista], [P].[WOENGENHEIRO] AS [Engenheiro], [P].[WOFERRAMENTARIA] AS [Ferramentaria], [P].[WOMECANICO] AS [Mecânico], [P].[WOPROGRAMADOR] AS [Programador], [P].[WOPROJETISTA] AS [Projetista]
-                        FROM [PROJETOS] AS [P]
-                            WHERE [P].[CLIENTE] NOT LIKE '%-%' AND [P].[CLIENTE] NOT LIKE '%AUTOMAÇÃO%'

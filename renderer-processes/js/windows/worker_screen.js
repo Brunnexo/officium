@@ -20,6 +20,7 @@ const charts = new Charts({
     laborChart: 'labor-chart',
     totalChart: 'total-chart',
     extraChart: 'extra-chart',
+
 });
 
 const functions = {
@@ -30,6 +31,7 @@ const functions = {
     "A": "Administrativo",
     "N": "Engenheiro"
 };
+
 back_page = '';
 
 // Funções ao carregar a página
@@ -75,28 +77,16 @@ document.getElementById('date').onchange = () => {
 
 // Navegar para o resumo
 document.getElementById('nav-resume').onclick = () => {
-    document.querySelectorAll('.active').forEach((elmnt) => {
-        elmnt.classList.remove('active');
-    });
-    document.getElementById('nav-resume').classList.add('active');
     HTML.load('personal-resume');
 };
 
 // Navegar para o registro
 document.getElementById('nav-reg').onclick = () => {
-    document.querySelectorAll('.active').forEach((elmnt) => {
-        elmnt.classList.remove('active');
-    });
-    document.getElementById('nav-reg').classList.add('active');
     HTML.load('reg-type');
 }
 
 // Gerenciar colaboradores
 document.getElementById('nav-manage-workers').onclick = () => {
-    document.querySelectorAll('.active').forEach((elmnt) => {
-        elmnt.classList.remove('active');
-    });
-    document.getElementById('nav-manage-workers').classList.add('active');
     HTML.load('manage-workers');
 }
 

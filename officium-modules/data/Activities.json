@@ -3,7 +3,7 @@
         "Administrativo": {
             "Controle": {
                 "Project": false,
-                "WO Each": true,
+                "WO each": true,
                 "Descriptions": [
                     "Controle de Compras",
                     "Controle de Demanda",
@@ -249,12 +249,17 @@
                     "Orçamento"
                 ]
             },
-            "Gestão de Projeto": {
+            "Gestão e Acompanhamento": {
                 "Project": false,
                 "WO each": false,
                 "WO as": "Gestão de Projeto",
                 "Descriptions": [
-                    "Gestão de Pojeto"
+                    "Gestão de Projeto",
+                    "Acompanhamento de Evento",
+                    "Acompanhamento de Fornecedor",
+                    "Acompanhamento de Montagem",
+                    "Acompanhamento de Produção",
+                    "Acompanhamento de S.A."
                 ]
             },
             "Retrabalhos e Melhorias": {

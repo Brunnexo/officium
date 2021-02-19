@@ -29,10 +29,10 @@ document.getElementById('btn-cancel').onclick = () => {
 };
 
 document.getElementById('btn-confirm').onclick = () => {
+    console.log(JSON.stringify(result, null, '\t'));
     ipc.send('project-selected', result);
     remote.getCurrentWindow().close();
 };
-
 
 function fill_list_common() {
     let _function = data['function'];
@@ -45,7 +45,6 @@ function fill_list_common() {
         input_os = document.getElementById('input-os'),
         input_equipment = document.getElementById('input-equipment'),
         select = document.getElementById('project-list');
-
 
     if (search.length > 0) {
         search.forEach(data => {

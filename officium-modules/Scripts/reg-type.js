@@ -1,4 +1,9 @@
 () => {
+    document.querySelectorAll('.active').forEach((elmnt) => {
+        elmnt.classList.remove('active');
+    });
+    document.getElementById('nav-reg').classList.add('active');
+
     WorkerLabor.clear();
 
     let btn_sr = document.getElementById('btn-sr'),

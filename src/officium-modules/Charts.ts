@@ -323,4 +323,3 @@ function randomColors(num: number) {
 }
 
 export { Charts, randomColors };
-

@@ -1,17 +1,17 @@
 {
     "sql": {
         "config": {
-            "server": "127.0.0.1",
+            "server": "10.144.201.115",
             "authentication": {
                 "type": "default",
                 "options": {
-                    "userName": "officium",
-                    "password": "pAcMaN2@"
+                    "userName": "sa",
+                    "password": "sa"
                 }
             },
             "options": {
-                "encrypt": false,
-                "database": "Officium",
+                "encrypt": true,
+                "database": "relger",
                 "enableArithAbort": true,
                 "appName": "Officium",
                 "useColumnNames": true
@@ -20,8 +20,8 @@
     },
     "workTime": {
         "hourly": 528,
-        "monthly": 522,
-        "dailyExtra": 60,
+        "monthly": 600,
+        "dailyExtra": 240,
         "weekendExtra": 660,
         "hourBank": 90
     }
